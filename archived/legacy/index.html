@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sankalp Shankar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;600;700&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> <style>
+        /* --- Basic Setup & Background Effect --- */
+        /* --- Basic Setup & Background Effect --- */
+        :root {
+            --primary-color: #E57373; /* A reddish-orange color for accents */
+            --background-color: #121212;
+            --text-color: #EAEAEA;
+            --card-color: #1e1e1e;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative; /* Needed for the pseudo-element */
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        /* The hazy background effect, correctly applied */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('effect.png');
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.35;
+            z-index: 1; /* Behind content but above background */
+            pointer-events: none; /* Allows clicks to go through the effect layer */
+            animation: static 3s steps(5) infinite;
+        }
+
+        @keyframes static {
+        0% { background-position: 0px 0px; }
+        20% { background-position: 25% 15%; }
+        40% { background-position: 50% 69%; }
+        60% { background-position: 33% 25%; }
+        80% { background-position: 72% 4%; }
+        100% { background-position: 80% 91%; }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            /* Make the background transparent by default */
+            background-color: transparent;
+            /* Add a smooth transition for the change */
+            transition: background-color 0.4s ease;
+        }
+
+        header.scrolled {
+            /* These styles apply only when the user scrolls down */
+            background-color: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* For Safari compatibility */
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 101;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(18, 18, 18, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 99;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--primary-color);
+            background-color: rgba(229, 115, 115, 0.1);
+        }
+
+        /* Change the header background color when scrolled */
+        header.scrolled {
+            /* These styles apply only when the user scrolls down */
+            background-color: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px); /* For Safari compatibility */
+        }
+
+        .logo {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- General Section Styling --- */
+        section {
+            padding: 6rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            z-index: 2;
+        }
+        
+        #contact.contact-new {
+            z-index: 0;
+        }
+        
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        h2 span {
+            color: var(--primary-color);
+        }
+
+        /* --- Home Section --- */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .home-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            align-items: center;
+            gap: 4rem;
+        }
+        
+        .home-text h1 {
+            font-family: 'Caveat', cursive;
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .home-text .tagline {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .home-text p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .home-image img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: 2px solid var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        /* --- Social Icons --- */
+        .social-icons {
+            margin-top: 2rem;
+        }
+
+        .social-icons a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin-right: 1.5rem;
+            transition: color 0.3s ease;
+            display: inline-block;
+            padding: 0.5rem;
+            min-width: 44px;
+            min-height: 44px;
+            text-align: center;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- About Section --- */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .education-card {
+            background-color: var(--card-color);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .education-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .education-card h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+        
+        .education-card p {
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .education-card p i {
+            color: var(--primary-color);
+            width: 16px;
+        }
+
+
+        /* --- Skills Section --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category {
+            background-color: var(--card-color);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .skill-category h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-category ul {
+            list-style-type: none;
+        }
+
+        .skill-category li {
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-category li i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+        
+        /* --- Achievements Section --- */
+        .achievement-card li {
+            align-items: flex-start;
+            line-height: 1.5;
+        }
+
+        .achievement-card li i {
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .achievement-card .role {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 0.75rem;
+        }
+
+        /* --- Projects Section --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        
+        .project-card h3 {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-card h3 i {
+            color: var(--primary-color);
+        }
+
+        .project-card .award {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: rgba(229, 115, 115, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-bottom: 0.5rem;
+            align-self: flex-start;
+        }
+        
+        .project-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+        
+        .project-tech span {
+            background-color: #333;
+            color: #ccc;
+            padding: 0.25rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* --- Contact Section --- */
+        #contact {
+            text-align: center;
+        }
+        
+        #contact p {
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            font-size: 1.1rem;
+        }
+        
+        #contact .email-link {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        /* --- Responsive Design --- */
+        @media(max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            /* Header adjustments */
+            header {
+                padding: 1rem;
+                background-color: rgba(18, 18, 18, 0.95);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            /* Hide desktop nav and show mobile menu toggle */
+            nav {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            /* Home section */
+            .home-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .home-text h1 {
+                font-size: 3rem;
+                line-height: 1.2;
+            }
+            
+            .home-text .tagline {
+                font-size: 1rem;
+            }
+            
+            .home-text p {
+                font-size: 0.95rem;
+            }
+            
+            .home-image {
+                margin: 1rem auto 0;
+                order: -1;
+            }
+            
+            .home-image img {
+                max-width: 250px;
+            }
+            
+            /* Button adjustments */
+            .btn {
+                display: block;
+                margin: 0.5rem auto;
+                max-width: 200px;
+                text-align: center;
+            }
+            
+            /* About section */
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: left;
+            }
+            
+            .education-card {
+                padding: 1.5rem;
+            }
+            
+            .education-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            /* Skills section */
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .skill-category {
+                padding: 1.2rem;
+            }
+            
+            .skill-category h3 {
+                font-size: 1.1rem;
+            }
+            
+            /* Projects section */
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .project-card {
+                padding: 1.5rem;
+            }
+            
+            .project-card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .project-card p {
+                font-size: 0.85rem;
+            }
+            
+            .project-tech {
+                gap: 0.3rem;
+            }
+            
+            .project-tech span {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.5rem;
+            }
+            
+            /* Section headings */
+            h2 {
+                font-size: 2rem;
+            }
+            
+            section {
+                padding: 4rem 0;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .home-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .home-text .tagline {
+                font-size: 0.95rem;
+            }
+            
+            .home-text p {
+                font-size: 0.9rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .project-card .award {
+                font-size: 0.7rem;
+            }
+            
+            .education-card h3 {
+                font-size: 1.2rem;
+            }
+            
+            .skill-category h3 {
+                font-size: 1rem;
+            }
+        }
+        /* --- New Contact Section Styles --- */
+        /* Find this rule */
+        .contact-new {
+            /* Change the background-color to an off-white */
+            background-color: #fafafa; 
+            /* background-image: url('effect.png'); */
+            color: #333;
+            border-bottom: none;
+            padding: 6rem 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* Left Column: Galaxy Text Effect */
+        .contact-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Find this rule */
+        .galaxy-text {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            /* Adjust font-size and line-height for the new text */
+            font-size: 6rem;
+            line-height: 1.2; 
+            text-transform: uppercase;
+            background-image: url('https://images.pexels.com/photos/110854/pexels-photo-110854.jpeg');
+            background-size: cover;
+            background-position: center;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        
+
+        /* Right Column: Interests and Links */
+        .contact-right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-right h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.1rem;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-right h3 i {
+            color: #E57373;
+        }
+
+        .interests-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .interests-container span {
+            border: 1px solid #aaa;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: default;
+        }
+
+        .cta-line {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #555;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-line i {
+            color: #E57373;
+        }
+
+        .contact-me-link {
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            color: #333;
+            text-decoration: underline;
+            text-decoration-color: #E57373; /* Using the primary accent color */
+            text-decoration-style: wavy;
+            text-underline-offset: 4px;
+        }
+
+        .contact-socials {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .contact-socials a {
+            color: #555;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.1rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-socials a i {
+            font-size: 1.1rem;
+        }
+
+        .contact-socials a:hover {
+            color: #000;
+        }
+
+        /* Responsive adjustments for the new contact section */
+        @media(max-width: 900px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .contact-left {
+                text-align: center;
+            }
+            
+            .galaxy-text {
+                font-size: 4rem;
+            }
+            
+            .cta-line {
+                justify-content: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .contact-socials {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+
+        @media(max-width: 600px) {
+            .galaxy-text {
+                font-size: 3rem;
+                line-height: 1.1;
+            }
+            
+            .contact-right h3 {
+                font-size: 1rem;
+            }
+            
+            .interests-container {
+                gap: 0.5rem;
+            }
+            
+            .interests-container span {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .cta-line {
+                font-size: 1rem;
+                padding: 0.8rem 0;
+            }
+            
+            .contact-me-link {
+                font-size: 1.3rem;
+            }
+            
+            .contact-socials {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+            }
+            
+            .contact-socials a {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media(max-width: 400px) {
+            .galaxy-text {
+                font-size: 2.5rem;
+            }
+            
+            .contact-right h3 {
+                font-size: 0.95rem;
+            }
+            
+            .interests-container span {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.6rem;
+            }
+            
+            .cta-line {
+                font-size: 0.95rem;
+            }
+            
+            .contact-me-link {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('header');
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                // Check if the user has scrolled more than 50 pixels
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Mobile menu toggle
+            mobileMenuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+                const icon = mobileMenuToggle.querySelector('i');
+                
+                // Toggle between hamburger and close icon
+                if (mobileMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Close mobile menu when clicking on a link
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                    const icon = mobileMenuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                });
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                    mobileMenu.classList.remove('active');
+                    const icon = mobileMenuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <div class="App"></div>
+
+    <header>
+        <a href="#home" class="logo">sankalp..</a>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#achievements">Achievements</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <main>
+        <section id="home">
+            <div class="container">
+                <div class="home-content">
+                    <div class="home-text">
+                        <h1>hELLO. i aM SANKALP</h1>
+                        <span class="tagline">ML Engineer — shipping LLM-powered products end-to-end.</span>
+                        <p>
+                            I build LLM-powered web applications end-to-end — from RAG pipelines and vector retrieval to FastAPI backends and React frontends. I take ownership of full project lifecycles, write production-ready code, and care deeply about the problems I work on.
+                        </p>
+                        <a href="sankalp.pdf" class="btn btn-primary" target="_blank">GET MY RESUME</a>
+                        <a href="#contact" class="btn btn-secondary">LET'S TALK</a>
+                         <div class="social-icons">
+                            <a href="https://github.com/sankalp-happy" target="_blank" aria-label="GitHub" title="GitHub"><i class="fab fa-github"></i></a>
+                            <a href="https://linkedin.com/in/sankalp-shankar-734007284/" target="_blank" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://leetcode.com/sankalpshankar/" target="_blank" aria-label="LeetCode" title="LeetCode"><i class="fas fa-code"></i></a>
+                         </div>
+                    </div>
+                    <div class="home-image">
+                        <img src="1718314922661.jpeg" alt="Sankalp Shankar">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                 <h2>About <span>Me</span></h2>
+                 <div class="about-content">
+                     <div class="about-text">
+                        <p>
+                            I am a Bachelor of Engineering student at Acharya Institute of Technology, specializing in AI and Machine Learning. My work sits where ML meets shipping software: RAG pipelines, vector retrieval, multi-provider LLM routing, and the FastAPI/React systems that put them in front of real users — containerized with Docker and deployed on AWS.
+                        </p>
+                        <p>
+                            Beyond academics, I was Event Head for Tech Habba, a 3-day institute-wide technical festival, and I serve as Vice President of "The Big O" Tech Club, where I organize a 500+ participant techfest and mentor junior developers. I thrive in collaborative environments and am always eager to expand my knowledge in AI and full-stack development.
+                        </p>
+                     </div>
+                     <div class="education-card">
+                         <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                         <h4>Bachelor of Engineering in AIML</h4>
+                         <p><i class="fas fa-university"></i> Acharya Institute of Technology, Bangalore</p>
+                         <p><i class="fas fa-star"></i> SGPA: 8.7/10.0</p>
+                         <p><i class="fas fa-calendar-alt"></i> Expected Graduation: July 2027</p>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <h2>Technical <span>Skills</span></h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3><i class="fas fa-code"></i> Languages & Frameworks</h3>
+                        <ul>
+                           <li><i class="fab fa-python"></i> Python</li>
+                           <li><i class="fab fa-js-square"></i> JavaScript</li>
+                           <li><i class="fab fa-html5"></i> HTML5 & CSS</li>
+                           <li><i class="fab fa-react"></i> React & Next.js</li>
+                           <li><i class="fas fa-bolt"></i> FastAPI</li>
+                           <li><i class="fab fa-node-js"></i> Node.js & Express.js</li>
+                        </ul>
+                        </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-brain"></i> AI / LLM</h3>
+                        <ul>
+                            <li><i class="fas fa-comment-dots"></i> OpenAI & Gemini</li>
+                            <li><i class="fas fa-link"></i> LangChain</li>
+                            <li><i class="fas fa-magnifying-glass-chart"></i> RAG & Vector Databases</li>
+                            <li><i class="fas fa-robot"></i> TensorFlow & PyTorch</li>
+                            <li><i class="fas fa-microscope"></i> XGBoost & Scikit-learn</li>
+                            <li><i class="fas fa-language"></i> NLTK</li>
+                        </ul>
+                        </div>
+                     <div class="skill-category">
+                        <h3><i class="fas fa-database"></i> Data & Databases</h3>
+                        <ul>
+                            <li><i class="fas fa-chart-line"></i> NumPy & Pandas</li>
+                            <li><i class="fas fa-table"></i> SQL</li>
+                            <li><i class="fas fa-leaf"></i> MongoDB</li>
+                            <li><i class="fas fa-bolt-lightning"></i> Redis</li>
+                        </ul>
+                        </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-cloud"></i> Cloud & DevOps</h3>
+                        <ul>
+                            <li><i class="fab fa-aws"></i> AWS</li>
+                            <li><i class="fab fa-docker"></i> Docker</li>
+                            <li><i class="fas fa-rotate"></i> CI/CD</li>
+                            <li><i class="fab fa-git-alt"></i> Git & GitHub</li>
+                            <li><i class="fas fa-book"></i> Jupyter Notebook</li>
+                            <li><i class="fas fa-code"></i> VS Code</li>
+                        </ul>
+                         </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2>My <span>Projects</span></h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3><i class="fas fa-dna"></i> PharmaGuard</h3>
+                        <p>An LLM-enabled clinical decision support system. End-to-end FastAPI + React platform that analyses genomic VCF files to generate CPIC-guided prescribing recommendations, pairing the PharmCAT pipeline and a deterministic risk engine with Llama 3.3 (via Groq) for clinician-ready explanations. Exports EHR-ready JSON, containerized with Docker for production deployment on AWS.</p>
+                        <div class="project-tech">
+                            <span>FastAPI</span> <span>React</span> <span>Llama 3.3</span> <span>Groq</span> <span>PharmCAT</span> <span>Docker</span> <span>AWS</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3><i class="fas fa-shuffle"></i> SwitchBoard</h3>
+                        <p>An LLM gateway and multi-provider routing layer. Routes requests across OpenAI, Gemini and Groq with automatic failover, retries and quota monitoring, backed by model fallback chains and centralized logging. Providers can be swapped without touching application-layer code.</p>
+                         <div class="project-tech">
+                            <span>LLM Gateway</span> <span>OpenAI</span> <span>Gemini</span> <span>Groq</span> <span>Failover</span> <span>Observability</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <span class="award"><i class="fas fa-medal"></i> Hackathon Runner-up</span>
+                        <h3><i class="fas fa-notes-medical"></i> MediAssist AI</h3>
+                        <p>A RAG-based agentic clinical decision support system. LangChain and a vector database drive structured medical knowledge retrieval with OpenAI-backed agents, while XGBoost models add explainable, confidence-scored differential diagnosis. Deployed full-stack with an automated NLP feedback loop for continuous improvement.</p>
+                         <div class="project-tech">
+                            <span>RAG</span> <span>LangChain</span> <span>Vector DB</span> <span>OpenAI</span> <span>XGBoost</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3><i class="fas fa-shield-halved"></i> Red Agent</h3>
+                        <p>An autonomous web scanning platform. FastAPI scanning engine with an orchestrated job lifecycle and Redis-backed state management, deployed on AWS with CI/CD. Produces structured vulnerability reports with severity scoring, on a modular architecture built for extensible exploit modules and scalable scan execution.</p>
+                         <div class="project-tech">
+                            <span>FastAPI</span> <span>Redis</span> <span>AWS</span> <span>CI/CD</span> <span>Security</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <span class="award"><i class="fas fa-trophy"></i> Hackathon Winner: 1st Place (State Level)</span>
+                        <h3><i class="fas fa-robot"></i> VaidyaBot</h3>
+                        <p>An end-to-end appointment system using chat and voice. Features LLM-based workflows for patient ID generation and a doctor dashboard with RAG-powered assistance.</p>
+                        <div class="project-tech">
+                            <span>LLM</span> <span>Chat/Voice UI</span> <span>RAG</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <span class="award"><i class="fas fa-medal"></i> Hackathon Winner: 3rd Place (Zonal Level)</span>
+                        <h3><i class="fas fa-newspaper"></i> Nirpeksha</h3>
+                        <p>A bias mitigation and fact-checking news aggregator. Uses LLMs to label articles for bias and tracks user consumption to identify echo chambers.</p>
+                         <div class="project-tech">
+                            <span>LLM</span> <span>Bias Detection</span> <span>Fact-Checking</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3><i class="fas fa-search"></i> Hybrid Semantic Search Engine</h3>
+                        <p>Developed a search engine combining semantic (FAISS) and keyword (TF-IDF) search for efficient document retrieval from PDFs via a Streamlit web interface.</p>
+                         <div class="project-tech">
+                            <span>Python</span> <span>FAISS</span> <span>TF-IDF</span> <span>Gemini AI</span> <span>Streamlit</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3><i class="fas fa-tint"></i> Groundwater Level Predictor</h3>
+                        <p>A full-stack application with ML models (Regression, Random Forest, NN) to forecast groundwater levels with over 95% accuracy for sustainable water management.</p>
+                         <div class="project-tech">
+                            <span>TensorFlow</span> <span>Django</span> <span>React.js</span> <span>SQL</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3><i class="fas fa-brain"></i> Neural Network from Scratch</h3>
+                        <p>Reimplemented dropout regularization by building a complete neural network from the ground up using only Python and NumPy, visualizing results to mirror research papers.</p>
+                         <div class="project-tech">
+                            <span>Python</span> <span>NumPy</span> <span>Jupyter Notebook</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="achievements">
+            <div class="container">
+                <h2>Achievements & <span>Leadership</span></h2>
+                <div class="skills-grid">
+                    <div class="skill-category achievement-card">
+                        <h3><i class="fas fa-trophy"></i> Competitions</h3>
+                        <p class="role">2022 &ndash; Present</p>
+                        <ul>
+                            <li><i class="fas fa-award"></i> 7&times; competition winner &mdash; 4 hackathon wins (1st Place State Level, Runner-up 48hr Hackathon, 3rd Place Zonal) and 2 National AI Ideathon titles</li>
+                            <li><i class="fas fa-crown"></i> Overall Champions &mdash; XActitude Tech Fest, Kristu Jayanti College</li>
+                            <li><i class="fas fa-medal"></i> Gold in Tech Quiz &amp; CTF, Silver in SQL Competition, 3rd in Code Relay (HackerRank) &amp; Prompt Engineering</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category achievement-card">
+                        <h3><i class="fas fa-terminal"></i> Competitive Programming</h3>
+                        <p class="role">Multiple Platforms</p>
+                        <ul>
+                            <li><i class="fas fa-chart-line"></i> ~1600 LeetCode rating</li>
+                            <li><i class="fas fa-list-check"></i> 260+ problems solved</li>
+                            <li><i class="fas fa-diagram-project"></i> Data Structures, Algorithms &amp; System Design fundamentals</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category achievement-card">
+                        <h3><i class="fas fa-users"></i> Leadership</h3>
+                        <p class="role">Acharya Institute of Technology</p>
+                        <ul>
+                            <li><i class="fas fa-calendar-days"></i> <span><strong>Event Head &mdash; Tech Habba (2024):</strong> led all departmental committees for a 3-day institute-wide technical festival, managing operations, sponsorship, marketing, logistics and budgeting</span></li>
+                            <li><i class="fas fa-code-branch"></i> <span><strong>Vice President &mdash; &lsquo;The Big O&rsquo; Tech Club (2023 &ndash; Present):</strong> organized a 2-day annual techfest with 500+ participants, mentored junior developers and led industry outreach</span></li>
+                        </ul>
+                    </div>
+                    <div class="skill-category achievement-card">
+                        <h3><i class="fas fa-certificate"></i> Certifications</h3>
+                        <ul>
+                            <li><i class="fas fa-brain"></i> Deep Learning (NPTEL &mdash; IIT Ropar) &mdash; 84% in a 12-week course</li>
+                            <li><i class="fab fa-meta"></i> Meta Professional Certificate in Front-End Development &mdash; 9-course curriculum with capstone project</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-new">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-left">
+    <h2 class="galaxy-text">Chai & Chat?<br>I’m In.</h2>
+</div>
+
+            <div class="contact-right">
+                <h3><i class="fas fa-star"></i> I'M ALWAYS INTERESTED ABOUT</h3>
+                <div class="interests-container">
+                    <span>Machine Learning</span>
+                    <span>LLMs & RAG</span>
+                    <span>Full-Stack Development</span>
+                    <span>FastAPI</span>
+                    <span>React</span>
+                    <span>Python</span>
+                    <span>Startups</span>
+                    <span>New Opportunities</span>
+                    <span>Coffee</span>
+                </div>
+
+                <p class="cta-line">
+                    <i class="fas fa-lightbulb"></i> MINDING A PROJECT? 
+                    <a href="mailto:sankalpshankar02@gmail.com" class="contact-me-link">conTacT mE</a>
+                </p>
+
+                <div class="contact-socials">
+                    <a href="https://github.com/sankalp-happy" target="_blank"><i class="fab fa-github"></i> GITHUB</a>
+                    <a href="https://linkedin.com/in/sankalp-shankar-734007284/" target="_blank"><i class="fab fa-linkedin-in"></i> LINKEDIN</a>
+                    <a href="https://leetcode.com/sankalpshankar/" target="_blank"><i class="fas fa-code"></i> LEETCODE</a>
+                    <a href="https://wellfound.com/u/sankalp-shankar-1" target="_blank"><i class="fas fa-briefcase"></i> WELLFOUND</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p><i class="fas fa-heart" style="color: #E57373;"></i> Designed and built by Sankalp Shankar.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sankalp Shankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0A; --fg:#EDEDED; --dim:#8A8D91; --faint:#54585E;
+  --line:#212327; --lime:#C8F135;
+  --paper:#F1EDE3; --ink:#15171A; --ink2:#5A5F66; --rule:#CFC8B8;
+  --sig:#C4432A;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);
+  font-family:'Inter Tight',system-ui,sans-serif;font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+a{color:inherit}
+
+/* ---------- shell: fixed rail + scrolling column ---------- */
+.shell{display:grid;grid-template-columns:230px minmax(0,1fr);max-width:1520px;margin:0 auto}
+.rail{position:sticky;top:0;height:100vh;padding:40px 26px 30px;
+  border-right:1px solid var(--line);display:flex;flex-direction:column;gap:26px}
+.rail .who{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.rail .who span{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+  color:var(--faint);letter-spacing:.13em;text-transform:uppercase;margin-top:7px;font-weight:400}
+.toc{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.03em;
+  display:flex;flex-direction:column;gap:2px;margin-top:4px}
+.toc a{text-decoration:none;color:var(--faint);padding:5px 0;display:flex;gap:11px;
+  align-items:baseline;transition:color .2s}
+.toc a i{font-style:normal;color:#3A3D42;width:20px;flex:none}
+.toc a:hover{color:var(--dim)}
+.toc a.on{color:var(--lime)} .toc a.on i{color:var(--lime)}
+.rail .ftr{margin-top:auto;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+  color:var(--faint);line-height:2}
+.rail .ftr a{display:block;text-decoration:none;color:var(--dim)}
+.rail .ftr a:hover{color:var(--lime)}
+
+.col{padding:0 0 120px}
+.pad{padding:0 clamp(28px,4.4vw,72px)}
+
+/* ---------- hero: type only, no diagram ---------- */
+.hero{min-height:74vh;display:flex;flex-direction:column;justify-content:center;
+  padding-top:80px;padding-bottom:60px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(38px,5.6vw,78px);line-height:1.02;letter-spacing:-.035em;
+  font-weight:600;max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--faint)}
+.hero .sub{margin-top:30px;max-width:52ch;font-size:17.5px;color:var(--dim);line-height:1.62}
+.hero .sub b{color:var(--fg);font-weight:500}
+.facts{margin-top:44px;display:flex;flex-wrap:wrap;gap:0;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em}
+.facts div{padding:0 26px 0 0;margin-right:26px;border-right:1px solid var(--line);color:var(--faint)}
+.facts div:last-child{border:0}
+.facts b{display:block;font-size:26px;font-weight:500;color:var(--lime);
+  letter-spacing:-.02em;margin-bottom:5px;font-family:'Inter Tight',sans-serif}
+
+/* ---------- section head ---------- */
+.sec{padding-top:96px}
+.sh{display:flex;align-items:baseline;gap:16px;padding-bottom:34px}
+.sh i{font-style:normal;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--lime);
+  letter-spacing:.12em}
+.sh h2{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.sh p{margin-left:auto;font-size:13px;color:var(--faint);max-width:34ch;text-align:right}
+
+/* ---------- PLATE: the whole idea. figure on paper, prose on black ---------- */
+.plate{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:0;border-top:1px solid var(--line);align-items:stretch}
+.plate:last-of-type{border-bottom:1px solid var(--line)}
+.ptext{padding:44px clamp(30px,3.4vw,54px) 48px clamp(28px,4.4vw,72px)}
+.ptext .no{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--faint);
+  letter-spacing:.14em;margin-bottom:16px}
+.ptext .no b{color:var(--lime);font-weight:500}
+.ptext h3{font-size:27px;letter-spacing:-.028em;font-weight:600;margin-bottom:6px}
+.ptext .tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--lime);
+  letter-spacing:.06em;margin-bottom:16px}
+.ptext p{color:var(--dim);font-size:15.3px;line-height:1.66;max-width:46ch}
+.ptext p+p{margin-top:12px}
+.ptext p b{color:var(--fg);font-weight:500}
+.kv{margin-top:26px;font-family:'JetBrains Mono',monospace;font-size:11px;
+  border-top:1px solid var(--line)}
+.kv div{display:flex;gap:14px;padding:8px 0;border-bottom:1px solid var(--line)}
+.kv span{color:var(--faint);width:82px;flex:none;letter-spacing:.06em}
+.kv em{font-style:normal;color:var(--dim)}
+
+/* the paper plate */
+.pfig{background:var(--paper);color:var(--ink);padding:30px 34px 24px;
+  display:flex;flex-direction:column;justify-content:center;
+  border-left:1px solid var(--line)}
+.pfig .hd{display:flex;justify-content:space-between;align-items:baseline;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;
+  color:var(--ink2);padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--rule)}
+.pfig svg{width:100%;height:auto;display:block}
+.pfig .cap{margin-top:18px;padding-top:13px;border-top:1px solid var(--rule);
+  font-family:'Source Serif 4',Georgia,serif;font-size:13.4px;line-height:1.5;color:var(--ink2)}
+.pfig .cap b{color:var(--ink);font-weight:400}
+.pfig .cap i{font-size:12.4px}
+/* svg tokens on paper */
+.f-lbl{font-family:'JetBrains Mono',monospace;font-size:8.4px;fill:var(--ink2);letter-spacing:.06em}
+.f-lbl.k{fill:var(--ink)}
+.f-ax{stroke:var(--ink2);stroke-width:.8}
+.f-gr{stroke:var(--rule);stroke-width:.8}
+.f-bx{fill:none;stroke:var(--ink);stroke-width:1}
+.f-sig{stroke:var(--sig);fill:none}
+
+/* ---------- archive: dense, small, no cards ---------- */
+.arch{border-top:1px solid var(--line)}
+.arow{display:grid;grid-template-columns:34px minmax(0,1.05fr) minmax(0,1fr) 140px;
+  gap:24px;padding:22px clamp(28px,4.4vw,72px);border-bottom:1px solid var(--line);
+  align-items:start;transition:background .2s}
+.arow:hover{background:#0F1013}
+.arow .n{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#3A3D42;padding-top:4px}
+.arow h4{font-size:16.5px;font-weight:600;letter-spacing:-.02em;margin-bottom:5px}
+.arow .m{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.07em}
+.arow p{font-size:14px;color:var(--dim);line-height:1.6}
+.spark{background:var(--paper);border-radius:2px;padding:8px 9px}
+.spark svg{width:100%;height:auto;display:block}
+
+/* ---------- ledger ---------- */
+.led{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line)}
+.led>div{padding:30px clamp(28px,4.4vw,72px) 34px;border-bottom:1px solid var(--line)}
+.led>div:nth-child(odd){border-right:1px solid var(--line)}
+.led h4{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--lime);
+  letter-spacing:.13em;margin-bottom:16px}
+.led ul{list-style:none;font-size:14.6px;color:var(--dim);line-height:1.68}
+.led li{padding:7px 0;border-bottom:1px solid #17191C}
+.led li:last-child{border:0}
+.led li b{color:var(--fg);font-weight:500}
+
+/* ---------- limits + contact ---------- */
+.lim{padding:34px clamp(28px,4.4vw,72px) 40px;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line)}
+.lim p{max-width:64ch;color:var(--dim);font-size:15.3px;line-height:1.7}
+.lim p+p{margin-top:12px}
+.contact{padding:76px clamp(28px,4.4vw,72px) 0}
+.contact h2{font-size:clamp(30px,4.4vw,52px);letter-spacing:-.034em;font-weight:600;max-width:16ch}
+.contact .lk{margin-top:34px;display:flex;flex-wrap:wrap;gap:9px}
+.contact .lk a{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.05em;
+  text-decoration:none;border:1px solid var(--line);padding:10px 17px;border-radius:2px;
+  color:var(--dim);transition:.2s}
+.contact .lk a:hover{border-color:var(--lime);color:var(--lime)}
+
+@media(max-width:1100px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);
+    flex-direction:row;align-items:center;gap:20px;padding:20px 26px;overflow-x:auto}
+  .rail .ftr,.toc{display:none}
+  .plate{grid-template-columns:1fr}
+  .pfig{border-left:0;border-top:1px solid var(--line)}
+  .arow{grid-template-columns:26px 1fr;gap:14px}
+  .arow .spark,.arow p{grid-column:2}
+  .led{grid-template-columns:1fr}
+  .led>div:nth-child(odd){border-right:0}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside class="rail">
+  <div class="who">Sankalp Shankar<span>ML Engineer · Bengaluru</span></div>
+  <nav class="toc">
+    <a href="#work" class="on"><i>01</i>Work</a>
+    <a href="#arch"><i>02</i>Archive</a>
+    <a href="#led"><i>03</i>Ledger</a>
+    <a href="#lim"><i>04</i>Limits</a>
+    <a href="#c"><i>05</i>Contact</a>
+  </nav>
+  <div class="ftr">
+    <a href="#">github ↗</a>
+    <a href="#">linkedin ↗</a>
+    <a href="#">résumé ↗</a>
+  </div>
+</aside>
+
+<main class="col">
+
+  <!-- HERO — type only. no generic architecture diagram. -->
+  <section class="hero pad">
+    <h1>I put language models where they are allowed to be wrong, <em>and keep them out of where they are not.</em></h1>
+    <p class="sub">Sankalp Shankar. I build LLM systems end to end: routing and failover across
+      providers, retrieval that actually retrieves, and <b>a hard line between the part that decides
+      and the part that explains</b>. Below: five systems, and the figure that makes each one worth reading.</p>
+    <div class="facts">
+      <div><b>1st</b>State-level hackathon</div>
+      <div><b>3rd</b>Zonal hackathon</div>
+      <div><b>500+</b>Techfest participants led</div>
+      <div><b>84%</b>NPTEL Deep Learning, IIT Ropar</div>
+    </div>
+  </section>
+
+  <!-- 01 WORK — every plate uses a DIFFERENT kind of figure -->
+  <section id="work" class="sec">
+    <div class="sh pad"><i>01</i><h2>Work</h2><p>Each figure answers a different question. No two are the same kind.</p></div>
+
+    <!-- PLATE 1 — failover timeline -->
+    <article class="plate">
+      <div class="ptext">
+        <div class="no">PLATE <b>01</b> — TIMELINE</div>
+        <h3>SwitchBoard</h3>
+        <div class="tag">LLM GATEWAY · MULTI-PROVIDER ROUTING</div>
+        <p>One endpoint in front of OpenAI, Gemini and Groq. Requests route by cost and
+          health; when a provider degrades, the fallback chain takes over <b>without the
+          application layer knowing a thing</b>.</p>
+        <p>Retries, quota accounting and centralised logging sit in the gateway, so swapping
+          a provider is a config change, not a refactor.</p>
+        <div class="kv">
+          <div><span>ROLE</span><em>Design + build</em></div>
+          <div><span>SURFACE</span><em>Single OpenAI-shaped API</em></div>
+          <div><span>FAILOVER</span><em>Health-scored chain, automatic</em></div>
+          <div><span>STACK</span><em>Python · FastAPI · Redis</em></div>
+        </div>
+      </div>
+      <div class="pfig">
+        <div class="hd"><span>FIG. 1.1</span><span>FAILOVER, SCHEMATIC</span></div>
+        <svg viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg">
+          <!-- grid -->
+          <g class="f-gr">
+            <line x1="74" y1="18" x2="74" y2="140"/><line x1="146" y1="18" x2="146" y2="140"/>
+            <line x1="218" y1="18" x2="218" y2="140"/><line x1="290" y1="18" x2="290" y2="140"/>
+            <line x1="362" y1="18" x2="362" y2="140"/>
+          </g>
+          <!-- lanes -->
+          <text class="f-lbl k" x="0" y="42">openai</text>
+          <text class="f-lbl k" x="0" y="80">gemini</text>
+          <text class="f-lbl k" x="0" y="118">groq</text>
+          <!-- lane baselines -->
+          <g class="f-gr"><line x1="74" y1="38" x2="380" y2="38"/><line x1="74" y1="76" x2="380" y2="76"/><line x1="74" y1="114" x2="380" y2="114"/></g>
+          <!-- active traffic bars -->
+          <rect x="74" y="30" width="120" height="15" fill="#15171A"/>
+          <rect x="194" y="30" width="26" height="15" fill="#15171A" opacity=".18"/>
+          <rect x="220" y="68" width="88" height="15" fill="#15171A"/>
+          <rect x="308" y="106" width="72" height="15" fill="#15171A"/>
+          <!-- failure mark -->
+          <line x1="196" y1="14" x2="196" y2="146" stroke="#C4432A" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="196" cy="37" r="4.6" fill="none" stroke="#C4432A" stroke-width="1.4"/>
+          <text class="f-lbl" x="200" y="12" fill="#C4432A">503 · health drops</text>
+          <line x1="306" y1="14" x2="306" y2="146" stroke="#C4432A" stroke-width="1" stroke-dasharray="3 3"/>
+          <text class="f-lbl" x="310" y="12" fill="#C4432A">rate limit</text>
+          <!-- hop arrows -->
+          <path class="f-sig" d="M196 45 C 204 45 206 62 216 70" stroke-width="1.2"/>
+          <path class="f-sig" d="M306 83 C 314 83 316 100 326 108" stroke-width="1.2"/>
+          <polygon points="216,70 210,68 212,63" fill="#C4432A"/>
+          <polygon points="326,108 320,106 322,101" fill="#C4432A"/>
+          <!-- axis -->
+          <line class="f-ax" x1="74" y1="140" x2="380" y2="140"/>
+          <text class="f-lbl" x="74" y="154">t →</text>
+          <text class="f-lbl" x="330" y="154">client sees: 200</text>
+        </svg>
+        <p class="cap"><b>Fig. 1.1</b> Traffic hops lanes twice; the caller's response code never
+          changes. <i>Schematic — lane occupancy, not measured latency.</i></p>
+      </div>
+    </article>
+
+    <!-- PLATE 2 — responsibility boundary -->
+    <article class="plate">
+      <div class="ptext">
+        <div class="no">PLATE <b>02</b> — BOUNDARY</div>
+        <h3>PharmaGuard</h3>
+        <div class="tag">PHARMACOGENOMICS · CLINICAL DECISION SUPPORT</div>
+        <p>Genomic VCF in, CPIC-guided prescribing guidance out. Every clinical call is made by
+          a <b>deterministic risk engine</b>. The model never gets a vote.</p>
+        <p>The LLM is confined to one job on the far side of the line: turning a decided
+          recommendation into prose a clinician will actually read. If it fails, you lose the
+          explanation, not the recommendation.</p>
+        <div class="kv">
+          <div><span>INPUT</span><em>VCF → PharmCAT diplotypes</em></div>
+          <div><span>DECIDES</span><em>Rule engine, CPIC tables</em></div>
+          <div><span>EXPLAINS</span><em>Llama 3.3, constrained</em></div>
+          <div><span>OUT</span><em>FastAPI → EHR-shaped JSON</em></div>
+        </div>
+      </div>
+      <div class="pfig">
+        <div class="hd"><span>FIG. 1.2</span><span>RESPONSIBILITY BOUNDARY</span></div>
+        <svg viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg">
+          <!-- the line -->
+          <line x1="228" y1="8" x2="228" y2="150" stroke="#15171A" stroke-width="1.6"/>
+          <text class="f-lbl k" x="128" y="20">DECIDES</text>
+          <text class="f-lbl" x="238" y="20">EXPLAINS ONLY</text>
+          <!-- left region tint -->
+          <rect x="8" y="26" width="220" height="106" fill="#15171A" opacity=".05"/>
+          <!-- boxes left -->
+          <rect class="f-bx" x="12" y="44" width="62" height="26"/><text class="f-lbl k" x="22" y="61">VCF</text>
+          <rect class="f-bx" x="12" y="90" width="62" height="26"/><text class="f-lbl k" x="18" y="107">PharmCAT</text>
+          <rect class="f-bx" x="104" y="60" width="98" height="46"/>
+          <text class="f-lbl k" x="116" y="80">risk engine</text>
+          <text class="f-lbl" x="116" y="94">CPIC · rules</text>
+          <!-- arrows left -->
+          <g class="f-sig" stroke="#15171A" stroke-width="1">
+            <path d="M74 57 L100 72"/><path d="M74 103 L100 94"/>
+          </g>
+          <polygon points="104,73 97,70 99,65" fill="#15171A"/>
+          <polygon points="104,93 97,96 99,101" fill="#15171A"/>
+          <!-- crossing: one arrow only -->
+          <path class="f-sig" d="M202 83 L262 83" stroke-width="1.4"/>
+          <polygon points="266,83 258,80 258,86" fill="#C4432A"/>
+          <text class="f-lbl" x="210" y="52" fill="#C4432A">decided</text>
+          <!-- right box -->
+          <rect class="f-bx" x="266" y="60" width="76" height="46" stroke-dasharray="3 2"/>
+          <text class="f-lbl k" x="276" y="80">Llama 3.3</text>
+          <text class="f-lbl" x="276" y="94">prose</text>
+          <path class="f-sig" d="M342 83 L376 83" stroke-width="1" stroke="#15171A"/>
+          <polygon points="380,83 372,80 372,86" fill="#15171A"/>
+          <!-- failure note -->
+          <text class="f-lbl" x="238" y="130">if this box fails →</text>
+          <text class="f-lbl k" x="238" y="142">recommendation still stands</text>
+          <text class="f-lbl" x="12" y="150">nothing crosses right-to-left</text>
+        </svg>
+        <p class="cap"><b>Fig. 1.2</b> The single arrow crossing the line is the whole design.
+          Model output is downstream of the decision, never upstream of it.</p>
+      </div>
+    </article>
+
+    <!-- PLATE 3 — swimlane sequence -->
+    <article class="plate">
+      <div class="ptext">
+        <div class="no">PLATE <b>03</b> — SEQUENCE</div>
+        <h3>MediAssist AI</h3>
+        <div class="tag">1ST PLACE · STATE-LEVEL HACKATHON</div>
+        <p>End-to-end appointment system over <b>chat and voice</b>. LLM-driven workflows handle
+          patient identification and intake; the doctor gets a dashboard with RAG-backed
+          assistance over prior records.</p>
+        <p>Interesting part is the handoff: the patient never touches a form, and the doctor
+          never waits on a summary.</p>
+        <div class="kv">
+          <div><span>ENTRY</span><em>Voice or chat, no forms</em></div>
+          <div><span>ID</span><em>LLM workflow → patient record</em></div>
+          <div><span>DOCTOR</span><em>Dashboard + RAG over history</em></div>
+          <div><span>RESULT</span><em>1st place, state level</em></div>
+        </div>
+      </div>
+      <div class="pfig">
+        <div class="hd"><span>FIG. 1.3</span><span>SEQUENCE, TWO ACTORS</span></div>
+        <svg viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg">
+          <!-- lanes -->
+          <g class="f-gr">
+            <line x1="86" y1="24" x2="86" y2="158"/><line x1="182" y1="24" x2="182" y2="158"/>
+            <line x1="278" y1="24" x2="278" y2="158"/><line x1="366" y1="24" x2="366" y2="158"/>
+          </g>
+          <text class="f-lbl k" x="60" y="16">patient</text>
+          <text class="f-lbl k" x="152" y="16">intake</text>
+          <text class="f-lbl k" x="250" y="16">records</text>
+          <text class="f-lbl k" x="336" y="16">doctor</text>
+          <!-- messages -->
+          <g class="f-sig" stroke="#15171A" stroke-width="1">
+            <path d="M86 44 L178 44"/><path d="M182 68 L274 68"/>
+            <path d="M278 92 L186 92"/><path d="M182 116 L362 116"/>
+            <path d="M366 140 L90 140"/>
+          </g>
+          <polygon points="182,44 174,41 174,47" fill="#15171A"/>
+          <polygon points="278,68 270,65 270,71" fill="#15171A"/>
+          <polygon points="182,92 190,89 190,95" fill="#15171A"/>
+          <polygon points="366,116 358,113 358,119" fill="#C4432A"/>
+          <polygon points="86,140 94,137 94,143" fill="#15171A"/>
+          <text class="f-lbl" x="92" y="39">“my knee hurts” (voice)</text>
+          <text class="f-lbl" x="188" y="63">resolve / create patient ID</text>
+          <text class="f-lbl" x="192" y="87">prior visits, meds</text>
+          <text class="f-lbl" x="188" y="111" fill="#C4432A">RAG summary → dashboard</text>
+          <text class="f-lbl" x="96" y="135">slot confirmed</text>
+          <!-- timing bracket -->
+          <line class="f-ax" x1="20" y1="44" x2="20" y2="140"/>
+          <text class="f-lbl" x="4" y="96">one turn</text>
+        </svg>
+        <p class="cap"><b>Fig. 1.3</b> Five messages, no forms. The red arrow is the only one the
+          doctor sees, and it arrives already summarised.</p>
+      </div>
+    </article>
+
+    <!-- PLATE 4 — an actual plot -->
+    <article class="plate">
+      <div class="ptext">
+        <div class="no">PLATE <b>04</b> — PLOT</div>
+        <h3>Dropout, from scratch</h3>
+        <div class="tag">NUMPY ONLY · NO FRAMEWORK</div>
+        <p>A full network built from nothing but Python and NumPy — forward pass, backprop,
+          and <b>dropout reimplemented from the paper</b> rather than imported.</p>
+        <p>The point wasn't the accuracy. It was reproducing the figure: watching validation
+          loss peel away from training loss without dropout, and stay pinned to it with.</p>
+        <div class="kv">
+          <div><span>BUILT</span><em>Layers, backprop, dropout</em></div>
+          <div><span>DEPS</span><em>Python, NumPy. Nothing else.</em></div>
+          <div><span>CHECK</span><em>Reproduced the paper's curve</em></div>
+          <div><span>WHY</span><em>Reading it isn't knowing it</em></div>
+        </div>
+      </div>
+      <div class="pfig">
+        <div class="hd"><span>FIG. 1.4</span><span>TRAIN / VAL LOSS</span></div>
+        <svg viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg">
+          <g class="f-gr">
+            <line x1="46" y1="30" x2="384" y2="30"/><line x1="46" y1="62" x2="384" y2="62"/>
+            <line x1="46" y1="94" x2="384" y2="94"/><line x1="46" y1="126" x2="384" y2="126"/>
+          </g>
+          <line class="f-ax" x1="46" y1="18" x2="46" y2="144"/>
+          <line class="f-ax" x1="46" y1="144" x2="384" y2="144"/>
+          <text class="f-lbl" x="6" y="24">loss</text>
+          <text class="f-lbl" x="352" y="158">epoch →</text>
+          <!-- train (both) -->
+          <path class="f-sig" stroke="#15171A" stroke-width="1.3"
+            d="M46 34 C 100 78, 150 112, 210 126 S 320 138, 384 140"/>
+          <!-- val without dropout: diverges -->
+          <path class="f-sig" stroke="#C4432A" stroke-width="1.5"
+            d="M46 38 C 100 82, 140 108, 178 110 C 240 114, 300 78, 384 46"/>
+          <!-- val with dropout: tracks -->
+          <path class="f-sig" stroke="#15171A" stroke-width="1.3" stroke-dasharray="4 3"
+            d="M46 40 C 100 84, 150 116, 210 128 S 320 136, 384 134"/>
+          <!-- overfit marker -->
+          <circle cx="178" cy="110" r="3.4" fill="#C4432A"/>
+          <line x1="178" y1="110" x2="178" y2="144" stroke="#C4432A" stroke-width=".8" stroke-dasharray="2 3"/>
+          <text class="f-lbl" x="182" y="104" fill="#C4432A">divergence begins</text>
+          <!-- legend -->
+          <g>
+            <line x1="240" y1="26" x2="260" y2="26" stroke="#15171A" stroke-width="1.3"/>
+            <text class="f-lbl k" x="264" y="29">train</text>
+            <line x1="240" y1="38" x2="260" y2="38" stroke="#C4432A" stroke-width="1.5"/>
+            <text class="f-lbl" x="264" y="41">val, no dropout</text>
+            <line x1="240" y1="50" x2="260" y2="50" stroke="#15171A" stroke-width="1.3" stroke-dasharray="4 3"/>
+            <text class="f-lbl" x="264" y="53">val, dropout p=0.5</text>
+          </g>
+        </svg>
+        <p class="cap"><b>Fig. 1.4</b> The textbook shape, reproduced by hand.
+          <i>Illustrative of the run's behaviour; axes unlabelled by units.</i></p>
+      </div>
+    </article>
+
+    <!-- PLATE 5 — retrieval overlap scatter -->
+    <article class="plate">
+      <div class="ptext">
+        <div class="no">PLATE <b>05</b> — RETRIEVAL</div>
+        <h3>Hybrid Semantic Search</h3>
+        <div class="tag">FAISS + TF-IDF OVER PDFs</div>
+        <p>Dense retrieval finds documents that <b>mean</b> the query. Sparse retrieval finds
+          documents that <b>say</b> it. Neither alone is enough on a PDF corpus full of
+          product codes and proper nouns.</p>
+        <p>So both run, and the ranked union goes to the reader. The interesting documents
+          are the ones only one method found.</p>
+        <div class="kv">
+          <div><span>DENSE</span><em>FAISS over embeddings</em></div>
+          <div><span>SPARSE</span><em>TF-IDF, exact tokens</em></div>
+          <div><span>FUSION</span><em>Ranked union</em></div>
+          <div><span>UI</span><em>Streamlit, PDF upload</em></div>
+        </div>
+      </div>
+      <div class="pfig">
+        <div class="hd"><span>FIG. 1.5</span><span>WHAT EACH METHOD CATCHES</span></div>
+        <svg viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="152" cy="84" r="62" class="f-bx"/>
+          <circle cx="238" cy="84" r="62" class="f-bx" stroke-dasharray="4 3"/>
+          <text class="f-lbl k" x="86" y="20">semantic · FAISS</text>
+          <text class="f-lbl k" x="256" y="20">keyword · TF-IDF</text>
+          <!-- dots -->
+          <g fill="#15171A">
+            <circle cx="118" cy="66" r="2.4"/><circle cx="106" cy="94" r="2.4"/>
+            <circle cx="130" cy="110" r="2.4"/><circle cx="140" cy="52" r="2.4"/>
+            <circle cx="112" cy="76" r="2.4"/><circle cx="126" cy="88" r="2.4"/>
+            <circle cx="268" cy="66" r="2.4"/><circle cx="280" cy="96" r="2.4"/>
+            <circle cx="258" cy="110" r="2.4"/><circle cx="272" cy="52" r="2.4"/>
+            <circle cx="286" cy="80" r="2.4"/>
+          </g>
+          <g fill="#C4432A">
+            <circle cx="196" cy="70" r="2.8"/><circle cx="188" cy="92" r="2.8"/>
+            <circle cx="202" cy="104" r="2.8"/><circle cx="194" cy="56" r="2.8"/>
+          </g>
+          <text class="f-lbl" x="66" y="146">“drug that thins blood”</text>
+          <text class="f-lbl" x="252" y="146">“CYP2C19*2”</text>
+          <text class="f-lbl" x="172" y="164" fill="#C4432A">both</text>
+          <line x1="196" y1="118" x2="190" y2="156" stroke="#C4432A" stroke-width=".8"/>
+        </svg>
+        <p class="cap"><b>Fig. 1.5</b> The union matters because the crescents don't overlap.
+          A code-heavy corpus punishes dense-only retrieval.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- 02 ARCHIVE -->
+  <section id="arch" class="sec">
+    <div class="sh pad"><i>02</i><h2>Archive</h2><p>Smaller, still shipped. One line and one sparkline each.</p></div>
+    <div class="arch">
+      <div class="arow">
+        <div class="n">06</div>
+        <div><h4>Groundwater Level Predictor</h4><div class="m">REGRESSION · RANDOM FOREST · NN</div></div>
+        <p>Full-stack forecaster for sustainable water management. Reported over 95% accuracy
+          across the model set.</p>
+        <div class="spark"><svg viewBox="0 0 130 40">
+          <path d="M2 30 C 20 26, 34 12, 52 16 S 84 30, 100 20 L 100 20" fill="none" stroke="#15171A" stroke-width="1.2"/>
+          <path d="M100 20 L 128 10" fill="none" stroke="#C4432A" stroke-width="1.4" stroke-dasharray="3 2"/>
+          <path d="M100 20 L 128 4 L 128 18 Z" fill="#C4432A" opacity=".14"/>
+          <line x1="100" y1="2" x2="100" y2="38" stroke="#CFC8B8" stroke-width=".8"/>
+          <text x="102" y="37" font-family="'JetBrains Mono',monospace" font-size="6" fill="#5A5F66">forecast</text>
+        </svg></div>
+      </div>
+      <div class="arow">
+        <div class="n">07</div>
+        <div><h4>Bias-Aware News Aggregator</h4><div class="m">3RD PLACE · ZONAL HACKATHON</div></div>
+        <p>Labels articles for political lean, then tracks what a reader consumes to surface
+          the echo chamber they're standing in.</p>
+        <div class="spark"><svg viewBox="0 0 130 40">
+          <line x1="65" y1="4" x2="65" y2="36" stroke="#CFC8B8" stroke-width=".8"/>
+          <rect x="20" y="10" width="34" height="7" fill="#C4432A" opacity=".8"/>
+          <rect x="26" y="21" width="28" height="7" fill="#C4432A" opacity=".5"/>
+          <rect x="66" y="15" width="12" height="7" fill="#15171A" opacity=".35"/>
+          <rect x="66" y="26" width="8" height="7" fill="#15171A" opacity=".2"/>
+          <text x="2" y="8" font-family="'JetBrains Mono',monospace" font-size="6" fill="#5A5F66">left</text>
+          <text x="104" y="8" font-family="'JetBrains Mono',monospace" font-size="6" fill="#5A5F66">right</text>
+        </svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 LEDGER -->
+  <section id="led" class="sec">
+    <div class="sh pad"><i>03</i><h2>Ledger</h2><p>Things with a date attached.</p></div>
+    <div class="led">
+      <div>
+        <h4>LED</h4>
+        <ul>
+          <li><b>Event Head, Tech Habba 2024</b> — ran every departmental committee for a
+            3-day institute-wide festival: ops, sponsorship, marketing, logistics, budget.</li>
+          <li><b>Vice President, ‘The Big O’</b> (2023–present) — 2-day annual techfest,
+            500+ participants; mentoring juniors and industry outreach.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>STUDIED</h4>
+        <ul>
+          <li><b>Deep Learning</b> — NPTEL, IIT Ropar. 12 weeks, 84%.</li>
+          <li><b>Meta Front-End Professional Certificate</b> — 9 courses, capstone.</li>
+          <li><b>Acharya Institute of Technology</b> — DSA and systems fundamentals.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 LIMITS -->
+  <section id="lim" class="sec">
+    <div class="sh pad"><i>04</i><h2>Limits</h2><p>The part most portfolios leave out.</p></div>
+    <div class="lim">
+      <p>Most of what's above is hackathon-scale or coursework-scale. SwitchBoard has run
+        real traffic; PharmaGuard has not been through a clinical validation and should not
+        be treated as if it had.</p>
+      <p>I'm strongest from the model boundary outward — routing, retrieval, evaluation,
+        the plumbing that decides what a model is even allowed to touch. I have not trained
+        anything at scale, and I'd rather say so than imply otherwise.</p>
+    </div>
+  </section>
+
+  <!-- 05 CONTACT -->
+  <section id="c" class="sec contact">
+    <h2>If you're putting a model somewhere it can do damage, I'd like to hear about it.</h2>
+    <div class="lk">
+      <a href="mailto:sankalp@example.com">email ↗</a>
+      <a href="#">github ↗</a>
+      <a href="#">linkedin ↗</a>
+      <a href="#">résumé.pdf ↗</a>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+const links=[...document.querySelectorAll('.toc a')];
+const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const i=secs.indexOf(e.target);
+    links.forEach((a,j)=>a.classList.toggle('on',j===i));
+  });
+},{rootMargin:'-12% 0px -78% 0px'});
+secs.forEach(s=>s&&io.observe(s));
+</script>
+</body>
+</html>

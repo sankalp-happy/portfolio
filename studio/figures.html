@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Figures — Sankalp Shankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#F5F1E8;
+    --plate:#EDE7D9;
+    --rule:#D8D0BE;
+    --ink:#1A1815;
+    --ink-2:#6B655A;
+    --ink-3:#989183;
+    --accent:#C4432A;
+
+    --display:'Inter Tight',system-ui,sans-serif;
+    --body:'Source Serif 4',Georgia,serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:18px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    padding:64px 32px 96px;
+  }
+
+  .wrap{max-width:920px;margin:0 auto}
+
+  /* ---- page head ---- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-2);
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:28px;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+
+  h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(30px,4.4vw,44px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+    max-width:20ch;
+    margin-bottom:20px;
+  }
+
+  .lede{max-width:66ch;color:var(--ink-2)}
+  .lede strong{color:var(--ink);font-weight:600}
+
+  a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+
+  /* ---- figure blocks ---- */
+  figure{margin:72px 0 0}
+
+  .plate{
+    background:var(--plate);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:20px 22px 8px;
+  }
+
+  .plate-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:24px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--ink-2);
+    padding-bottom:14px;
+    margin-bottom:6px;
+    border-bottom:1px solid var(--rule);
+  }
+  .plate-head .kind{color:var(--ink-3)}
+
+  .plate svg{display:block;width:100%;height:auto}
+
+  figcaption{
+    margin-top:14px;
+    font-size:15.5px;
+    line-height:1.6;
+    color:var(--ink-2);
+    max-width:74ch;
+  }
+  figcaption b{font-weight:600;color:var(--ink)}
+
+  .meta{
+    margin-top:16px;
+    font-family:var(--mono);
+    font-size:11px;
+    line-height:2;
+    color:var(--ink-2);
+    border-top:1px solid var(--rule);
+    padding-top:12px;
+  }
+  .meta span{display:inline-block;width:88px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.07em}
+
+  /* ---- svg type ---- */
+  .m{font-family:var(--mono);font-size:11px;fill:var(--ink-2)}
+  .m-sm{font-family:var(--mono);font-size:9.5px;fill:var(--ink-3);letter-spacing:.06em}
+  .m-ink{font-family:var(--mono);font-size:11px;fill:var(--ink)}
+  .m-b{font-family:var(--mono);font-size:11px;font-weight:700;fill:var(--ink)}
+  .m-red{font-family:var(--mono);font-size:10.5px;fill:var(--accent)}
+  .lbl{font-family:var(--display);font-size:13px;font-weight:600;fill:var(--ink)}
+
+  .stroke{stroke:var(--ink);fill:none;stroke-width:1.25}
+  .hair{stroke:var(--rule);fill:none;stroke-width:1}
+  .dash{stroke:var(--ink-3);fill:none;stroke-width:1;stroke-dasharray:3 3}
+  .red{stroke:var(--accent);fill:none;stroke-width:1.25}
+  .red-dash{stroke:var(--accent);fill:none;stroke-width:1.25;stroke-dasharray:4 3}
+  .box{fill:none;stroke:var(--ink);stroke-width:1.25}
+
+  .note{
+    margin-top:80px;
+    padding-top:20px;
+    border-top:1px solid var(--rule);
+    font-size:15px;
+    color:var(--ink-2);
+    max-width:70ch;
+  }
+
+  @media (max-width:760px){
+    body{padding:40px 20px 64px}
+    .plate{padding:16px 14px 6px;overflow-x:auto}
+    .plate svg{min-width:640px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Studio · figure set v1</div>
+  <h1>Three figures, one claim each.</h1>
+  <p class="lede">Drawn before any layout, because on this page the figures <strong>are</strong> the design. Each plate declares what kind of evidence it is — measured, architectural, or schematic — so a reader never has to guess whether a number was observed or asserted.</p>
+
+  <!-- ================= FIG 1 ================= -->
+  <figure>
+    <div class="plate">
+      <div class="plate-head">
+        <span>Fig. 1 &nbsp;·&nbsp; SwitchBoard &nbsp;·&nbsp; semantic cache</span>
+        <span class="kind">measured — deployed gateway</span>
+      </div>
+      <svg viewBox="0 0 840 296" role="img" aria-labelledby="f1t f1d">
+        <title id="f1t">Cosine similarity of three prompts against the 0.90 cache threshold</title>
+        <desc id="f1d">Three requests plotted on a similarity axis. The first has no cached neighbour and calls the provider. The second is identical to it and returns from cache at similarity 1.0000. The third is a rephrasing and returns from cache at 0.9144, just past the 0.90 threshold.</desc>
+
+        <!-- zones -->
+        <rect x="300" y="46" width="130" height="176" fill="#E5DDCB"/>
+        <text class="m-sm" x="310" y="62">PROVIDER CALL</text>
+        <text class="m-sm" x="440" y="62">SERVED FROM REDIS &middot; NO TOKENS SPENT</text>
+
+        <!-- threshold -->
+        <line class="red-dash" x1="430" y1="40" x2="430" y2="228"/>
+        <text class="m-red" x="430" y="32" text-anchor="middle">threshold 0.90</text>
+
+        <!-- rows -->
+        <!-- row 1 -->
+        <text class="m-ink" x="40" y="98">"Say hi in five words."</text>
+        <text class="m-sm" x="40" y="113">FIRST CALL &middot; NOTHING CACHED</text>
+        <line class="hair" x1="300" y1="93" x2="690" y2="93"/>
+        <circle cx="313" cy="93" r="4.5" fill="none" stroke="#1A1815" stroke-width="1.25"/>
+        <text class="m-sm" x="324" y="90">no neighbour</text>
+        <text class="m-b" x="706" y="90">MISS</text>
+        <text class="m-sm" x="706" y="104">groq &middot; 424.0 ms</text>
+
+        <!-- row 2 -->
+        <text class="m-ink" x="40" y="152">"Say hi in five words."</text>
+        <text class="m-sm" x="40" y="167">IDENTICAL STRING</text>
+        <line class="hair" x1="300" y1="147" x2="690" y2="147"/>
+        <circle cx="690" cy="147" r="4.5" fill="#1A1815"/>
+        <text class="m-b" x="706" y="144">HIT</text>
+        <text class="m-sm" x="706" y="158">similarity 1.0000</text>
+
+        <!-- row 3 -->
+        <text class="m-ink" x="40" y="206">"Greet me using five words."</text>
+        <text class="m-sm" x="40" y="221">DIFFERENT STRING &middot; SAME QUESTION</text>
+        <line class="hair" x1="300" y1="201" x2="690" y2="201"/>
+        <circle cx="467" cy="201" r="4.5" fill="#C4432A"/>
+        <text class="m-red" x="482" y="198">0.9144 — clears by 0.0144</text>
+        <text class="m-b" x="706" y="198">HIT</text>
+        <text class="m-sm" x="706" y="212">0 provider calls</text>
+
+        <!-- axis -->
+        <line class="stroke" x1="300" y1="248" x2="690" y2="248"/>
+        <g>
+          <line class="hair" x1="300" y1="248" x2="300" y2="254"/><text class="m-sm" x="300" y="268" text-anchor="middle">0.85</text>
+          <line class="hair" x1="430" y1="248" x2="430" y2="254"/><text class="m-sm" x="430" y="268" text-anchor="middle">0.90</text>
+          <line class="hair" x1="560" y1="248" x2="560" y2="254"/><text class="m-sm" x="560" y="268" text-anchor="middle">0.95</text>
+          <line class="hair" x1="690" y1="248" x2="690" y2="254"/><text class="m-sm" x="690" y="268" text-anchor="middle">1.00</text>
+        </g>
+        <text class="m-sm" x="300" y="286">COSINE SIMILARITY TO NEAREST CACHED PROMPT &middot; GEMINI-EMBEDDING-001</text>
+      </svg>
+    </div>
+    <figcaption><b>Fig. 1</b> Cosine similarity to the nearest cached prompt, against the 0.90 threshold. A rephrasing of a question already asked clears the bar by 0.0144 and never reaches a provider. Latency shown is the first call's round trip to Groq; the two cache hits make no provider call at all. Numbers read off the deployed gateway.</figcaption>
+    <div class="meta">
+      <div><span>Surface</span>OpenAI-compatible &middot; POST /v1/chat/completions</div>
+      <div><span>Cache</span>gemini-embedding-001 &middot; Redis &middot; ttl 3600s</div>
+      <div><span>Routing</span>groq &middot; google &middot; anthropic, quota-aware, 5s sweeper</div>
+      <div><span>Live</span>switchboard-tau-ruby.vercel.app &middot; v0.2.0</div>
+    </div>
+  </figure>
+
+  <!-- ================= FIG 2 ================= -->
+  <figure>
+    <div class="plate">
+      <div class="plate-head">
+        <span>Fig. 2 &nbsp;·&nbsp; PharmaGuard &nbsp;·&nbsp; responsibility boundary</span>
+        <span class="kind">architecture</span>
+      </div>
+      <svg viewBox="0 0 840 296" role="img" aria-labelledby="f2t f2d">
+        <title id="f2t">The boundary between what decides and what explains in PharmaGuard</title>
+        <desc id="f2d">A vertical dashed line separates the system. Left of it, a VCF file and PharmCAT feed a deterministic risk engine running CPIC rules, which produces the prescribing recommendation. One arrow crosses the line rightward, carrying the finished recommendation to Llama 3.3, which writes clinician-facing prose. No arrow crosses back leftward, so a model failure costs the explanation and never the recommendation.</desc>
+
+        <!-- side headers -->
+        <text class="lbl" x="40" y="42">Decides</text>
+        <text class="m-sm" x="40" y="58">DETERMINISTIC &middot; AUDITABLE</text>
+        <text class="lbl" x="500" y="42">Explains only</text>
+        <text class="m-sm" x="500" y="58">GENERATIVE &middot; NON-BINDING</text>
+
+        <!-- boundary, opened exactly where the one permitted crossing passes -->
+        <line class="red-dash" x1="470" y1="30" x2="470" y2="128"/>
+        <line class="red-dash" x1="470" y1="180" x2="470" y2="258"/>
+
+        <!-- inputs -->
+        <rect class="box" x="40" y="96" width="112" height="42"/>
+        <text class="m-ink" x="96" y="122" text-anchor="middle">VCF in</text>
+        <rect class="box" x="40" y="158" width="112" height="42"/>
+        <text class="m-ink" x="96" y="184" text-anchor="middle">PharmCAT</text>
+
+        <path class="stroke" d="M152 117 H196 V152 H228"/>
+        <path class="stroke" d="M152 179 H196 V152"/>
+        <polygon points="228,152 220,148.5 220,155.5" fill="#1A1815"/>
+
+        <!-- risk engine -->
+        <rect class="box" x="230" y="118" width="176" height="70"/>
+        <text class="m-b" x="318" y="146" text-anchor="middle">risk engine</text>
+        <text class="m-sm" x="318" y="163" text-anchor="middle">CPIC RULES &middot; NO MODEL</text>
+        <text class="m-sm" x="318" y="178" text-anchor="middle">RECOMMENDATION IS FINAL HERE</text>
+
+        <!-- crossing arrow -->
+        <path class="stroke" d="M406 153 H514"/>
+        <polygon points="522,153 512,149 512,157" fill="#1A1815"/>
+        <text class="m-ink" x="465" y="143" text-anchor="middle">recommendation</text>
+        <text class="m-sm" x="465" y="171" text-anchor="middle">THE ONLY CROSSING</text>
+
+        <!-- llm -->
+        <rect class="box" x="524" y="118" width="150" height="70"/>
+        <text class="m-b" x="599" y="148" text-anchor="middle">Llama 3.3</text>
+        <text class="m-sm" x="599" y="166" text-anchor="middle">PROSE ONLY</text>
+
+        <path class="stroke" d="M674 153 H736"/>
+        <polygon points="744,153 734,149 734,157" fill="#1A1815"/>
+        <text class="m-sm" x="752" y="150">CLINICIAN</text>
+        <text class="m-sm" x="752" y="163">READS THIS</text>
+
+        <!-- forbidden return path -->
+        <path class="dash" d="M599 188 V226 H318 V192"/>
+        <g stroke="#C4432A" stroke-width="1.5">
+          <line x1="452" y1="219" x2="466" y2="233"/>
+          <line x1="466" y1="219" x2="452" y2="233"/>
+        </g>
+        <text class="m-red" x="478" y="220">model output never re-enters the decision</text>
+
+        <!-- failure note -->
+        <line class="hair" x1="40" y1="256" x2="800" y2="256"/>
+        <text class="m-sm" x="40" y="274">IF LLAMA 3.3 FAILS, THE CLINICIAN LOSES THE EXPLANATION — NOT THE RECOMMENDATION.</text>
+        <text class="m-sm" x="40" y="288">ONE ARROW, ONE DIRECTION. THAT CONSTRAINT IS THE ARCHITECTURE.</text>
+      </svg>
+    </div>
+    <figcaption><b>Fig. 2</b> Everything that decides sits left of the line. The model receives a recommendation that is already final and writes the explanation a clinician reads. Nothing crosses back. If the model fails, the clinician loses the prose, not the guidance — which is the only property that makes an LLM admissible in this system at all.</figcaption>
+    <div class="meta">
+      <div><span>Input</span>genomic VCF &rarr; PharmCAT</div>
+      <div><span>Decides</span>deterministic risk engine &middot; CPIC guidelines</div>
+      <div><span>Explains</span>Llama 3.3 via Groq</div>
+      <div><span>Out</span>EHR-ready JSON &middot; FastAPI + React &middot; Docker/AWS</div>
+    </div>
+  </figure>
+
+  <!-- ================= FIG 3 ================= -->
+  <figure>
+    <div class="plate">
+      <div class="plate-head">
+        <span>Fig. 3 &nbsp;·&nbsp; RDSO ingest &nbsp;·&nbsp; the link set is not the signal</span>
+        <span class="kind">schematic</span>
+      </div>
+      <svg viewBox="0 0 840 330" role="img" aria-labelledby="f3t f3d">
+        <title id="f3t">Two channels observed across weekly crawl passes of the RDSO portal</title>
+        <desc id="f3d">The link set channel is flat across every pass because the source portal reuses URLs when a document is revised. The ETag channel moves at pass five, which is the only evidence a standard changed. Only the changed row is pushed out of RailNet. The first build watched the link set alone and propagated nothing during the passes where revisions shipped.</desc>
+
+        <!-- channel labels -->
+        <text class="lbl" x="40" y="82">link set</text>
+        <text class="m-sm" x="40" y="98">WHAT WE WATCHED FIRST</text>
+
+        <text class="lbl" x="40" y="176">ETag / URL</text>
+        <text class="m-sm" x="40" y="192">THE CHANNEL THAT MOVES</text>
+
+        <text class="lbl" x="40" y="262">delta pushed</text>
+        <text class="m-sm" x="40" y="278">OUT OF RAILNET</text>
+
+        <!-- pass gridlines -->
+        <g>
+          <line class="hair" x1="220" y1="44" x2="220" y2="292"/>
+          <line class="hair" x1="300" y1="44" x2="300" y2="292"/>
+          <line class="hair" x1="380" y1="44" x2="380" y2="292"/>
+          <line class="hair" x1="460" y1="44" x2="460" y2="292"/>
+          <line class="hair" x1="540" y1="44" x2="540" y2="292"/>
+          <line class="hair" x1="620" y1="44" x2="620" y2="292"/>
+          <line class="hair" x1="700" y1="44" x2="700" y2="292"/>
+          <line class="hair" x1="780" y1="44" x2="780" y2="292"/>
+        </g>
+
+        <!-- channel A: flat -->
+        <line class="stroke" x1="220" y1="76" x2="780" y2="76"/>
+        <g fill="#1A1815">
+          <circle cx="220" cy="76" r="3"/><circle cx="300" cy="76" r="3"/><circle cx="380" cy="76" r="3"/>
+          <circle cx="460" cy="76" r="3"/><circle cx="540" cy="76" r="3"/><circle cx="620" cy="76" r="3"/>
+          <circle cx="700" cy="76" r="3"/><circle cx="780" cy="76" r="3"/>
+        </g>
+        <text class="m-sm" x="792" y="79">FLAT</text>
+
+        <!-- red bracket over the blind window -->
+        <path class="red" d="M220 54 V46 H540 V54"/>
+        <text class="m-red" x="380" y="38" text-anchor="middle">revisions shipped in this window &mdash; a link-only crawl reported nothing</text>
+
+        <!-- channel B: step at pass 5 -->
+        <path class="stroke" d="M220 182 H540 V152 H780"/>
+        <g fill="#1A1815">
+          <circle cx="220" cy="182" r="3"/><circle cx="300" cy="182" r="3"/><circle cx="380" cy="182" r="3"/>
+          <circle cx="460" cy="182" r="3"/>
+        </g>
+        <circle cx="540" cy="152" r="4.5" fill="#C4432A"/>
+        <g fill="#1A1815">
+          <circle cx="620" cy="152" r="3"/><circle cx="700" cy="152" r="3"/><circle cx="780" cy="152" r="3"/>
+        </g>
+        <text class="m-red" x="552" y="138">ETag changed &mdash; same URL, new bytes</text>
+
+        <!-- the tag is an identity, not a magnitude: show it repeating, then differing -->
+        <g class="m-sm" text-anchor="middle">
+          <text x="220" y="200">a3f1c8</text><text x="300" y="200">a3f1c8</text>
+          <text x="380" y="200">a3f1c8</text><text x="460" y="200">a3f1c8</text>
+        </g>
+        <g class="m-sm" text-anchor="middle" fill="#C4432A">
+          <text x="540" y="170">7c92e4</text>
+        </g>
+        <g class="m-sm" text-anchor="middle">
+          <text x="620" y="170">7c92e4</text><text x="700" y="170">7c92e4</text><text x="780" y="170">7c92e4</text>
+        </g>
+
+        <!-- channel C: single delta -->
+        <line class="hair" x1="220" y1="272" x2="780" y2="272"/>
+        <rect x="533" y="238" width="14" height="34" fill="#C4432A"/>
+        <text class="m-red" x="556" y="250">1 row</text>
+        <text class="m-sm" x="556" y="264">NOT THE WHOLE DATABASE</text>
+
+        <!-- x axis -->
+        <line class="stroke" x1="220" y1="292" x2="780" y2="292"/>
+        <g>
+          <text class="m-sm" x="220" y="308" text-anchor="middle">1</text>
+          <text class="m-sm" x="300" y="308" text-anchor="middle">2</text>
+          <text class="m-sm" x="380" y="308" text-anchor="middle">3</text>
+          <text class="m-sm" x="460" y="308" text-anchor="middle">4</text>
+          <text class="m-sm" x="540" y="308" text-anchor="middle">5</text>
+          <text class="m-sm" x="620" y="308" text-anchor="middle">6</text>
+          <text class="m-sm" x="700" y="308" text-anchor="middle">7</text>
+          <text class="m-sm" x="780" y="308" text-anchor="middle">8</text>
+        </g>
+        <text class="m-sm" x="220" y="324">WEEKLY CRAWL PASS &middot; ADMIN CAN TRIGGER ONE ON DEMAND</text>
+      </svg>
+    </div>
+    <figcaption><b>Fig. 3</b> The source portal reuses a document's URL when the document is revised, so the link set stays flat while the corpus changes underneath it. The first build watched links alone and propagated nothing. The ETag is the only channel that moves, and only the changed rows cross the RailNet boundary. Nothing is ever deleted — a superseded file moves to Archive.</figcaption>
+    <div class="meta">
+      <div><span>Client</span>Southern Railway &middot; RDSO document distribution</div>
+      <div><span>Role</span>crawler + scheduled ingest, architecture</div>
+      <div><span>Runs</span>inside RailNet &middot; weekly cron &middot; admin-triggerable</div>
+      <div><span>Sync</span>delta only &middot; RailNet &rarr; internet-facing server</div>
+    </div>
+  </figure>
+
+  <p class="note">Fig. 1 is measured from the deployed gateway. Fig. 2 is architectural. Fig. 3 is schematic — pass numbers illustrate the mechanism, not a logged run, since the link-only build had no ETag record to compare against. Every plate declares its evidence type in the header for exactly this reason.</p>
+
+</div>
+</body>
+</html>

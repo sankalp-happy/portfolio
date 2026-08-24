@@ -1,0 +1,4 @@
+[build]
+  # Static single file. No build step, no dependencies to install.
+  command = ""
+  publish = "."

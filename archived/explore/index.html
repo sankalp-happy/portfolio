@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Explore — portfolio design directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0A;--fg:#EDEDED;--dim:#8A8D91;--faint:#54585E;--line:#1F2125;--lime:#C8F135}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Inter Tight',system-ui,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,4vw,40px)}
+
+header{padding:56px 0 30px;border-bottom:1px solid var(--line)}
+header .kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.15em;
+  color:var(--lime);text-transform:uppercase;margin-bottom:16px}
+header h1{font-size:clamp(30px,4.4vw,46px);letter-spacing:-.032em;font-weight:600;max-width:20ch}
+header p{margin-top:18px;max-width:62ch;color:var(--dim);font-size:15.6px;line-height:1.66}
+header p b{color:var(--fg);font-weight:500}
+header .back{display:inline-block;margin-top:24px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.05em;text-decoration:none;color:var(--dim);
+  border:1px solid var(--line);border-radius:2px;padding:8px 14px;transition:.2s}
+header .back:hover{border-color:var(--lime);color:var(--lime)}
+
+/* what changed */
+.why{padding:34px 0;border-bottom:1px solid var(--line)}
+.why h2{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.15em;
+  color:var(--faint);margin-bottom:18px}
+.why ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line)}
+.why li{background:var(--bg);padding:16px 18px;font-size:14.4px;color:var(--dim);line-height:1.6}
+.why li b{display:block;color:var(--fg);font-weight:500;margin-bottom:5px;font-size:14.8px}
+
+/* figure table */
+.figs{padding:34px 0;border-bottom:1px solid var(--line)}
+.figs h2{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.15em;
+  color:var(--faint);margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:14.4px}
+th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;
+  color:var(--faint);font-weight:400;padding:0 14px 10px 0;border-bottom:1px solid var(--line)}
+td{padding:11px 14px 11px 0;border-bottom:1px solid var(--line);color:var(--dim);vertical-align:top}
+td:first-child{color:var(--fg);white-space:nowrap}
+td.f{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--lime);white-space:nowrap}
+
+/* cards */
+.grid{padding:40px 0 90px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:26px}
+.card{border:1px solid var(--line);border-radius:4px;overflow:hidden;
+  display:flex;flex-direction:column;transition:border-color .2s}
+.card:hover{border-color:#33363C}
+.shot{height:300px;overflow:hidden;background:#000;position:relative;
+  border-bottom:1px solid var(--line);display:block}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;
+  transition:transform .4s ease,opacity .3s}
+.card:hover .shot img{transform:scale(1.03);opacity:.9}
+.shot::after{content:"";position:absolute;left:0;right:0;bottom:0;height:64px;
+  background:linear-gradient(to bottom,rgba(10,10,10,0),rgba(10,10,10,.92));pointer-events:none}
+.card .meta{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}
+.card .id{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+  color:var(--lime);margin-bottom:8px}
+.card h3{font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:8px}
+.card p{font-size:14.2px;color:var(--dim);line-height:1.62;flex:1}
+.card .tags{margin-top:15px;font-family:'JetBrains Mono',monospace;font-size:9.5px;
+  color:var(--faint);letter-spacing:.07em;line-height:1.8}
+.card .go{margin-top:16px;display:inline-block;align-self:flex-start;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;text-decoration:none;
+  border:1px solid var(--line);border-radius:2px;padding:8px 14px;color:var(--dim);transition:.2s}
+.card .go:hover{border-color:var(--lime);color:var(--lime)}
+.card .verdict{margin-top:14px;font-size:13.2px;color:var(--faint);line-height:1.58;
+  border-left:2px solid #26282D;padding-left:12px}
+.card .verdict b{color:var(--dim);font-weight:500}
+
+footer{border-top:1px solid var(--line);padding:26px 0 60px;
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--faint);line-height:2}
+footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kick">Design exploration · round 4</div>
+  <h1>Three directions for the portfolio.</h1>
+  <p>All three hold the same type and palette (Inter Tight + JetBrains Mono, near-black + lime)
+    and the same content. <b>Only the presentation changes.</b> Pick by which one you'd actually
+    want to send someone.</p>
+  <a class="back" href="../index.html">← current site</a>
+</header>
+
+<section class="why">
+  <h2>WHAT CHANGED FROM ROUND 3</h2>
+  <ul>
+    <li><b>The generic diagram is gone</b>
+      "The shape of most things I build" over a stock app skeleton. It flattened five different
+      systems into one CRUD-plus-LLM claim. The hero is type only now.</li>
+    <li><b>No two figures are alike</b>
+      Three identical box-and-arrow diagrams read as wallpaper by the third one. Each project
+      now gets the figure that actually explains it.</li>
+    <li><b>A Limits section exists</b>
+      Says plainly what hasn't been validated and what hasn't been done at scale. Slop never
+      admits a limit, so admitting one makes everything else more credible.</li>
+    <li><b>Figures are labelled schematic</b>
+      Anything not measured says so. Swap in real numbers when you have them — do not ship
+      invented benchmarks.</li>
+  </ul>
+</section>
+
+<section class="figs">
+  <h2>ONE FIGURE PER PROJECT, NEVER THE SAME KIND TWICE</h2>
+  <table>
+    <thead><tr><th>PROJECT</th><th>FIGURE</th><th>WHAT IT SHOWS</th></tr></thead>
+    <tbody>
+      <tr><td>SwitchBoard</td><td class="f">failover timeline</td>
+        <td>Two provider failures hidden behind a single 200 to the caller.</td></tr>
+      <tr><td>PharmaGuard</td><td class="f">responsibility boundary</td>
+        <td>One arrow crosses the line, one direction. That constraint is the architecture.</td></tr>
+      <tr><td>MediAssist AI</td><td class="f">message sequence</td>
+        <td>Five messages end to end. No forms, no waiting on a summary.</td></tr>
+      <tr><td>Dropout from scratch</td><td class="f">train / val loss</td>
+        <td>Validation peeling away without dropout, pinned to train with it.</td></tr>
+      <tr><td>Hybrid search</td><td class="f">retrieval overlap</td>
+        <td>Why dense-only retrieval fails on a corpus full of codes and proper nouns.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="grid">
+
+  <article class="card">
+    <a class="shot" href="plates.html"><img src="thumb-plates.png" alt="Plates layout preview"></a>
+    <div class="meta">
+      <div class="id">P1</div>
+      <h3>Plates</h3>
+      <p>Prose on black, every figure on a warm paper plate. The light/dark alternation running
+        down the page is what kills the monotony — the figures become the spine of the layout
+        instead of decoration hanging off it.</p>
+      <div class="tags">PAPER FIGURES · 5 FIGURE TYPES · STICKY RAIL</div>
+      <div class="verdict"><b>Safest.</b> Reads as published research. Least likely to age badly,
+        least likely to be remembered.</div>
+      <a class="go" href="plates.html">Open ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <a class="shot" href="notebook.html"><img src="thumb-notebook.png" alt="Executed notebook layout preview"></a>
+    <div class="meta">
+      <div class="id">P2</div>
+      <h3>Executed notebook</h3>
+      <p>In[n] / Out[n] cell rhythm — a prose cell, a real code cell, then the output it
+        produced. Three scroll regions: cell index on the left, cells in the middle, and a
+        runtime panel on the right that tracks where you are.</p>
+      <div class="tags">3 REGIONS · CODE + OUTPUT CELLS · LIVE KERNEL PANEL</div>
+      <div class="verdict"><b>Recommended.</b> Most visual of the three, and native to how you
+        actually work — which is why it reads as yours rather than as a template.</div>
+      <a class="go" href="notebook.html">Open ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <a class="shot" href="panes.html"><img src="thumb-panes.png" alt="Sideways panes layout preview"></a>
+    <div class="meta">
+      <div class="id">P3</div>
+      <h3>Sideways panes</h3>
+      <p>Reads horizontally. Panes pin at the left as you move right and collapse into vertical
+        spines, so your whole path stays on screen. Vertical scroll inside a pane, horizontal
+        scroll across them.</p>
+      <div class="tags">H-SCROLL DECK · STACKING SPINES · 2-AXIS SCROLL</div>
+      <div class="verdict"><b>Riskiest.</b> Most memorable by a distance, but horizontal reading
+        loses some people instantly and needs a separate mobile story.</div>
+      <a class="go" href="panes.html">Open ↗</a>
+    </div>
+  </article>
+
+</section>
+
+<footer>
+  REFERENCES DRAWN FROM ·
+  <a href="https://ciechanow.ski/" target="_blank" rel="noopener">ciechanow.ski</a> ·
+  <a href="https://distill.pub/" target="_blank" rel="noopener">distill.pub</a> ·
+  <a href="https://wattenberger.com/" target="_blank" rel="noopener">wattenberger.com</a> ·
+  <a href="https://notes.andymatuschak.org/" target="_blank" rel="noopener">notes.andymatuschak.org</a><br>
+  EARLIER ROUNDS (A–D, B1–B3, L1–L3) ARE ARCHIVED IN ~/.gstack/projects/sankalp-happy-portfolio/designs/
+</footer>
+
+</div>
+</body>
+</html>
