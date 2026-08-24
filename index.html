@@ -155,9 +155,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 }
 
 /* ---------- ground toggle ----------
-   Reuses the rail's own vocabulary: the 5px square that means "active" on the index
-   means "slate is on" here. Text label stays fixed so it does not thrash on click;
-   aria-pressed carries the state to assistive tech. */
+   Reuses the rail's 5px square, but not its colour. Accent-red on this rail means one
+   thing only: you are here. A red square on the toggle read as a seventh, permanently
+   active index item, so the toggle says on/off by fill, in ink. Text label stays fixed
+   so it does not thrash on click; aria-pressed carries the state to assistive tech. */
 .ground-btn{
   margin-top:26px;display:flex;align-items:center;gap:9px;
   background:none;border:0;cursor:pointer;padding:6px 0;
@@ -166,9 +167,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 }
 .ground-btn .sw{width:5px;height:5px;border:1px solid var(--ink-3);background:none;flex:none}
 .ground-btn[aria-pressed="true"]{color:var(--ink-2)}
-.ground-btn[aria-pressed="true"] .sw{background:var(--accent);border-color:var(--accent)}
+.ground-btn[aria-pressed="true"] .sw{background:var(--ink-2);border-color:var(--ink-2)}
 .ground-btn:hover{color:var(--ink)}
-.ground-btn:hover .sw{border-color:var(--accent)}
+.ground-btn:hover .sw{border-color:var(--ink)}
 @media (prefers-reduced-motion:no-preference){
   .ground-btn,.ground-btn .sw{transition:color 150ms ease,border-color 150ms ease,background 150ms ease}
 }
