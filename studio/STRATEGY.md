@@ -727,3 +727,134 @@ belongs to nobody else; "Things with a date attached", which is dry and accurate
 correct, not fast, and it has never been asked to be", which is voice, and rule 27's
 "add soul" section asks for exactly that; and the four bold sentences, one per write-up,
 which are an emphasis pattern rather than the bold-every-noun tell of rule 15.
+
+---
+
+## Revision 7 (2026-08-25) — Experience, and an About that answers the first question
+
+**`Work` is now `Experience`,** holding both paid engagements in resume order, newest
+first, each with its dates in the mono annotation line.
+
+**Kapture CX is back, at the right depth this time.** Revision 4 cut it to one line
+because a fourth system would have owed a fourth figure. As an Experience entry it owes
+nothing, so it gets two paragraphs: the prefix-cache mechanism, the quantization
+benchmarks, and the routing argument. The throughput numbers stay off the page. They
+need the benchmark-versus-production split to be honest, that split needs a figure, and
+a figure is exactly what this section does not have. `PRODUCT.md` still holds them.
+
+**RDSO lost its figure and two thirds of its words.** Client work with no public
+artefact, so the plate was a drawing of a system nobody can go and look at. The one
+insight worth keeping is that the portal reuses a URL on revision, which makes the link
+set useless and the ETag the only honest signal. That survives in two paragraphs. The
+seven-row spec table is down to three.
+
+Figures renumbered again as a consequence: SwitchBoard is `Fig. 1`, PharmaGuard is
+`Fig. 2`, and the two Limits cross-references moved with them. **Only Projects carries
+figures now,** which is a cleaner rule than the old one: a figure means there is
+something deployed you can go and check.
+
+**About answers what a first-time reader actually asks.** It was a headline, one lede,
+and a stats strip, which said what the page was about but not what the person can do.
+Now: what I build, in concrete mechanisms rather than a skills list. Then what I have
+actually done, in four sentences. Then one opinion, because a first impression made
+entirely of facts reads like a spec sheet.
+
+The new `.job` block is deliberately lighter than `.system`: title, dates, two
+paragraphs, a short spec list, no plate. One bug worth recording. The first pass named
+it `.role`, which the rail's own identity line already used, so the experience styles
+leaked onto "ML Engineer, Bengaluru" in the sidebar. Renamed to `.job`. The blind
+find-and-replace that fixed it then renamed the rail's class too and broke it the other
+way, which is the second lesson: a class rename across a single-file page needs the
+occurrences read, not counted.
+
+Unslop pass on the new copy. "Two are my own" went because the antecedent was missing.
+The Kapture paragraph names the mechanism (a byte-identical prefix is what lets the
+cache hit) rather than the feeling of speed. No colons as connectors, no dashes, and the
+opinion at the end of About is concrete about three specific failures rather than
+gesturing at rigour.
+
+---
+
+## Revision 8 (2026-08-25) — the rail was set at annotation size
+
+The rail was doing navigation at the same 10.5px the figures use for axis labels, which
+is how the resume ended up as the third grey line in a footer list. Fixed by treating
+the rail as navigation rather than as marginalia.
+
+Rail 200px to 236px, shell 1240 to 1280 so `main` keeps its measure (900px, so the
+plates still break out to their full width). Name 17 to 19px, section index 10.5 to
+12px with the marker grown to 6px to match.
+
+**The resume gets a hairline box.** Not a filled button: the page already means
+"bounded region" with a 1px rule in every plate and table, so a solid pill would be the
+one element speaking a different language. It sits first in the foot now, with GitHub and
+LinkedIn as plain lines below it, because those two are not what a hiring reader came to
+leave with.
+
+Two bugs found while doing it, both worth recording because neither was visible in the
+change I set out to make.
+
+**The resume was unreachable on every touch viewport.** The tablet and mobile rule was
+`.rail-foot{display:none}`, written when the foot held three equal grey links and the
+horizontal strip had no room. That silently took the PDF with it, leaving Contact as the
+only path to it on a phone. Now the foot stays and only the non-resume links hide, so
+the box moves into the strip at a 44px target. The complaint that started this revision
+was about desktop, and the mobile case was worse.
+
+**`scroll-margin-top` was a hardcoded 132px.** A taller rail made the sticky strip 215px
+on a phone, so tapping a section landed its heading 80px underneath the strip. The strip
+wraps to a different height at every width, so a constant was always going to be wrong
+at some size. JS now measures the rail into `--rail-h` on resize and the rule reads
+`calc(var(--rail-h, 132px) + 14px)`, with the old constant as the no-JS fallback.
+Verified: the Projects heading now lands 90px clear of the strip at 375px.
+
+---
+
+## Revision 9 (2026-08-25) — project headings link to the deployed site
+
+`SwitchBoard` and `PharmaGuard` were headings above a spec table whose `Live` row held
+the URL, so the most useful click on the page was its least obvious one.
+
+Both headings are now links to the deployment, with a `↗` (U+2197) and
+`target="_blank" rel="noopener noreferrer"`.
+
+**At rest the heading stays ink.** A 29px accent underline would outrank the h1 and turn
+the page into a link farm, so the tilted arrow carries the affordance instead, in ink-3
+at 0.6em. The accent and a 1px underline at 7px offset arrive on hover, which is the
+third and last item in the motion budget. `cursor:pointer` and a `:focus-visible`
+outline come with it.
+
+The arrow is `aria-hidden`, with a `.vh` visually-hidden span saying "live site, opens in
+a new tab" so the arrow's meaning is not sighted-only.
+
+**Every off-site link now opens in a new tab,** not only the two headings, because the
+`Live` rows point at the same URLs and a heading that opens a tab next to a row that
+does not is a coin flip for the reader. Eleven external anchors, all with `noopener`.
+The hash nav is untouched, which matters: giving those a target would break the panel
+switching entirely.
+
+Verification note worth keeping. The in-app preview pane does not produce a real CSS
+`:hover`, so hovering there proved nothing and the screenshots looked like the effect
+was missing. `browse hover` on the gstack Chromium does drive a real pointer, and
+confirmed the rest state (ink, no underline) against the hover state (accent, underline
+1px, offset 7px, arrow accent). Use the gstack browser for hover and focus states.
+
+---
+
+## Revision 10 (2026-08-25) — the Projects spec tables are gone
+
+Both `dl.meta` blocks under Projects removed. Each write-up now ends on its figure and
+caption, which is the right place to stop: the caption is the evidence and the table was
+a second, quieter version of the same claims.
+
+The two under Experience stay. They are doing different work there, standing in for the
+figure those entries do not get.
+
+**One thing left the page with them.** SwitchBoard's `Live` row held the only link to
+`github.com/sankalp-happy/switchboard`. The deployment survived, because the heading now
+carries it, but the source repo is only reachable through the GitHub profile in the rail
+and in Contact. Flagged to the client rather than silently preserved, since the
+instruction was to remove the section and a lone `source` link hanging under a figure
+would have been a different design decision than the one asked for.
+
+`dl.meta` styles stay in the sheet, still used by Experience.

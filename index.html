@@ -31,7 +31,7 @@
   color-scheme:light;
   --ground:#F5F1E8;
   --plate:#EDE7D9;   /* figure surface */
-  --band:#E5DDCB;    /* the shaded region inside Fig. 2 */
+  --band:#E5DDCB;    /* the shaded region inside Fig. 1 */
   --rule:#D8D0BE;    /* page hairlines */
   --hair:#D8D0BE;    /* figure gridlines — same value on paper, lifted on slate */
   --ink:#1A1815;      /* 15.0:1 on ground */
@@ -45,7 +45,7 @@
   --body:'Source Serif 4',Georgia,'Times New Roman',serif;
   --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
 
-  --rail:200px;
+  --rail:236px;
   --gutter:64px;
 }
 
@@ -106,7 +106,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .shell{
   display:grid;
   grid-template-columns:var(--rail) var(--gutter) minmax(0,1fr);
-  max-width:1240px;
+  max-width:1280px;
   margin:0 auto;
   padding:0 40px;
 }
@@ -115,28 +115,44 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .rail{grid-column:1}
 .rail-inner{position:sticky;top:0;padding:56px 0 56px;height:100vh;min-height:0;overflow-y:auto;display:flex;flex-direction:column}
 
-.ident .name{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em;line-height:1.2}
-.ident .role{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:6px}
+.ident .name{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.012em;line-height:1.2}
+.ident .role{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:7px}
 
-.index{margin-top:44px;list-style:none}
+.index{margin-top:40px;list-style:none}
 .index li{position:relative}
 .index a{
   display:flex;gap:10px;align-items:baseline;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--ink-2);text-decoration:none;padding:5px 0 5px 14px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-2);text-decoration:none;padding:8px 0 8px 16px;
 }
 .index a:hover{color:var(--ink-2)}
 .index a[aria-current="true"]{color:var(--ink)}
 .index .mark{
-  position:absolute;left:0;top:11px;width:5px;height:5px;background:var(--accent);
+  position:absolute;left:0;top:15px;width:6px;height:6px;background:var(--accent);
   opacity:0;
 }
 .index a[aria-current="true"] + .mark,
 .index li:has(a[aria-current="true"]) .mark{opacity:1}
 
-.rail-foot{margin-top:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;line-height:2.1}
+.rail-foot{margin-top:auto;font-family:var(--mono);font-size:11px;letter-spacing:.07em;line-height:2.1}
 .rail-foot a{color:var(--ink-2);text-decoration:none}
 .rail-foot a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+
+/* The resume is the one thing a hiring reader comes here to leave with, so it stops
+   being the third grey line in a list. Hairline box, not a filled button: the page
+   already means "bounded region" with a 1px rule everywhere else. */
+.rail-foot .cv{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border:1px solid var(--rule);padding:12px 13px;margin-bottom:18px;
+  font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink);line-height:1.2;
+}
+.rail-foot .cv:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+.rail-foot .cv .arw{color:var(--ink-3)}
+.rail-foot .cv:hover .arw{color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){
+  .rail-foot .cv{transition:border-color 150ms ease,color 150ms ease}
+}
 
 /* ---------- ground toggle ----------
    Reuses the rail's own vocabulary: the 5px square that means "active" on the index
@@ -181,9 +197,10 @@ section:first-child{padding-top:0}
 /* de-emphasised, but these words carry meaning — keep it above AA (6:1), not decorative grey */
 .thesis h1 em{font-style:normal;color:var(--ink-2)}
 .thesis .lede{max-width:64ch;color:var(--ink-2)}
-/* Current position. One line, in the annotation voice, so it reads as a standing fact
-   rather than a fourth system the page then owes a figure for. */
-.thesis .now{margin-top:22px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+/* The About body. Same measure as the lede, ink-2 like every other reading passage,
+   so the strong line in the lede stays the only thing at full ink up here. */
+.thesis > p{max-width:64ch;color:var(--ink-2)}
+.thesis > p + p{margin-top:18px}
 .thesis .lede strong{color:var(--ink);font-weight:600}
 
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;border-top:1px solid var(--rule)}
@@ -205,6 +222,39 @@ section:first-child{padding-top:0}
    they carried now live once, in dl.meta, where a reader goes looking for them. */
 .sys-head{margin-bottom:26px}
 .sys-title{display:flex;align-items:baseline;gap:16px}
+
+/* A project heading that goes somewhere. At rest it stays ink, because a 29px accent
+   underline would outrank the h1 and break the page's hierarchy; the tilted arrow is
+   what marks it as a link. The accent and the underline arrive on hover, which is the
+   third and last item in the motion budget. */
+.system h3 a.site{
+  color:inherit;text-decoration:none;
+  display:inline-flex;align-items:baseline;gap:.3em;
+}
+.system h3 a.site .ext{font-size:.6em;line-height:1;color:var(--ink-3);flex:none}
+.system h3 a.site:hover{color:var(--accent);text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px}
+.system h3 a.site:hover .ext{color:var(--accent)}
+.system h3 a.site:focus-visible{outline:2px solid var(--accent);outline-offset:5px;border-radius:1px}
+@media (prefers-reduced-motion:no-preference){
+  .system h3 a.site,.system h3 a.site .ext{transition:color 150ms ease}
+}
+
+/* Says out loud what the arrow says visually. */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* ---------- experience ----------
+   Lighter than a .system: a job title, the dates, two paragraphs. No plate. The two
+   engagements were client and employer systems, so there is no artefact to show and a
+   figure would be decoration standing in for evidence. */
+.job + .job{margin-top:72px;padding-top:56px;border-top:1px solid var(--rule)}
+.job-head{margin-bottom:22px}
+.job h3{font-family:var(--display);font-weight:600;font-size:25px;letter-spacing:-.016em;line-height:1.2;text-wrap:balance}
+.job-meta{margin-top:9px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.job p{max-width:66ch}
+.job .job-head + p{margin-top:0}
+.job p + p{margin-top:16px}
+.job p strong{font-weight:600;color:var(--ink)}
+.job .meta{margin-top:26px}
 
 /* "Also shipped", inside Projects. A rule above it, not a second sec-head, so the
    table still reads as subordinate to the two write-ups it follows. */
@@ -316,7 +366,7 @@ td:last-child,th:last-child{padding-right:0}
 @media (max-width:1099px){
   .shell{grid-template-columns:1fr;padding:0 36px}
   .rail{grid-column:1;position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:1px solid var(--rule)}
-  .rail-inner{position:static;height:auto;padding:18px 0;flex-direction:row;align-items:center;gap:28px;flex-wrap:wrap}
+  .rail-inner{position:static;height:auto;padding:14px 0;flex-direction:row;align-items:center;gap:14px 22px;flex-wrap:wrap}
   .ident{display:flex;align-items:baseline;gap:12px}
   .ident .role{margin-top:0}
   .index{display:flex;margin-top:0;gap:2px;flex-wrap:wrap;margin-left:auto}
@@ -325,14 +375,21 @@ td:last-child,th:last-child{padding-right:0}
   .contact-links a{padding:13px 16px}
   .index .mark{display:none}
   .index a[aria-current="true"]{color:var(--accent)}
-  .rail-foot{display:none}
-  /* the rail-foot goes, but the toggle cannot — it moves into the strip at full size */
+  /* The foot's link list goes, but the resume cannot: hiding the whole foot here left
+     the PDF reachable only from Contact on every touch viewport. It moves into the
+     strip instead, at a 44px target. */
+  .rail-foot{display:block;margin-top:0}
+  .rail-foot a:not(.cv){display:none}
+  .rail-foot .cv{margin-bottom:0;min-height:44px;padding:0 13px}
+  /* the link list goes, but the toggle cannot — it moves into the strip at full size */
   .ground-btn{margin-top:0;min-height:44px;padding:0 0 0 4px}
   /* two adjacent links on one metadata line at 14px tall is a mis-tap waiting to happen.
      This starts here, not at 767px — 768 to 1099 is tablet, and tablets are touched. */
   dl.meta dd a{display:inline-block;padding:9px 0}
-  /* the rail is a sticky strip here, so anchors must not land underneath it */
-  section{scroll-margin-top:132px}
+  /* The rail is a sticky strip here, so anchors must not land underneath it. The strip
+     wraps to a different height at every width, so JS measures it into --rail-h; the
+     132px fallback is the no-JS case. */
+  section{scroll-margin-top:calc(var(--rail-h, 132px) + 14px)}
   main{grid-column:1;padding:44px 0 96px}
   .ledger{grid-template-columns:1fr;gap:0}
   .ledger .col + .col{border-left:0;padding-left:0;margin-left:0;margin-top:44px}
@@ -406,7 +463,7 @@ td:last-child,th:last-child{padding-right:0}
       <nav aria-label="Sections">
         <ul class="index">
           <li><a href="#thesis">About</a><span class="mark"></span></li>
-          <li><a href="#work">Work</a><span class="mark"></span></li>
+          <li><a href="#experience">Experience</a><span class="mark"></span></li>
           <li><a href="#projects">Projects</a><span class="mark"></span></li>
           <li><a href="#ledger">Ledger</a><span class="mark"></span></li>
           <li><a href="#limits">Limits</a><span class="mark"></span></li>
@@ -419,9 +476,9 @@ td:last-child,th:last-child{padding-right:0}
       </button>
 
       <div class="rail-foot">
-        <div><a href="https://github.com/sankalp-happy">github &rarr;</a></div>
-        <div><a href="https://linkedin.com/in/sankalp-shankar-734007284/">linkedin &rarr;</a></div>
-        <div><a href="sankalp-shankar-resume.pdf">résumé.pdf &rarr;</a></div>
+        <a class="cv" href="sankalp-shankar-resume.pdf">Résumé, PDF <span class="arw" aria-hidden="true">&rarr;</span></a>
+        <div><a href="https://github.com/sankalp-happy" target="_blank" rel="noopener noreferrer">github &rarr;</a></div>
+        <div><a href="https://linkedin.com/in/sankalp-shankar-734007284/" target="_blank" rel="noopener noreferrer">linkedin &rarr;</a></div>
       </div>
     </div>
   </div>
@@ -432,8 +489,13 @@ td:last-child,th:last-child{padding-right:0}
     <!-- ---------- ABOUT ---------- -->
     <section id="thesis" class="thesis">
       <h1>I work at the boundary where a model stops <em>being allowed to decide.</em></h1>
-      <p class="lede">Gateways, serving, retrieval, ingest, failover. <strong>This half of an LLM product decides whether the model is safe to put in front of anyone.</strong> Three systems are written up here, one figure each.</p>
-      <p class="now">Machine learning intern at Kapture CX, working on LLM serving.</p>
+      <p class="lede">Gateways, serving, retrieval, ingest, failover. <strong>This half of an LLM product decides whether the model is safe to put in front of anyone.</strong></p>
+
+      <p>I build the parts around the model. Provider routing with failover, and a cache that recognises a question it has already answered in different words. Retrieval that finds product codes as well as meaning. Ingest that can tell a revised document from one it has already published. Serving tuned to hold more requests on the same GPUs. Then the FastAPI and React that puts any of it in front of a person.</p>
+
+      <p>Right now I tune LLM serving at Kapture CX. Before that I built the ingest crawler for a Southern Railway document system, where the source portal reused a URL every time it revised a file. On my own I built an LLM gateway that has served real traffic, and a prescribing system where a deterministic engine makes every clinical call and the model only writes the explanation.</p>
+
+      <p>Most of what breaks in an LLM product is not the model. It is the retry nobody wrote, the cache that compares by hash, the crawler watching a signal that never moves.</p>
 
       <div class="stats">
         <div><div class="v">1st</div><div class="k">State-level<br>hackathon</div></div>
@@ -444,109 +506,32 @@ td:last-child,th:last-child{padding-right:0}
     </section>
 
     <!-- ---------- WORK ---------- -->
-    <section id="work">
-      <h2 class="sec-head"><span>Work</span> <span class="tail">Paid engagement. What it had to detect, and the signal that moved.</span></h2>
+    <section id="experience">
+      <h2 class="sec-head"><span>Experience</span> <span class="tail">Two paid engagements. What I owned, and when.</span></h2>
 
-      <!-- === 03 RDSO === -->
-      <article class="system">
-        <header class="sys-head">
-          <div class="sys-title"><h3>RDSO Documents</h3></div>
-          <p class="sys-sub">A weekly ingest pass for Southern Railway, built around the one signal that moves when a standard is revised.</p>
+      <article class="job">
+        <header class="job-head">
+          <h3>Machine learning intern</h3>
+          <p class="job-meta">Kapture CX &middot; Bangalore &middot; June 2026 to present</p>
         </header>
-
-        <p>RDSO engineering standards live on RailNet. Getting them to engineers over the internet needs an ingest pass that can tell a revised document from one it has already published. <strong>The source portal reuses a document's URL when the document is revised.</strong> Same link, new bytes.</p>
-        <p>So the obvious signal is the wrong one. The first build watched the link set, found it unchanged every week, and propagated nothing while standards were being revised underneath it. Nothing errored. That failure sent us looking for a channel that moves.</p>
-        <p>The ETag moves. The crawler stores one per URL, and an ETag delta is the only honest evidence a document changed. Only the changed rows cross back out of RailNet, never the whole database. Nothing is ever deleted. A superseded standard goes to Archive.</p>
-
-        <figure class="plate-fig">
-          <div class="plate">
-            <div class="plate-head">
-              <span>Fig. 1</span>
-              <span class="kind">schematic</span>
-            </div>
-            <svg viewBox="0 0 840 330" role="img" aria-labelledby="f1t f1d">
-              <title id="f1t">Two channels observed across weekly crawl passes of the RDSO portal</title>
-              <desc id="f1d">The link set channel is flat across every pass because the source portal reuses URLs when a document is revised. The ETag channel shows the same token repeating for four passes and then a different token from pass five onward, which is the only evidence a standard changed. Only that one changed row is pushed out of RailNet.</desc>
-
-              <text class="lbl" x="40" y="82">link set</text>
-              <text class="m-sm" x="40" y="98">WHAT WE WATCHED FIRST</text>
-              <text class="lbl" x="40" y="176">ETag / URL</text>
-              <text class="m-sm" x="40" y="192">THE CHANNEL THAT MOVES</text>
-              <text class="lbl" x="40" y="262">delta pushed</text>
-              <text class="m-sm" x="40" y="278">OUT OF RAILNET</text>
-
-              <g>
-                <line class="hair" x1="220" y1="44" x2="220" y2="292"/>
-                <line class="hair" x1="300" y1="44" x2="300" y2="292"/>
-                <line class="hair" x1="380" y1="44" x2="380" y2="292"/>
-                <line class="hair" x1="460" y1="44" x2="460" y2="292"/>
-                <line class="hair" x1="540" y1="44" x2="540" y2="292"/>
-                <line class="hair" x1="620" y1="44" x2="620" y2="292"/>
-                <line class="hair" x1="700" y1="44" x2="700" y2="292"/>
-                <line class="hair" x1="780" y1="44" x2="780" y2="292"/>
-              </g>
-
-              <line class="stroke" x1="220" y1="76" x2="780" y2="76"/>
-              <g class="f-ink">
-                <circle cx="220" cy="76" r="3"/><circle cx="300" cy="76" r="3"/><circle cx="380" cy="76" r="3"/>
-                <circle cx="460" cy="76" r="3"/><circle cx="540" cy="76" r="3"/><circle cx="620" cy="76" r="3"/>
-                <circle cx="700" cy="76" r="3"/><circle cx="780" cy="76" r="3"/>
-              </g>
-              <text class="m-sm" x="792" y="79">FLAT</text>
-
-              <path class="red" d="M220 54 V46 H540 V54"/>
-              <text class="m-red" x="380" y="38" text-anchor="middle">revisions shipped in this window, a link-only crawl reported nothing</text>
-
-              <path class="stroke" d="M220 182 H540 V152 H780"/>
-              <g class="f-ink">
-                <circle cx="220" cy="182" r="3"/><circle cx="300" cy="182" r="3"/><circle cx="380" cy="182" r="3"/>
-                <circle cx="460" cy="182" r="3"/>
-              </g>
-              <circle cx="540" cy="152" r="4.5" class="f-accent"/>
-              <g class="f-ink">
-                <circle cx="620" cy="152" r="3"/><circle cx="700" cy="152" r="3"/><circle cx="780" cy="152" r="3"/>
-              </g>
-              <text class="m-red" x="552" y="138">ETag changed, same URL, new bytes</text>
-
-              <g class="m-sm" text-anchor="middle">
-                <text x="220" y="200">a3f1c8</text><text x="300" y="200">a3f1c8</text>
-                <text x="380" y="200">a3f1c8</text><text x="460" y="200">a3f1c8</text>
-              </g>
-              <g class="m-sm f-accent" text-anchor="middle"><text x="540" y="170">7c92e4</text></g>
-              <g class="m-sm" text-anchor="middle">
-                <text x="620" y="170">7c92e4</text><text x="700" y="170">7c92e4</text><text x="780" y="170">7c92e4</text>
-              </g>
-
-              <line class="hair" x1="220" y1="272" x2="780" y2="272"/>
-              <rect x="533" y="238" width="14" height="34" class="f-accent"/>
-              <text class="m-red" x="556" y="250">1 row</text>
-              <text class="m-sm" x="556" y="264">NOT THE WHOLE DATABASE</text>
-
-              <line class="stroke" x1="220" y1="292" x2="780" y2="292"/>
-              <g>
-                <text class="m-sm" x="220" y="308" text-anchor="middle">1</text>
-                <text class="m-sm" x="300" y="308" text-anchor="middle">2</text>
-                <text class="m-sm" x="380" y="308" text-anchor="middle">3</text>
-                <text class="m-sm" x="460" y="308" text-anchor="middle">4</text>
-                <text class="m-sm" x="540" y="308" text-anchor="middle">5</text>
-                <text class="m-sm" x="620" y="308" text-anchor="middle">6</text>
-                <text class="m-sm" x="700" y="308" text-anchor="middle">7</text>
-                <text class="m-sm" x="780" y="308" text-anchor="middle">8</text>
-              </g>
-              <text class="m-sm" x="220" y="324">WEEKLY CRAWL PASS &middot; ADMIN CAN TRIGGER ONE ON DEMAND</text>
-            </svg>
-          </div>
-          <div class="scroll-hint">Scroll the figure sideways &rarr;</div>
-          <figcaption><b>Fig. 1</b> Eight weekly passes over the portal. The link set is flat across all of them. The ETag repeats for four passes and then changes at pass five, and that change is the only evidence a standard was revised. One row leaves RailNet, not the database.</figcaption>
-        </figure>
-
+        <p>LLM serving on vLLM, for a 31B model on H200s. <strong>vLLM reuses a cached prefix only when the shared front of a prompt is byte-identical.</strong> I restructured the prompts so that it is, and retuned the serving flags around that. Same weights, same GPUs, more requests held.</p>
+        <p>I also benchmarked GPTQ and AWQ quantization against the unquantized configuration, and argued for vLLM-router over nginx round-robin. Round-robin hands a request to whichever replica is next, which throws away the prefix the tuning just bought.</p>
         <dl class="meta">
-          <dt>Client</dt><dd>Southern Railway &middot; RDSO document distribution</dd>
-          <dt>Role</dt><dd>ML and backend engineer, remote &middot; March to June 2026 &middot; delivered by a freelance team</dd>
-          <dt>Scope</dt><dd>crawler and scheduled ingest, architecture</dd>
+          <dt>Serving</dt><dd>vLLM &middot; Gemma 4 31B-IT &middot; H200 &middot; systemd service</dd>
+          <dt>Also</dt><dd>GPTQ and AWQ benchmarks &middot; cache-aware routing</dd>
+        </dl>
+      </article>
+
+      <article class="job">
+        <header class="job-head">
+          <h3>ML and backend engineer, freelance</h3>
+          <p class="job-meta">Southern Railway &middot; Remote &middot; March to June 2026</p>
+        </header>
+        <p>RDSO engineering standards live on RailNet and had to reach engineers over the internet. <strong>The source portal reuses a document's URL when it revises the file.</strong> So the first build watched the link set, found it unchanged every week, and propagated nothing while standards were being revised underneath it.</p>
+        <p>The ETag is the one thing that moves. The crawler stores one per URL and treats a delta as the evidence a document changed. Only changed rows leave RailNet, on a weekly cron, and nothing is deleted.</p>
+        <dl class="meta">
+          <dt>Client</dt><dd>Southern Railway &middot; document distribution &middot; delivered by a freelance team</dd>
           <dt>Detection</dt><dd>ETag per URL for revisions &middot; link table for new documents</dd>
-          <dt>Runs</dt><dd>inside RailNet &middot; weekly cron &middot; admin can trigger a pass on demand</dd>
-          <dt>Sync</dt><dd>delta only &middot; RailNet &rarr; internet-facing server</dd>
           <dt>Source</dt><dd>client system &middot; no public repository</dd>
         </dl>
       </article>
@@ -559,7 +544,7 @@ td:last-child,th:last-child{padding-right:0}
       <!-- === 01 SwitchBoard === -->
       <article class="system">
         <header class="sys-head">
-          <div class="sys-title"><h3>SwitchBoard</h3></div>
+          <div class="sys-title"><h3><a class="site" href="https://switchboard-tau-ruby.vercel.app" target="_blank" rel="noopener noreferrer">SwitchBoard<span class="ext" aria-hidden="true">&#8599;</span><span class="vh"> live site, opens in a new tab</span></a></h3></div>
           <p class="sys-sub">An LLM gateway that keeps three providers behind one endpoint, and recognises a question it has already answered.</p>
         </header>
 
@@ -569,12 +554,12 @@ td:last-child,th:last-child{padding-right:0}
         <figure class="plate-fig">
           <div class="plate">
             <div class="plate-head">
-              <span>Fig. 2</span>
+              <span>Fig. 1</span>
               <span class="kind">measured, deployed gateway</span>
             </div>
-            <svg viewBox="0 0 840 296" role="img" aria-labelledby="f2t f2d">
-              <title id="f2t">Cosine similarity of three prompts against the 0.90 cache threshold</title>
-              <desc id="f2d">Three requests plotted on a similarity axis. The first has no cached neighbour and calls the provider, taking 424 milliseconds. The second is identical to it and returns from cache at similarity 1.0000. The third is a rephrasing and returns from cache at 0.9144, just past the 0.90 threshold.</desc>
+            <svg viewBox="0 0 840 296" role="img" aria-labelledby="f1t f1d">
+              <title id="f1t">Cosine similarity of three prompts against the 0.90 cache threshold</title>
+              <desc id="f1d">Three requests plotted on a similarity axis. The first has no cached neighbour and calls the provider, taking 424 milliseconds. The second is identical to it and returns from cache at similarity 1.0000. The third is a rephrasing and returns from cache at 0.9144, just past the 0.90 threshold.</desc>
               <rect x="300" y="46" width="130" height="176" class="f-band"/>
               <text class="m-sm" x="310" y="62">PROVIDER CALL</text>
               <text class="m-sm" x="440" y="62">SERVED FROM REDIS &middot; NO TOKENS SPENT</text>
@@ -613,24 +598,15 @@ td:last-child,th:last-child{padding-right:0}
             </svg>
           </div>
           <div class="scroll-hint">Scroll the figure sideways &rarr;</div>
-          <figcaption><b>Fig. 2</b> Cosine similarity to the nearest cached prompt, against the 0.90 threshold. A rephrasing of a question already asked clears the bar by 0.0144 and never reaches a provider. Latency shown is the first call's round trip to Groq; the two cache hits make no provider call at all. Numbers read off the deployed gateway.</figcaption>
+          <figcaption><b>Fig. 1</b> Cosine similarity to the nearest cached prompt, against the 0.90 threshold. A rephrasing of a question already asked clears the bar by 0.0144 and never reaches a provider. Latency shown is the first call's round trip to Groq; the two cache hits make no provider call at all. Numbers read off the deployed gateway.</figcaption>
         </figure>
 
-        <dl class="meta">
-          <dt>Status</dt><dd>live &middot; v0.2.0</dd>
-          <dt>Endpoint</dt><dd>OpenAI-compatible &middot; POST /v1/chat/completions</dd>
-          <dt>Cache</dt><dd>gemini-embedding-001 &middot; Redis &middot; ttl 3600s &middot; threshold 0.90</dd>
-          <dt>Routing</dt><dd>groq &middot; google &middot; anthropic &middot; quota-aware, 5s sweeper</dd>
-          <dt>Keys</dt><dd>Fernet-encrypted at rest in SQLite, returned masked</dd>
-          <dt>Stack</dt><dd>Python &middot; FastAPI &middot; Redis &middot; Prometheus &middot; Grafana &middot; Docker Compose</dd>
-          <dt>Live</dt><dd><a href="https://switchboard-tau-ruby.vercel.app">switchboard-tau-ruby.vercel.app</a> &middot; <a href="https://github.com/sankalp-happy/switchboard">source</a></dd>
-        </dl>
       </article>
 
       <!-- === 02 PharmaGuard === -->
       <article class="system">
         <header class="sys-head">
-          <div class="sys-title"><h3>PharmaGuard</h3></div>
+          <div class="sys-title"><h3><a class="site" href="https://pharmaguard-tbo.netlify.app" target="_blank" rel="noopener noreferrer">PharmaGuard<span class="ext" aria-hidden="true">&#8599;</span><span class="vh"> live site, opens in a new tab</span></a></h3></div>
           <p class="sys-sub">Prescribing guidance read off a genomic file, in a system where the model does not get to make the call.</p>
         </header>
 
@@ -640,12 +616,12 @@ td:last-child,th:last-child{padding-right:0}
         <figure class="plate-fig">
           <div class="plate">
             <div class="plate-head">
-              <span>Fig. 3</span>
+              <span>Fig. 2</span>
               <span class="kind">architecture</span>
             </div>
-            <svg viewBox="0 0 840 296" role="img" aria-labelledby="f3t f3d">
-              <title id="f3t">The boundary between what decides and what explains in PharmaGuard</title>
-              <desc id="f3d">A vertical dashed line separates the system. Left of it, a VCF file and PharmCAT feed a deterministic risk engine running CPIC rules, which produces the prescribing recommendation. One arrow crosses the line rightward, carrying the finished recommendation to Llama 3.3, which writes clinician-facing prose. No arrow crosses back leftward, so a model failure costs the explanation and never the recommendation.</desc>
+            <svg viewBox="0 0 840 296" role="img" aria-labelledby="f2t f2d">
+              <title id="f2t">The boundary between what decides and what explains in PharmaGuard</title>
+              <desc id="f2d">A vertical dashed line separates the system. Left of it, a VCF file and PharmCAT feed a deterministic risk engine running CPIC rules, which produces the prescribing recommendation. One arrow crosses the line rightward, carrying the finished recommendation to Llama 3.3, which writes clinician-facing prose. No arrow crosses back leftward, so a model failure costs the explanation and never the recommendation.</desc>
 
               <text class="lbl" x="40" y="42">Decides</text>
               <text class="m-sm" x="40" y="58">DETERMINISTIC &middot; AUDITABLE</text>
@@ -696,17 +672,9 @@ td:last-child,th:last-child{padding-right:0}
             </svg>
           </div>
           <div class="scroll-hint">Scroll the figure sideways &rarr;</div>
-          <figcaption><b>Fig. 3</b> Everything that decides sits left of the dashed line. One arrow crosses it, carrying a recommendation that is already final. No arrow crosses back, so nothing the model writes can reach the decision.</figcaption>
+          <figcaption><b>Fig. 2</b> Everything that decides sits left of the dashed line. One arrow crosses it, carrying a recommendation that is already final. No arrow crosses back, so nothing the model writes can reach the decision.</figcaption>
         </figure>
 
-        <dl class="meta">
-          <dt>Input</dt><dd>genomic VCF &rarr; PharmCAT pipeline</dd>
-          <dt>Decides</dt><dd>deterministic risk engine &middot; CPIC guidelines</dd>
-          <dt>Explains</dt><dd>Llama 3.3 via Groq &middot; prose only, non-binding</dd>
-          <dt>Out</dt><dd>EHR-ready JSON for downstream integration</dd>
-          <dt>Stack</dt><dd>FastAPI &middot; React &middot; Docker &middot; AWS</dd>
-          <dt>Live</dt><dd><a href="https://pharmaguard-tbo.netlify.app">pharmaguard-tbo.netlify.app</a></dd>
-        </dl>
       </article>
 
       <h3 class="sub-head">Also shipped <span class="tail">Smaller. One line each.</span></h3>
@@ -717,7 +685,7 @@ td:last-child,th:last-child{padding-right:0}
           </thead>
           <tbody>
             <tr>
-              <td class="k"><a href="https://github.com/IAteNoodles/MedAssist">MediAssist AI</a></td>
+              <td class="k"><a href="https://github.com/IAteNoodles/MedAssist" target="_blank" rel="noopener noreferrer">MediAssist AI</a></td>
               <td>RAG-based agentic clinical decision support. Appointments over chat and voice; the doctor gets a dashboard, not a form.</td>
               <td>LangChain &middot; vector DB &middot; XGBoost</td>
               <td>hackathon runner-up</td>
@@ -793,8 +761,9 @@ td:last-child,th:last-child{padding-right:0}
     <!-- ---------- 04 LIMITS ---------- -->
     <section id="limits" class="limits">
       <h2 class="sec-head"><span>Limits</span> <span class="tail">What is not validated, and what I have not done.</span></h2>
-      <p>Most of what is on this site is hackathon- or coursework-scale. SwitchBoard is the exception. It has served real traffic, and I will stand behind the numbers in Fig. 2.</p>
-      <p><strong>PharmaGuard has not been through clinical validation. Do not read it as if it had.</strong> It shows that the boundary in Fig. 3 can be built. It is not evidence that the recommendations behind it are safe to act on.</p>
+      <p>Most of what is on this site is hackathon- or coursework-scale. The two engagements under Experience are not, and neither is SwitchBoard, which has served real traffic. I will stand behind the numbers in Fig. 1.</p>
+      <p>The Kapture work is an internship, and I tuned that serving stack rather than building it.</p>
+      <p><strong>PharmaGuard has not been through clinical validation. Do not read it as if it had.</strong> It shows that the boundary in Fig. 2 can be built. It is not evidence that the recommendations behind it are safe to act on.</p>
       <p>The RDSO crawler ran weekly on one small server inside one network. It is correct, not fast, and it has never been asked to be. I have also written it up here from memory of a system I no longer have access to.</p>
       <p>I have not trained anything at scale and I have not published. The two reproductions under Projects are the closest I have come to research, and they are small. My work starts at the model boundary and goes outward. Routing, retrieval, ingest, failover, evaluation. I would rather write that down than let a résumé imply otherwise.</p>
     </section>
@@ -805,9 +774,9 @@ td:last-child,th:last-child{padding-right:0}
       <p class="statement">If you are putting a model somewhere it can do damage, I would like to hear about it.</p>
       <div class="contact-links">
         <a href="mailto:sankalpshankar02@gmail.com">email &rarr;</a>
-        <a href="https://github.com/sankalp-happy">github &rarr;</a>
-        <a href="https://linkedin.com/in/sankalp-shankar-734007284/">linkedin &rarr;</a>
-        <a href="https://leetcode.com/sankalpshankar/">leetcode &rarr;</a>
+        <a href="https://github.com/sankalp-happy" target="_blank" rel="noopener noreferrer">github &rarr;</a>
+        <a href="https://linkedin.com/in/sankalp-shankar-734007284/" target="_blank" rel="noopener noreferrer">linkedin &rarr;</a>
+        <a href="https://leetcode.com/sankalpshankar/" target="_blank" rel="noopener noreferrer">leetcode &rarr;</a>
         <a href="sankalp-shankar-resume.pdf">résumé.pdf &rarr;</a>
       </div>
       <div class="colophon">Set in Inter Tight, Source Serif 4 and JetBrains Mono &middot; Figures drawn by hand in SVG &middot; Bengaluru</div>
@@ -914,8 +883,18 @@ td:last-child,th:last-child{padding-right:0}
     spy();
   }
 
+  // The sticky strip's height changes as the nav wraps, and scroll-margin-top has to
+   // match it or a tapped section lands underneath the strip. Measured, not guessed.
+  var rail = document.querySelector('.rail');
+  function measureRail() {
+    if (!rail) return;
+    if (wide.matches) { root.style.removeProperty('--rail-h'); return; }
+    root.style.setProperty('--rail-h', rail.offsetHeight + 'px');
+  }
+
   function apply() {
     if (wide.matches) enterPanels(); else leavePanels();
+    measureRail();
   }
 
   // The click is authoritative; the URL is written on a best-effort basis afterwards.
@@ -976,7 +955,7 @@ td:last-child,th:last-child{padding-right:0}
   function schedule() {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(function () { spy(); ticking = false; });
+    requestAnimationFrame(function () { spy(); measureRail(); ticking = false; });
   }
 
   window.addEventListener('scroll', schedule, { passive: true });

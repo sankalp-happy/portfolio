@@ -9,11 +9,13 @@ page. Netlify publishes the repo root as-is (`netlify.toml`).
 open index.html
 ```
 
-Sections are About, Work, Projects, Ledger, Limits, Contact. At 1100px and up the rail
+Sections are About, Experience, Projects, Ledger, Limits, Contact. At 1100px and up the rail
 is a tab list and one section shows at a time (`[data-panels="on"]`, set by JS only, so
 no-JS keeps the full scrolling document); below that it is one continuous scroll with
 the rail as a scroll index. There is no section numbering. `Fig. N` labels stay and are
-referenced by captions and by Limits, so renumbering one means updating those too.
+referenced by captions and by Limits, so renumbering one means updating those too. Only
+Projects carries figures. Experience does not, because both engagements were client or
+employer systems with no artefact to show.
 
 - `PRODUCT.md` holds product truth: users, positioning, and the facts no work may
   invent. Read it before changing copy.
