@@ -298,6 +298,10 @@ section:first-child{padding-top:0}
 .plate svg{display:block;width:100%;height:auto}
 figcaption{margin-top:14px;font-size:15.5px;line-height:1.6;color:var(--ink-2);max-width:68ch}
 figcaption b{font-weight:600;color:var(--ink)}
+/* A Fig. reference is a citation. In panel mode the figure it names is in another
+   panel entirely, so it has to be reachable, but it stays quieter than a body link. */
+.figref{color:inherit;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px}
+.figref:hover{color:var(--accent);text-decoration-color:var(--accent)}
 
 dl.meta{margin-top:26px;border-top:1px solid var(--rule);padding-top:13px;font-family:var(--mono);font-size:11px;line-height:2;display:grid;grid-template-columns:96px 1fr;color:var(--ink-2)}
 dl.meta dt{color:var(--ink-2);text-transform:uppercase;letter-spacing:.07em}
@@ -392,7 +396,7 @@ td:last-child,th:last-child{padding-right:0}
   /* The rail is a sticky strip here, so anchors must not land underneath it. The strip
      wraps to a different height at every width, so JS measures it into --rail-h; the
      132px fallback is the no-JS case. */
-  section{scroll-margin-top:calc(var(--rail-h, 132px) + 14px)}
+  section,.plate-fig{scroll-margin-top:calc(var(--rail-h, 132px) + 14px)}
   main{grid-column:1;padding:44px 0 96px}
   .ledger{grid-template-columns:1fr;gap:0}
   .ledger .col + .col{border-left:0;padding-left:0;margin-left:0;margin-top:44px}
@@ -554,7 +558,7 @@ td:last-child,th:last-child{padding-right:0}
         <p>One endpoint in front of Groq, Google and Anthropic. A semantic cache answers repeat questions instead of the provider, and keys rotate the moment one hits a rate limit. <strong>The application layer never learns that a provider degraded.</strong></p>
         <p>The cache compares prompts by cosine similarity rather than by hash, which is the only reason it catches a question asked in different words. Swapping a provider is a config change, not a refactor.</p>
 
-        <figure class="plate-fig">
+        <figure class="plate-fig" id="fig-1">
           <div class="plate">
             <div class="plate-head">
               <span>Fig. 1</span>
@@ -616,7 +620,7 @@ td:last-child,th:last-child{padding-right:0}
         <p>A genomic VCF goes in and CPIC-guided prescribing guidance comes out. <strong>A deterministic risk engine makes every clinical call.</strong> The model writes one thing, the explanation a clinician reads, and it writes that after the decision is already final.</p>
         <p>That constraint is the architecture, not a precaution bolted on afterwards. It is also the only property that makes an LLM admissible here. If the model fails, the clinician loses the prose and keeps the recommendation.</p>
 
-        <figure class="plate-fig">
+        <figure class="plate-fig" id="fig-2">
           <div class="plate">
             <div class="plate-head">
               <span>Fig. 2</span>
@@ -764,9 +768,9 @@ td:last-child,th:last-child{padding-right:0}
     <!-- ---------- 04 LIMITS ---------- -->
     <section id="limits" class="limits">
       <h2 class="sec-head"><span>Limits</span> <span class="tail">What is not validated, and what I have not done.</span></h2>
-      <p>Most of what is on this site is hackathon- or coursework-scale. The two engagements under Experience are not, and neither is SwitchBoard, which has served real traffic. I will stand behind the numbers in Fig. 1.</p>
+      <p>Most of what is on this site is hackathon- or coursework-scale. The two engagements under Experience are not, and neither is SwitchBoard, which has served real traffic. I will stand behind the numbers in <a class="figref" href="#fig-1">Fig. 1</a>.</p>
       <p>The Kapture work is an internship, and I tuned that serving stack rather than building it.</p>
-      <p><strong>PharmaGuard has not been through clinical validation. Do not read it as if it had.</strong> It shows that the boundary in Fig. 2 can be built. It is not evidence that the recommendations behind it are safe to act on.</p>
+      <p><strong>PharmaGuard has not been through clinical validation. Do not read it as if it had.</strong> It shows that the boundary in <a class="figref" href="#fig-2">Fig. 2</a> can be built. It is not evidence that the recommendations behind it are safe to act on.</p>
       <p>The RDSO crawler ran weekly on one small server inside one network. It is correct, not fast, and it has never been asked to be. I have also written it up here from memory of a system I no longer have access to.</p>
       <p>I have not trained anything at scale and I have not published. The two reproductions under Projects are the closest I have come to research, and they are small. My work starts at the model boundary and goes outward. Routing, retrieval, ingest, failover, evaluation. I would rather write that down than let a résumé imply otherwise.</p>
     </section>
@@ -872,11 +876,27 @@ td:last-child,th:last-child{padding-right:0}
     return (location.hash || '').replace(/^#/, '');
   }
 
+  // A hash can name something inside a panel rather than the panel itself. Limits cites
+  // Fig. 1 and Fig. 2, which live in Projects; in panel mode they are not merely offscreen,
+  // they are display:none. Resolve the hash to its owning section, then land on the target.
+  function resolve(hash) {
+    if (ids().indexOf(hash) !== -1) return { id: hash, target: null };
+    var el = hash && document.getElementById(hash);
+    var owner = el && el.closest('section[id]');
+    if (owner && ids().indexOf(owner.id) !== -1) return { id: owner.id, target: el };
+    return { id: sections[0].id, target: null };
+  }
+
+  function land(r) {
+    show(r.id);
+    if (r.target) r.target.scrollIntoView({ block: 'start' });
+    else window.scrollTo(0, 0);
+  }
+
   function enterPanels() {
     root.setAttribute('data-panels', 'on');
-    show(fromHash() || sections[0].id);
     // A panel switch is a new page, not a scroll position carried over from the last one.
-    window.scrollTo(0, 0);
+    land(resolve(fromHash()));
   }
 
   function leavePanels() {
@@ -918,8 +938,7 @@ td:last-child,th:last-child{padding-right:0}
 
   function syncFromUrl() {
     if (!wide.matches) return;
-    show(fromHash());
-    window.scrollTo(0, 0);
+    land(resolve(fromHash()));
   }
 
   window.addEventListener('hashchange', syncFromUrl);
