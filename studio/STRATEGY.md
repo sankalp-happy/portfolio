@@ -858,3 +858,153 @@ instruction was to remove the section and a lone `source` link hanging under a f
 would have been a different design decision than the one asked for.
 
 `dl.meta` styles stay in the sheet, still used by Experience.
+
+## Revision 11: the intro, and the rhythm underneath it
+
+The About section was written as a thesis, not an introduction. It opened on a
+claim ("I work at the boundary where a model stops being allowed to decide")
+and never said who was speaking or what he actually does. It also narrowed him
+to one activity, LLM serving, when the work is LLMOps and model training and
+the current role is an internship. The h1 now introduces him by name and by
+field, and the lede states the role, the employer and the city before it states
+anything clever.
+
+Four rhetorical habits were running as a template across the whole page, and a
+reader clocks the rhythm before the words:
+
+- One bolded mic-drop sentence per paragraph. Six on the page. Now one, the
+  clinical-validation caveat in Limits, which is the only place emphasis is
+  load-bearing rather than decorative.
+- "It is not X, it is Y." Five instances, including two in the also-shipped
+  table. One survives, in the last About paragraph.
+- Noun-list-as-sentence ("Gateways, serving, retrieval, ingest, failover.")
+  twice, nearly verbatim, in About and Limits. Both are sentences now.
+- The word "boundary" in the title, the meta description, the h1, the Fig. 2
+  caption and twice in Limits. It now appears once, in the Fig. 2 title, where
+  it names a dashed line that is literally drawn.
+
+Aphoristic closers went with them. The Fig. 2 footer said "ONE ARROW, ONE
+DIRECTION. THAT CONSTRAINT IS THE ARCHITECTURE."; it now states what the drawing
+shows. Rule going forward: a device used more than once in a page is a template,
+and the fix is to break the rhythm rather than to soften the content.
+
+Two corrections found while editing. Limits claimed "two reproductions under
+Projects" and the table lists one. And the Ledger carried the page's only curly
+quotes.
+
+## Revision 12: motion, borrowed from thegustafson.com
+
+The reference site (Nick Gustafson's) shares this page's ground already, warm paper,
+mono eyebrows, hairline rules. Four things it does that this page did not:
+
+**Links wear their underline at rest.** His prose links carry a light underline that
+inks in on hover, transitioned over 150ms. This page thickened the underline instead,
+1px to 2px, which moves the line by a pixel while nothing around it moves, and reads as
+a rendering glitch rather than as a response. Now the underline sits in rule grey at
+4px offset and the colour goes to accent over 160ms. Nav, contact and rail links are
+unaffected; they were never underlined.
+
+**The resume is linked inside a sentence.** His "More about me" sits in the intro
+paragraph with an arrow after it. The rail box stays, because a hiring reader who has
+already scrolled needs it in reach, but the lede now carries the same link inline with
+an arrow that slides 3px on hover. Two placements, one for each way of reading a page.
+
+**One word in the headline types itself.** His hero cycles a word with a blinking
+caret. Here the heading's last word cycles LLMOps, model training, LLM serving,
+retrieval, which is the same set the sections below cover, so the motion carries
+information instead of decorating a heading. The markup holds the full static phrase
+for no-JS and reduced-motion readers, the animated span is `aria-hidden` with a
+visually hidden copy beside it, and the slot is emptied during parse rather than after
+load, because the static phrase is the only state that wraps the heading to a fourth
+line and clearing it late dropped the lede 59px in front of the reader.
+
+The word also has to change without the heading re-wrapping around it. Four words of
+different lengths at the end of a 19ch measure meant the last line reflowed, and at
+some widths the word split across two lines, which is worse than no animation at all.
+The em now reserves 6.4em, the width of the longest word it will ever show plus the
+caret, and takes `white-space: nowrap`. The reservation sits on the em and not on the
+text slot, or the caret parks at the far edge of an empty box instead of staying
+against the last letter. Measured at 375, 500, 700, 900, 1100, 1300 and 1440px, the
+line count is identical for all four words and the empty state.
+
+**Blocks respond as a whole.** His post rows take a soft background on hover, padded
+wider than the text. The also-shipped table now does the same, so the row is the
+target rather than the link inside it.
+
+One thing added that is not his: section text rises 7px into place, staggered across
+the first blocks, replaying whenever a panel is switched so the tab reads as a page
+being turned. Below 1100px an IntersectionObserver adds the class on the way in and
+unobserves, since this is an entrance and not a state. Every rule above lives inside
+`prefers-reduced-motion: no-preference`, the class is JS-set, and the reduce block
+still zeroes animation and transition globally, so a no-JS document is never left
+holding invisible text.
+
+Not borrowed: his top nav (the rail is load-bearing here), his portrait, and his
+icon row.
+
+## Revision 13: the homepage index
+
+Panel view shows one section at a time, so About was a dead end. The rail listed five
+more names and nothing on the page said what any of them held. About now ends in an
+index of the other five, each row a link. One href serves both layouts, a panel switch
+above 1100px and an anchor scroll below it, and the rows go through the same click
+handler the rail uses. `aria-current` stays on the rail alone, because marking a
+preview row current would tell a screen reader the reader is inside a section they are
+only looking at from outside.
+
+The first version of this was a mono label, a sentence, and an arrow per row. It was a
+table of contents, and it read as one: correct, and completely flat. It had quietly
+opted out of the page's strongest move, which is that this page draws things.
+
+Each row now carries a small drawing built from the same figure primitives as Fig. 1
+and Fig. 2, so the marks re-theme with the page and cost no assets:
+
+- Experience, two spans on one time axis, the second open-ended with an arrow.
+- Projects, one endpoint fanning to three, which is Fig. 1's shape in miniature.
+- Ledger, a date column and four ruled entries of different length.
+- Limits, a solid line that stops at a tick and continues dashed.
+- Contact, one arrow leaving a bounded frame.
+
+Then the section name at display size, 23px, and one line of measurement in mono, which
+is the voice the plates and the ledger already use. The prose description came out. A
+count is denser than a sentence and it does not repeat the section tail the reader is
+about to land on. Every count refers to what is actually on the page: two write-ups,
+two figures, four table rows, five paragraphs under Limits.
+
+Hover fills the row with `--band`, inks the name and the arrow to accent, and moves one
+part of the drawing 4px, the part that already points somewhere. One moving element per
+mark, not five.
+
+Two defects the first build shipped and the inspection pass caught. The name and the
+measurement rendered on one line, because the middle column was a bare inline `span`.
+And the rest-state arrow was set in `--rule`, which is a hairline colour, around 1.9:1
+on slate; it is an affordance, so it went to `--ink-3` like the measurement beside it.
+
+## Revision 14: the contact cluster
+
+Four addresses sit directly under the heading, so the first thing after the name is a
+way to reach it: LinkedIn, GitHub, Email, LeetCode, in the order the user named them.
+Icon only. A label under each mark made the block a second navigation bar competing
+with the index below it; the mark alone reads as a control, and the service name is
+carried in a visually hidden span so the link still announces itself.
+
+The first build put them in the 4-up ruled grid the page used for its numbers, with
+labels, below the intro paragraphs. Wrong on both counts: too far down to be the thing
+after the name, and too wordy for what it is.
+
+Circles, at 46px with a 19px mark, 44px on small screens. This is the one round shape
+on a page that means "bounded region" with a 1px rectangle everywhere else, and it is
+deliberate: a round hairline target reads as a control rather than as another framed
+block of text. Gaps are even at 14px.
+
+The marks are the official brand silhouettes, GitHub, LinkedIn and LeetCode from
+simple-icons, which is CC0. They are filled rather than drawn in the figures' 1.25px
+stroke, because a brand mark is recognised by its silhouette and an outlined octocat is
+not a thing anyone recognises. Every mark takes `fill: currentColor`, so one path per
+service covers both grounds and the hover accent, with no second asset and no
+`prefers-color-scheme` branch. The envelope is authored here, since an inbox has no
+logo; it was rendered at 240px and inspected before going in at 19.
+
+Contact now appears in the rail, in this cluster, and in the Contact section. That is
+deliberate: PRODUCT.md holds the address to one action from any screen position, and in
+panel view About is the only screen a reader is guaranteed to see.

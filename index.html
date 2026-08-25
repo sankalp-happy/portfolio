@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sankalp Shankar</title>
-<meta name="description" content="ML engineer. I work at the boundary where a model stops being allowed to decide.">
+<meta name="description" content="Sankalp Shankar, machine learning engineer in Bengaluru. LLMOps and model training.">
 <meta name="color-scheme" content="light dark">
 <script>
 // Runs before first paint, on purpose: stamping the ground after the stylesheet
@@ -92,12 +92,42 @@ body{
 /* ---------- shared type ---------- */
 .mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;line-height:1.4}
 
-a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
-a:hover{text-decoration-thickness:2px}
+/* A prose link wears its underline at rest, in rule grey, and the rule inks in when
+   you point at it. Thickening the underline instead moved the line by a pixel and
+   reflowed nothing around it, which reads as a glitch rather than as a response. */
+a{color:var(--accent);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;text-decoration-color:var(--rule)}
+a:hover{text-decoration-color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){
-  a{transition:text-decoration-thickness 120ms ease}
+  a{transition:text-decoration-color 160ms ease,color 160ms ease}
 }
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:1px}
+
+/* An inline call to action stays part of the sentence it sits in. It keeps the prose
+   link's underline and adds one arrow that leans forward under the pointer. */
+.cta{color:var(--ink)}
+.cta .arw{display:inline-block;color:var(--ink-3)}
+.cta:hover .arw{color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){
+  .cta .arw,.rail-foot .cv .arw{transition:transform 170ms cubic-bezier(.2,.7,.3,1),color 160ms ease}
+  .cta:hover .arw,.rail-foot .cv:hover .arw{transform:translateX(3px)}
+}
+
+/* Section text arrives rather than appears. Opacity and a 7px lift, nothing that
+   costs layout, staggered across the first four blocks so the eye lands at the top.
+   In panel view it replays on every tab, which is the whole point: the switch reads
+   as a page being turned. Below 1100px an observer adds .rise on the way in, so the
+   class is JS-set and a no-JS document is never left holding invisible text. */
+@media (prefers-reduced-motion:no-preference){
+  @keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+  :root[data-panels="on"] main > section[data-active] > *,
+  main > section.rise > *{animation:rise 280ms cubic-bezier(.2,.7,.3,1) both}
+  :root[data-panels="on"] main > section[data-active] > :nth-child(2),
+  main > section.rise > :nth-child(2){animation-delay:45ms}
+  :root[data-panels="on"] main > section[data-active] > :nth-child(3),
+  main > section.rise > :nth-child(3){animation-delay:90ms}
+  :root[data-panels="on"] main > section[data-active] > :nth-child(n+4),
+  main > section.rise > :nth-child(n+4){animation-delay:135ms}
+}
 
 .skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--ground);padding:10px 16px;z-index:99}
 .skip:focus{left:8px;top:8px}
@@ -197,21 +227,87 @@ section:first-child{padding-top:0}
 }
 /* de-emphasised, but these words carry meaning — keep it above AA (6:1), not decorative grey */
 .thesis h1 em{font-style:normal;color:var(--ink-2)}
+/* The only moving thing above the fold. It types through the four areas the rest of
+   the document is about, so the motion carries the same information the static phrase
+   does. The animated span is aria-hidden with a static copy beside it, so a screen
+   reader reads the phrase once and never hears it being retyped. */
+/* .on is set by the script, so these rules exist only while the cycle is actually
+   running. Left to the media query alone they would also hit a motion-allowed reader
+   with JS off, where nowrap on the full static phrase overflows a narrow heading. */
+#cyc .caret{display:none}
+@media (prefers-reduced-motion:no-preference){
+  #cyc.on .caret{
+    display:inline-block;width:2px;height:.74em;margin-left:3px;background:var(--accent);
+    vertical-align:-.02em;animation:blink 1.1s steps(1,end) infinite;
+  }
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  /* The em reserves the width of the longest word it will ever show, 6.11em for
+     "model training" plus the caret, so the heading breaks in the same place for all
+     four and no word can split across two lines. A heading that re-wraps itself under
+     the reader is the one thing this animation must not do. The width is reserved on
+     the em rather than on the text slot, so the caret stays against the last letter
+     instead of parking at the far edge of an empty box. */
+  #cyc.on{display:inline-block;min-width:6.4em;white-space:nowrap}
+}
 .thesis .lede{max-width:64ch;color:var(--ink-2)}
-/* The About body. Same measure as the lede, ink-2 like every other reading passage,
-   so the strong line in the lede stays the only thing at full ink up here. */
+
+/* ---------- the contact cluster ----------
+   Directly under the heading, so the four addresses are the first thing after the
+   name. Circles, not the page's usual 1px rectangle, because the brief asked for them
+   and a round target reads as a control rather than as another bounded region of text.
+   The marks are the official brand silhouettes, filled with currentColor, so one path
+   per service serves both grounds and the hover accent. Icon only, with the service
+   name carried visually hidden, so the link still has a name to announce. */
+.wires{list-style:none;display:flex;gap:14px;margin:0 0 32px}
+.wires a{
+  display:grid;place-items:center;width:46px;height:46px;
+  border:1px solid var(--rule);border-radius:50%;color:var(--ink-2);text-decoration:none;
+}
+.wire-i{width:19px;height:19px;fill:currentColor;display:block}
+.wires a:hover{color:var(--accent);border-color:var(--accent)}
+.wires a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){
+  .wires a{transition:color 170ms ease,border-color 170ms ease}
+}
+
+/* ---------- the homepage index ----------
+   Panel view shows one section at a time, which left About as a dead end: nothing on
+   it said what the other five hold. Each row is a link and the row is the target, not
+   the words inside it. One href drives both layouts, a panel switch above 1100px and
+   an anchor scroll below it.
+
+   The rows carry drawings because this page draws things. A mono label and a sentence
+   would have been a table of contents; the mark, the name at display size and one line
+   of measurement is the same idiom the figures and the ledger already use. Each mark is
+   built from the figure primitives, so it re-themes with the page and needs no assets. */
+.peeks{list-style:none;margin-top:26px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.peeks li + li{border-top:1px solid var(--rule)}
+.peek{
+  display:grid;grid-template-columns:96px 1fr auto;gap:26px;align-items:center;
+  padding:17px 14px;margin:0 -14px;text-decoration:none;color:inherit;
+}
+.peek-mark{display:block;width:96px;height:60px;overflow:visible}
+.peek-txt{min-width:0}
+.peek-t{display:block;font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.014em;line-height:1.15;color:var(--ink)}
+/* the measurement line, in the same voice the plates and the ledger use */
+.peek-m{display:block;margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);line-height:1.55}
+.peek-go{font-family:var(--mono);font-size:15px;color:var(--ink-3);line-height:1}
+.peek:hover{background:var(--band)}
+.peek:hover .peek-t,.peek:hover .peek-go{color:var(--accent)}
+.peek:hover .peek-m{color:var(--ink-2)}
+.peek:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:1px}
+@media (prefers-reduced-motion:no-preference){
+  .peek{transition:background-color 180ms ease}
+  .peek-t,.peek-m,.peek-go{transition:color 170ms ease}
+  /* one moving part per mark, and it is the part that already points somewhere */
+  .peek-mark .mv,.peek-go{transition:transform 200ms cubic-bezier(.2,.7,.3,1),color 170ms ease}
+  .peek:hover .peek-mark .mv,.peek:hover .peek-go{transform:translateX(4px)}
+}
+
+/* The About body. Same measure as the lede, ink-2 like every other reading passage. */
 .thesis > p{max-width:64ch;color:var(--ink-2)}
 .thesis > p + p{margin-top:18px}
-.thesis .lede strong{color:var(--ink);font-weight:600}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;border-top:1px solid var(--rule)}
-/* direct children only — a descendant selector here puts a border on every number too */
-.stats > div{padding:18px 20px 16px 0;border-right:1px solid var(--rule)}
-.stats > div:last-child{border-right:0}
-.stats .v{font-family:var(--display);font-weight:600;font-size:26px;line-height:1;letter-spacing:-.02em}
-/* these labels ARE the fact — "84%" alone is noise. They read, so they get a readable size. */
-.stats .k{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);margin-top:9px;line-height:1.5}
-.stats .v{font-variant-numeric:tabular-nums}
 
 /* ---------- systems ---------- */
 .system{padding-bottom:88px}
@@ -316,6 +412,13 @@ th{
 }
 td{padding:13px 16px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2);font-variant-numeric:tabular-nums}
 td.k{color:var(--ink)}
+/* the whole row is the target, not the link text inside it */
+tbody tr:hover{background:var(--band)}
+tbody tr:hover td{color:var(--ink-2)}
+tbody tr:hover td.k{color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){
+  tbody tr{transition:background-color 170ms ease}
+}
 td:last-child,th:last-child{padding-right:0}
 
 /* ---------- ledger ---------- */
@@ -407,10 +510,13 @@ td:last-child,th:last-child{padding-right:0}
   body{font-size:17px}
   .shell{padding:0 20px}
   section{padding-top:76px}
-  .stats{grid-template-columns:1fr 1fr}
-  .stats div{border-bottom:1px solid var(--rule)}
-  .stats div:nth-child(2){border-right:0}
-  .stats div:nth-child(3),.stats div:nth-child(4){border-bottom:0}
+  .wires{gap:12px;margin-bottom:28px}
+  .wires a{width:44px;height:44px}
+  /* the mark shrinks but stays: it is what tells the rows apart at a glance */
+  .peek{grid-template-columns:64px 1fr auto;gap:16px;padding:15px 12px}
+  .peek-mark{width:64px;height:40px}
+  .peek-t{font-size:19px}
+  .peek-m{font-size:9.5px;margin-top:5px}
   /* diagrams do not survive being squeezed: scroll them inside a bounded frame */
   .plate{padding:16px 14px 6px;overflow-x:auto}
   .plate svg{min-width:660px}
@@ -496,21 +602,116 @@ td:last-child,th:last-child{padding-right:0}
 
     <!-- ---------- ABOUT ---------- -->
     <section id="thesis" class="thesis">
-      <h1>I work at the boundary where a model stops <em>being allowed to decide.</em></h1>
-      <p class="lede">Gateways, serving, retrieval, ingest, failover. <strong>This half of an LLM product decides whether the model is safe to put in front of anyone.</strong></p>
+      <h1>I am Sankalp Shankar, a machine learning engineer working on <em id="cyc" aria-hidden="true"><span class="w">LLMOps and model training</span><span class="caret"></span></em><span class="vh">LLMOps and model training.</span></h1>
+      <ul class="wires">
+        <li><a href="https://linkedin.com/in/sankalp-shankar-734007284/" target="_blank" rel="noopener noreferrer">
+          <svg class="wire-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="vh">LinkedIn, opens in a new tab</span></a></li>
+        <li><a href="https://github.com/sankalp-happy" target="_blank" rel="noopener noreferrer">
+          <svg class="wire-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span class="vh">GitHub, opens in a new tab</span></a></li>
+        <li><a href="mailto:sankalpshankar02@gmail.com">
+          <svg class="wire-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6.75A2.75 2.75 0 0 1 4.75 4h14.5A2.75 2.75 0 0 1 22 6.75v10.5A2.75 2.75 0 0 1 19.25 20H4.75A2.75 2.75 0 0 1 2 17.25V6.75Zm2.9-.25L12 12.05 19.1 6.5H4.9ZM20.5 8.35l-7.87 6.15a1 1 0 0 1-1.26 0L3.5 8.35v8.9c0 .69.56 1.25 1.25 1.25h14.5c.69 0 1.25-.56 1.25-1.25v-8.9Z"/></svg><span class="vh">Email</span></a></li>
+        <li><a href="https://leetcode.com/sankalpshankar/" target="_blank" rel="noopener noreferrer">
+          <svg class="wire-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg><span class="vh">LeetCode, opens in a new tab</span></a></li>
+      </ul>
+      <p class="lede">I am a machine learning intern at Kapture CX in Bengaluru, finishing a BE in AI and ML. <a class="cta" href="sankalp-shankar-resume.pdf">R&eacute;sum&eacute;, PDF <span class="arw" aria-hidden="true">&rarr;</span></a></p>
 
-      <p>I build the parts around the model. Provider routing with failover, and a cache that recognises a question it has already answered in different words. Retrieval that finds product codes as well as meaning. Ingest that can tell a revised document from one it has already published. Serving tuned to hold more requests on the same GPUs. Then the FastAPI and React that puts any of it in front of a person.</p>
+      <p>Recent work includes LLM serving at Kapture CX, an ingest pipeline for a Southern Railway document system, an LLM gateway of my own, and a prescribing tool that reads a genomic file.</p>
 
-      <p>Right now I tune LLM serving at Kapture CX. Before that I built the ingest crawler for a Southern Railway document system, where the source portal reused a URL every time it revised a file. On my own I built an LLM gateway that has served real traffic, and a prescribing system where a deterministic engine makes every clinical call and the model only writes the explanation.</p>
 
-      <p>Most of what breaks in an LLM product is not the model. It is the retry nobody wrote, the cache that compares by hash, the crawler watching a signal that never moves.</p>
 
-      <div class="stats">
-        <div><div class="v">1st</div><div class="k">State-level<br>hackathon</div></div>
-        <div><div class="v">4</div><div class="k">Hackathon wins<br>2022-present</div></div>
-        <div><div class="v">500+</div><div class="k">Techfest<br>participants led</div></div>
-        <div><div class="v">84%</div><div class="k">NPTEL deep learning<br>IIT Ropar, 12 weeks</div></div>
-      </div>
+      <h3 class="sub-head">The rest of the page <span class="tail">Five sections, and what is in each.</span></h3>
+      <ul class="peeks">
+        <li><a class="peek" href="#experience">
+          <svg class="peek-mark" viewBox="0 0 96 60" aria-hidden="true">
+            <line class="hair" x1="4" y1="48" x2="92" y2="48"/>
+            <line class="stroke" x1="10" y1="18" x2="40" y2="18"/>
+            <line class="stroke" x1="10" y1="12" x2="10" y2="24"/>
+            <line class="stroke" x1="40" y1="12" x2="40" y2="24"/>
+            <g class="mv">
+              <line class="stroke s-accent" x1="50" y1="34" x2="80" y2="34"/>
+              <line class="stroke s-accent" x1="50" y1="28" x2="50" y2="40"/>
+              <polygon class="f-accent" points="88,34 79,30.4 79,37.6"/>
+            </g>
+          </svg>
+          <span class="peek-txt">
+            <span class="peek-t">Experience</span>
+            <span class="peek-m">Jun 2026 to now &middot; Mar to Jun 2026</span>
+          </span>
+          <span class="peek-go" aria-hidden="true">&rarr;</span>
+        </a></li>
+
+        <li><a class="peek" href="#projects">
+          <svg class="peek-mark" viewBox="0 0 96 60" aria-hidden="true">
+            <rect class="box" x="6" y="20" width="26" height="20"/>
+            <path class="stroke" d="M32 30 H46"/>
+            <path class="stroke" d="M46 30 V12 H70"/>
+            <path class="stroke" d="M46 30 H70"/>
+            <path class="stroke" d="M46 30 V48 H70"/>
+            <g class="mv">
+              <circle class="f-ink" cx="76" cy="12" r="2.4"/>
+              <circle class="f-accent" cx="76" cy="30" r="2.4"/>
+              <circle class="f-ink" cx="76" cy="48" r="2.4"/>
+            </g>
+          </svg>
+          <span class="peek-txt">
+            <span class="peek-t">Projects</span>
+            <span class="peek-m">2 write-ups &middot; 2 figures &middot; 4 in a table</span>
+          </span>
+          <span class="peek-go" aria-hidden="true">&rarr;</span>
+        </a></li>
+
+        <li><a class="peek" href="#ledger">
+          <svg class="peek-mark" viewBox="0 0 96 60" aria-hidden="true">
+            <line class="hair" x1="34" y1="6" x2="34" y2="54"/>
+            <line class="stroke s-accent" x1="8" y1="13" x2="26" y2="13"/>
+            <line class="stroke" x1="8" y1="26" x2="26" y2="26"/>
+            <line class="stroke" x1="8" y1="39" x2="26" y2="39"/>
+            <line class="stroke" x1="8" y1="52" x2="26" y2="52"/>
+            <g class="mv">
+              <line class="hair" x1="42" y1="13" x2="88" y2="13"/>
+              <line class="hair" x1="42" y1="26" x2="74" y2="26"/>
+              <line class="hair" x1="42" y1="39" x2="84" y2="39"/>
+              <line class="hair" x1="42" y1="52" x2="66" y2="52"/>
+            </g>
+          </svg>
+          <span class="peek-txt">
+            <span class="peek-t">Ledger</span>
+            <span class="peek-m">4 hackathon wins &middot; 2 certificates &middot; a degree in progress</span>
+          </span>
+          <span class="peek-go" aria-hidden="true">&rarr;</span>
+        </a></li>
+
+        <li><a class="peek" href="#limits">
+          <svg class="peek-mark" viewBox="0 0 96 60" aria-hidden="true">
+            <line class="stroke" x1="6" y1="30" x2="50" y2="30"/>
+            <line class="stroke" x1="50" y1="19" x2="50" y2="41"/>
+            <g class="mv">
+              <line class="red-dash" x1="54" y1="30" x2="90" y2="30"/>
+            </g>
+          </svg>
+          <span class="peek-txt">
+            <span class="peek-t">Limits</span>
+            <span class="peek-m">Where the evidence stops, in five paragraphs</span>
+          </span>
+          <span class="peek-go" aria-hidden="true">&rarr;</span>
+        </a></li>
+
+        <li><a class="peek" href="#contact">
+          <svg class="peek-mark" viewBox="0 0 96 60" aria-hidden="true">
+            <rect class="box" x="6" y="20" width="30" height="20"/>
+            <g class="mv">
+              <line class="stroke s-accent" x1="36" y1="30" x2="80" y2="30"/>
+              <polygon class="f-accent" points="89,30 79,26 79,34"/>
+            </g>
+          </svg>
+          <span class="peek-txt">
+            <span class="peek-t">Contact</span>
+            <span class="peek-m">1 address &middot; 4 places the work lives</span>
+          </span>
+          <span class="peek-go" aria-hidden="true">&rarr;</span>
+        </a></li>
+      </ul>
+
     </section>
 
     <!-- ---------- WORK ---------- -->
@@ -522,7 +723,7 @@ td:last-child,th:last-child{padding-right:0}
           <h3>Machine learning intern</h3>
           <p class="job-meta">Kapture CX &middot; Bangalore &middot; June 2026 to present</p>
         </header>
-        <p>LLM serving on vLLM, for a 31B model on H200s. <strong>vLLM reuses a cached prefix only when the shared front of a prompt is byte-identical.</strong> I restructured the prompts so that it is, and retuned the serving flags around that. Same weights, same GPUs, more requests held.</p>
+        <p>LLM serving on vLLM, for a 31B model on H200s. vLLM reuses a cached prefix only when the shared front of a prompt is byte-identical, so I restructured the prompts until it was and retuned the serving flags around that. The weights and the hardware stayed where they were, and the same box now holds more requests.</p>
         <p>I also benchmarked GPTQ and AWQ quantization against the unquantized configuration, and argued for vLLM-router over nginx round-robin. Round-robin hands a request to whichever replica is next, which throws away the prefix the tuning just bought.</p>
         <dl class="meta">
           <dt>Serving</dt><dd>vLLM &middot; Gemma 4 31B-IT &middot; H200 &middot; systemd service</dd>
@@ -535,7 +736,7 @@ td:last-child,th:last-child{padding-right:0}
           <h3>ML and backend engineer, freelance</h3>
           <p class="job-meta">Southern Railway &middot; Remote &middot; March to June 2026</p>
         </header>
-        <p>RDSO engineering standards live on RailNet and had to reach engineers over the internet. <strong>The source portal reuses a document's URL when it revises the file.</strong> So the first build watched the link set, found it unchanged every week, and propagated nothing while standards were being revised underneath it.</p>
+        <p>RDSO engineering standards live on RailNet and had to reach engineers over the internet. The source portal reuses a document's URL when it revises the file, so the first build watched the link set, found it unchanged every week, and propagated nothing while standards were being revised underneath it.</p>
         <p>The ETag is the one thing that moves. The crawler stores one per URL and treats a delta as the evidence a document changed. Only changed rows leave RailNet, on a weekly cron, and nothing is deleted.</p>
         <dl class="meta">
           <dt>Client</dt><dd>Southern Railway &middot; document distribution &middot; delivered by a freelance team</dd>
@@ -556,8 +757,8 @@ td:last-child,th:last-child{padding-right:0}
           <p class="sys-sub">An LLM gateway that keeps three providers behind one endpoint, and recognises a question it has already answered.</p>
         </header>
 
-        <p>One endpoint in front of Groq, Google and Anthropic. A semantic cache answers repeat questions instead of the provider, and keys rotate the moment one hits a rate limit. <strong>The application layer never learns that a provider degraded.</strong></p>
-        <p>The cache compares prompts by cosine similarity rather than by hash, which is the only reason it catches a question asked in different words. Swapping a provider is a config change, not a refactor.</p>
+        <p>One endpoint in front of Groq, Google and Anthropic. A semantic cache answers repeat questions instead of the provider, and keys rotate the moment one hits a rate limit. The application layer never learns that a provider degraded.</p>
+        <p>The cache compares prompts by cosine similarity rather than by hash, which is the only reason it catches a question asked in different words. Swapping a provider takes a config edit.</p>
 
         <figure class="plate-fig" id="fig-1">
           <div class="plate">
@@ -618,8 +819,8 @@ td:last-child,th:last-child{padding-right:0}
           <p class="sys-sub">Prescribing guidance read off a genomic file, in a system where the model does not get to make the call.</p>
         </header>
 
-        <p>A genomic VCF goes in and CPIC-guided prescribing guidance comes out. <strong>A deterministic risk engine makes every clinical call.</strong> The model writes one thing, the explanation a clinician reads, and it writes that after the decision is already final.</p>
-        <p>That constraint is the architecture, not a precaution bolted on afterwards. It is also the only property that makes an LLM admissible here. If the model fails, the clinician loses the prose and keeps the recommendation.</p>
+        <p>A genomic VCF goes in and CPIC-guided prescribing guidance comes out. A deterministic risk engine makes every clinical call, and the model writes one thing only, the explanation a clinician reads, after the decision is already final.</p>
+        <p>Wiring it that way is what makes an LLM admissible here at all. If the model fails, the clinician loses the prose and keeps the recommendation.</p>
 
         <figure class="plate-fig" id="fig-2">
           <div class="plate">
@@ -676,7 +877,7 @@ td:last-child,th:last-child{padding-right:0}
 
               <line class="hair" x1="40" y1="256" x2="800" y2="256"/>
               <text class="m-sm" x="40" y="274">IF LLAMA 3.3 FAILS, THE CLINICIAN LOSES THE EXPLANATION, NOT THE RECOMMENDATION.</text>
-              <text class="m-sm" x="40" y="288">ONE ARROW, ONE DIRECTION. THAT CONSTRAINT IS THE ARCHITECTURE.</text>
+              <text class="m-sm" x="40" y="288">THE RECOMMENDATION IS ALREADY FINAL WHEN IT CROSSES THE LINE.</text>
             </svg>
           </div>
           <div class="scroll-hint">Scroll the figure sideways &rarr;</div>
@@ -694,7 +895,7 @@ td:last-child,th:last-child{padding-right:0}
           <tbody>
             <tr>
               <td class="k"><a href="https://github.com/IAteNoodles/MedAssist" target="_blank" rel="noopener noreferrer">MediAssist AI<span class="vh"> repository, opens in a new tab</span></a></td>
-              <td>RAG-based agentic clinical decision support. Appointments over chat and voice; the doctor gets a dashboard, not a form.</td>
+              <td>RAG-based agentic clinical decision support. Appointments over chat and voice, and the doctor gets a dashboard to work from.</td>
               <td>LangChain &middot; vector DB &middot; XGBoost</td>
               <td>hackathon runner-up</td>
             </tr>
@@ -706,13 +907,13 @@ td:last-child,th:last-child{padding-right:0}
             </tr>
             <tr>
               <td class="k">Dropout, from scratch</td>
-              <td>Forward, backward and dropout implemented from the paper rather than imported. Built to reproduce the figure, not to beat a benchmark.</td>
+              <td>Forward, backward and dropout implemented from the paper rather than imported. Built to reproduce the figure from the paper.</td>
               <td>Python &middot; NumPy only</td>
               <td>reproduction</td>
             </tr>
             <tr>
               <td class="k">Hybrid Semantic Search</td>
-              <td>Dense retrieval unioned with sparse over a PDF corpus. Neither alone is enough. Dense finds meaning, sparse finds proper nouns and product codes.</td>
+              <td>Dense retrieval unioned with sparse over a PDF corpus, because dense finds meaning and sparse finds proper nouns and product codes.</td>
               <td>FAISS &middot; TF-IDF</td>
               <td>ranked union</td>
             </tr>
@@ -740,7 +941,7 @@ td:last-child,th:last-child{padding-right:0}
             <div class="d">3-DAY INSTITUTE-WIDE TECHNICAL FESTIVAL &middot; RAN EVERY DEPARTMENTAL COMMITTEE, SPONSORSHIP, LOGISTICS, BUDGET</div>
           </div>
           <div class="entry">
-            <div class="t">Vice President, “The Big O”</div>
+            <div class="t">Vice President, "The Big O"</div>
             <div class="d">2023-PRESENT &middot; 2-DAY ANNUAL TECH FEST, 500+ PARTICIPANTS &middot; MENTORING JUNIOR DEVELOPERS</div>
           </div>
         </div>
@@ -771,9 +972,9 @@ td:last-child,th:last-child{padding-right:0}
       <h2 class="sec-head"><span>Limits</span> <span class="tail">What is not validated, and what I have not done.</span></h2>
       <p>Most of what is on this site is hackathon- or coursework-scale. The two engagements under Experience are not, and neither is SwitchBoard, which has served real traffic. I will stand behind the numbers in <a class="figref" href="#fig-1">Fig. 1</a>.</p>
       <p>The Kapture work is an internship, and I tuned that serving stack rather than building it.</p>
-      <p><strong>PharmaGuard has not been through clinical validation. Do not read it as if it had.</strong> It shows that the boundary in <a class="figref" href="#fig-2">Fig. 2</a> can be built. It is not evidence that the recommendations behind it are safe to act on.</p>
-      <p>The RDSO crawler ran weekly on one small server inside one network. It is correct, not fast, and it has never been asked to be. I have also written it up here from memory of a system I no longer have access to.</p>
-      <p>I have not trained anything at scale and I have not published. The two reproductions under Projects are the closest I have come to research, and they are small. My work starts at the model boundary and goes outward. Routing, retrieval, ingest, failover, evaluation. I would rather write that down than let a résumé imply otherwise.</p>
+      <p><strong>PharmaGuard has not been through clinical validation. Do not read it as if it had.</strong> It shows that the split in <a class="figref" href="#fig-2">Fig. 2</a> can be built. It is not evidence that the recommendations behind it are safe to act on.</p>
+      <p>The RDSO crawler ran weekly on one small server inside one network. Weekly was as fast as that job ever needed to be. I have also written it up here from memory of a system I no longer have access to.</p>
+      <p>I have not trained anything at scale and I have not published. The reproduction under Projects is the closest I have come to research, and it is small. Most of my shipped work sits in the layer around a model, which is routing, retrieval, ingest, failover and evaluation. I would rather write that down than let a résumé imply otherwise.</p>
     </section>
 
     <!-- ---------- 05 CONTACT ---------- -->
@@ -925,8 +1126,13 @@ td:last-child,th:last-child{padding-right:0}
   // Deriving the panel from the hash alone breaks anywhere the hash is not writable
   // (a data: document, some embedded viewers), and a nav that dies there is worse than
   // a URL that does not update.
-  for (var k = 0; k < links.length; k++) {
-    links[k].addEventListener('click', function (e) {
+  // Anything that names a section acts as a tab, not just the rail: the homepage index
+  // rows switch panels through the same path. mark() stays on the rail links alone,
+  // because aria-current on a preview row would tell a screen reader the reader is
+  // inside a section they are only looking at from the outside.
+  var switchers = links.concat(Array.prototype.slice.call(document.querySelectorAll('.peek')));
+  for (var k = 0; k < switchers.length; k++) {
+    switchers[k].addEventListener('click', function (e) {
       if (!wide.matches) return;
       var id = this.getAttribute('href').replace(/^#/, '');
       if (ids().indexOf(id) === -1) return;
@@ -984,6 +1190,52 @@ td:last-child,th:last-child{padding-right:0}
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule, { passive: true });
   apply();
+})();
+
+// The typing headline. The full phrase sits in the markup, so a no-JS or
+// reduced-motion reader gets "LLMOps and model training" and nothing moves.
+// When the cycle is on, the slot is emptied here, during parse and before first
+// paint, because that phrase is the only state that wraps the heading to a fourth
+// line. Clearing it later would drop the lede by 59px in front of the reader.
+// Every cycled word is short enough to hold the heading at three lines.
+(function () {
+  var el = document.getElementById('cyc');
+  if (!el) return;
+  var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion:no-preference)');
+  if (!mq || !mq.matches) return;
+
+  var slot = el.querySelector('.w');
+  var words = ['LLMOps', 'model training', 'LLM serving', 'retrieval'];
+  var cur = words[0], ch = 0, erasing = false, i = 0;
+  slot.textContent = '';
+  el.classList.add('on');
+
+  function step() {
+    ch += erasing ? -1 : 1;
+    slot.textContent = cur.slice(0, ch);
+    var wait = erasing ? 30 : 58;
+    if (!erasing && ch === cur.length) { erasing = true; wait = 2400; }
+    else if (erasing && ch === 0) { erasing = false; i = (i + 1) % words.length; cur = words[i]; wait = 300; }
+    setTimeout(step, wait);
+  }
+  setTimeout(step, 550);
+})();
+
+// Below 1100px there are no panels to switch, so the rise has to be triggered by
+// arrival instead. One observer, one class, unobserve on first hit: this is an
+// entrance, not a state, and re-running it on every scroll back up would be noise.
+(function () {
+  var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion:no-preference)');
+  if (!mq || !mq.matches || !window.IntersectionObserver) return;
+  var io = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (!entries[i].isIntersecting) continue;
+      entries[i].target.classList.add('rise');
+      io.unobserve(entries[i].target);
+    }
+  }, { rootMargin: '0px 0px -12% 0px' });
+  var secs = document.querySelectorAll('main > section');
+  for (var i = 0; i < secs.length; i++) io.observe(secs[i]);
 })();
 </script>
 </body>
