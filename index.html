@@ -227,7 +227,7 @@ section:first-child{padding-top:0}
 }
 /* de-emphasised, but these words carry meaning — keep it above AA (6:1), not decorative grey */
 .thesis h1 em{font-style:normal;color:var(--ink-2)}
-/* The only moving thing above the fold. It types through the four areas the rest of
+/* The only moving thing above the fold. It types through the six areas the rest of
    the document is about, so the motion carries the same information the static phrase
    does. The animated span is aria-hidden with a static copy beside it, so a screen
    reader reads the phrase once and never hears it being retyped. */
@@ -243,7 +243,7 @@ section:first-child{padding-top:0}
   @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
   /* The em reserves the width of the longest word it will ever show, 6.11em for
      "model training" plus the caret, so the heading breaks in the same place for all
-     four and no word can split across two lines. A heading that re-wraps itself under
+     six and no word can split across two lines. A heading that re-wraps itself under
      the reader is the one thing this animation must not do. The width is reserved on
      the em rather than on the text slot, so the caret stays against the last letter
      instead of parking at the far edge of an empty box. */
@@ -1205,7 +1205,7 @@ td:last-child,th:last-child{padding-right:0}
   if (!mq || !mq.matches) return;
 
   var slot = el.querySelector('.w');
-  var words = ['LLMOps', 'model training', 'LLM serving', 'retrieval'];
+  var words = ['LLMOps', 'model training', 'LLM serving', 'RAG', 'quantization', 'evaluation'];
   var cur = words[0], ch = 0, erasing = false, i = 0;
   slot.textContent = '';
   el.classList.add('on');
@@ -1213,12 +1213,12 @@ td:last-child,th:last-child{padding-right:0}
   function step() {
     ch += erasing ? -1 : 1;
     slot.textContent = cur.slice(0, ch);
-    var wait = erasing ? 30 : 58;
-    if (!erasing && ch === cur.length) { erasing = true; wait = 2400; }
-    else if (erasing && ch === 0) { erasing = false; i = (i + 1) % words.length; cur = words[i]; wait = 300; }
+    var wait = erasing ? 16 : 32;
+    if (!erasing && ch === cur.length) { erasing = true; wait = 1150; }
+    else if (erasing && ch === 0) { erasing = false; i = (i + 1) % words.length; cur = words[i]; wait = 160; }
     setTimeout(step, wait);
   }
-  setTimeout(step, 550);
+  setTimeout(step, 350);
 })();
 
 // Below 1100px there are no panels to switch, so the rise has to be triggered by
