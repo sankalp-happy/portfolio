@@ -142,7 +142,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 }
 
 /* ---------- rail ---------- */
-.rail{grid-column:1}
+.rail{grid-column:1;grid-row:1}
 .rail-inner{position:sticky;top:0;padding:56px 0 56px;height:100vh;min-height:0;overflow-y:auto;display:flex;flex-direction:column}
 
 .ident .name{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.012em;line-height:1.2}
@@ -164,6 +164,35 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .index a[aria-current="true"] + .mark,
 .index li:has(a[aria-current="true"]) .mark{opacity:1}
 
+.rail-body{display:flex;flex-direction:column;flex:1;min-height:0}
+
+/* ---------- the narrow-width nav button ----------
+   Hidden on the wide layout, where the rail is a real sidebar and .rail-body is only a
+   wrapper. The six ticks are the index itself, not a hamburger: one per section, the
+   current one accent and full width. So the closed button already answers "where am I",
+   which the wrapped strip could only say by recolouring one 12px label. */
+.navbtn{
+  display:none;align-items:center;gap:11px;
+  background:none;border:1px solid var(--rule);cursor:pointer;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink);white-space:nowrap;
+}
+.navbtn .ticks{display:grid;gap:3px;width:15px;flex:none}
+.navbtn .ticks i{height:1px;width:100%;background:var(--ink-3);transform:scaleX(.58);transform-origin:right}
+.navbtn[data-at="1"] .ticks i:nth-child(1),
+.navbtn[data-at="2"] .ticks i:nth-child(2),
+.navbtn[data-at="3"] .ticks i:nth-child(3),
+.navbtn[data-at="4"] .ticks i:nth-child(4),
+.navbtn[data-at="5"] .ticks i:nth-child(5),
+.navbtn[data-at="6"] .ticks i:nth-child(6){transform:none;background:var(--accent)}
+/* open: every tick runs full width, because every section is on screen */
+.rail[data-open] .navbtn{border-color:var(--ink)}
+.rail[data-open] .navbtn .ticks i{transform:none}
+@media (prefers-reduced-motion:no-preference){
+  .navbtn{transition:border-color 150ms ease}
+  .navbtn .ticks i{transition:transform 190ms cubic-bezier(.2,.7,.3,1),background 150ms ease}
+}
+
 .rail-foot{margin-top:auto;font-family:var(--mono);font-size:11px;letter-spacing:.07em;line-height:2.1}
 .rail-foot a{color:var(--ink-2);text-decoration:none}
 .rail-foot a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
@@ -184,28 +213,37 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   .rail-foot .cv{transition:border-color 150ms ease,color 150ms ease}
 }
 
-/* ---------- ground toggle ----------
-   Reuses the rail's 5px square, but not its colour. Accent-red on this rail means one
-   thing only: you are here. A red square on the toggle read as a seventh, permanently
-   active index item, so the toggle says on/off by fill, in ink. Text label stays fixed
-   so it does not thrash on click; aria-pressed carries the state to assistive tech. */
-.ground-btn{
-  margin-top:26px;display:flex;align-items:center;gap:9px;
-  background:none;border:0;cursor:pointer;padding:6px 0;
+/* ---------- light / dark ----------
+   Was one button labelled "Slate" with a 5px square for state, and it never said what it
+   did. "Slate" is the destination while you are on paper and the name of where you
+   already are once you are on slate, and the only thing separating those two readings
+   was whether a 5px square was filled. Both grounds are named on the control now and
+   the one you are in is filled, which is what fill already meant on the square. */
+/* Top right of the content column, on the heading's own line. It shares the grid cell
+   with main and sits in the space the first line of the lede does not use (95px clear at
+   1100px, 336px at 1280), so a preference costs the page no vertical room. It scrolls
+   away with the page rather than floating, because a chip pinned over the prose is worse
+   than one the reader scrolls back up to. */
+.ground{
+  grid-column:3;grid-row:1;align-self:start;justify-self:end;
+  position:relative;z-index:1;margin-top:57px;
+  display:inline-flex;border:1px solid var(--rule);background:var(--ground);
+}
+.ground button{
+  background:none;border:0;cursor:pointer;padding:8px 12px;line-height:1;
   font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
   color:var(--ink-3);
 }
-.ground-btn .sw{width:5px;height:5px;border:1px solid var(--ink-3);background:none;flex:none}
-.ground-btn[aria-pressed="true"]{color:var(--ink-2)}
-.ground-btn[aria-pressed="true"] .sw{background:var(--ink-2);border-color:var(--ink-2)}
-.ground-btn:hover{color:var(--ink)}
-.ground-btn:hover .sw{border-color:var(--ink)}
+.ground button + button{border-left:1px solid var(--rule)}
+.ground button:hover{color:var(--ink)}
+/* the same inversion the skip link uses, so the filled cell is a surface, not a highlight */
+.ground button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
 @media (prefers-reduced-motion:no-preference){
-  .ground-btn,.ground-btn .sw{transition:color 150ms ease,border-color 150ms ease,background 150ms ease}
+  .ground button{transition:color 150ms ease,background-color 150ms ease}
 }
 
 /* ---------- main ---------- */
-main{grid-column:3;padding:56px 0 120px;min-width:0}
+main{grid-column:3;grid-row:1;padding:56px 0 120px;min-width:0}
 .prose{max-width:66ch}
 
 section{padding-top:104px}
@@ -217,7 +255,6 @@ section:first-child{padding-top:0}
   color:var(--ink-2);margin-bottom:40px;
 }
 .sec-head::after{content:"";flex:1;height:1px;background:var(--rule)}
-.sec-head .tail{color:var(--ink-3);text-transform:none;letter-spacing:.04em;font-size:10.5px}
 
 /* ---------- thesis ---------- */
 .thesis h1{
@@ -353,15 +390,15 @@ section:first-child{padding-top:0}
 .job p strong{font-weight:600;color:var(--ink)}
 .job .meta{margin-top:26px}
 
-/* "Also shipped", inside Projects. A rule above it, not a second sec-head, so the
-   table still reads as subordinate to the two write-ups it follows. */
+/* A subordinate label, used for the homepage section index and for "Also shipped"
+   inside Projects. A rule above it, not a second sec-head, so what follows still reads
+   as subordinate to the section it sits in. */
 .sub-head{
   display:flex;align-items:baseline;gap:16px;
   margin-top:96px;padding-top:26px;border-top:1px solid var(--rule);margin-bottom:28px;
   font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
   color:var(--ink-2);
 }
-.sub-head .tail{color:var(--ink-3);text-transform:none;letter-spacing:.04em;font-size:10.5px}
 
 /* ---------- panel view ----------
    On the wide layout the rail is a persistent sidebar, so it can behave as a real
@@ -476,12 +513,20 @@ td:last-child,th:last-child{padding-right:0}
 /* ---------- responsive ---------- */
 @media (max-width:1099px){
   .shell{grid-template-columns:1fr;padding:0 36px}
-  .rail{grid-column:1;position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:1px solid var(--rule)}
+  /* The strip is chrome, so its ground and its rule run to the glass. Inset by the
+     shell's padding, the sticky bar left a 36px channel down each side that the page
+     scrolled through. Negative margin out, equal padding back in, so the contents stay
+     on the column while the surface does not. */
+  .rail{
+    grid-column:1;position:sticky;top:0;z-index:20;
+    margin:0 -36px;padding:0 36px;
+    background:var(--ground);border-bottom:1px solid var(--rule);
+  }
   .rail-inner{position:static;height:auto;padding:14px 0;flex-direction:row;align-items:center;gap:14px 22px;flex-wrap:wrap}
   .ident{display:flex;align-items:baseline;gap:12px}
   .ident .role{margin-top:0}
   .index{display:flex;margin-top:0;gap:2px;flex-wrap:wrap;margin-left:auto}
-  /* the rail's links become touch targets at this width — 44px minimum */
+  /* the rail's links become touch targets at this width, 44px minimum */
   .index a{padding:0 10px;min-height:44px;align-items:center}
   .contact-links a{padding:13px 16px}
   .index .mark{display:none}
@@ -492,16 +537,52 @@ td:last-child,th:last-child{padding-right:0}
   .rail-foot{display:block;margin-top:0}
   .rail-foot a:not(.cv){display:none}
   .rail-foot .cv{margin-bottom:0;min-height:44px;padding:0 13px}
-  /* the link list goes, but the toggle cannot — it moves into the strip at full size */
-  .ground-btn{margin-top:0;min-height:44px;padding:0 0 0 4px}
+  /* one column now, so the control shares row 2 with main instead of column 3 */
+  .ground{grid-column:1;grid-row:2;margin-top:45px}
+  .ground button{min-height:44px;padding:0 13px}
+  .rail-body{display:flex;flex:none;flex-direction:row;align-items:center;flex-wrap:wrap;gap:14px 22px;min-height:0}
+
+  /* ---------- disclosure, JS only ----------
+     Six links, a toggle and a resume box will not sit on one 390px row, and wrapped they
+     took 215px of an 844px screen before a word of the page showed. Behind the button
+     they take 57px. data-nav is written by JS, so with JS off the block above still
+     stands and every link is on the strip. */
+  :root[data-nav="on"] .rail-inner{flex-wrap:nowrap;gap:16px}
+  :root[data-nav="on"] .navbtn{display:flex;margin-left:auto;min-height:40px;padding:0 12px}
+  :root[data-nav="on"] .rail-body{
+    position:absolute;left:0;right:0;top:100%;
+    display:grid;grid-template-columns:1fr;gap:0;
+    padding:8px 36px 20px;
+    background:var(--ground);border-bottom:1px solid var(--rule);
+    /* a phone held sideways has ~390px of height, and the panel wants 411. Cap it against
+       the live viewport and let it scroll, so Contact and the resume stay reachable. */
+    max-height:calc(100dvh - var(--rail-h, 69px));overflow-y:auto;overscroll-behavior:contain;
+  }
+  :root[data-nav="on"] .rail-body > nav{border-bottom:1px solid var(--rule)}
+  :root[data-nav="on"] .rail:not([data-open]) .rail-body{display:none}
+  /* In the panel the links are rows, so the accent square comes back: it is the same
+     "you are here" mark the wide rail uses, and it lines up under the button's ticks. */
+  :root[data-nav="on"] .index{flex-direction:column;align-items:stretch;gap:0;margin-left:0}
+  :root[data-nav="on"] .index li{border-top:1px solid var(--rule)}
+  :root[data-nav="on"] .index a{padding:0 0 0 18px;min-height:52px;font-size:14px;letter-spacing:.05em}
+  :root[data-nav="on"] .index .mark{display:block;top:23px;width:6px;height:6px}
+  :root[data-nav="on"] .index a[aria-current="true"]{color:var(--ink)}
+  /* the resume is the one thing a reader comes here to leave with, so in the panel it is
+     the full-width block the list ends on */
+  :root[data-nav="on"] .rail-foot{margin-top:18px}
+  @media (prefers-reduced-motion:no-preference){
+    .rail[data-open] .rail-body{animation:drop 200ms cubic-bezier(.2,.7,.3,1)}
+    @keyframes drop{from{opacity:0;transform:translateY(-6px)}}
+  }
   /* two adjacent links on one metadata line at 14px tall is a mis-tap waiting to happen.
-     This starts here, not at 767px — 768 to 1099 is tablet, and tablets are touched. */
+     This starts here, not at 767px, since 768 to 1099 is tablet and tablets are touched. */
   dl.meta dd a{display:inline-block;padding:9px 0}
   /* The rail is a sticky strip here, so anchors must not land underneath it. The strip
      wraps to a different height at every width, so JS measures it into --rail-h; the
      132px fallback is the no-JS case. */
   section,.plate-fig{scroll-margin-top:calc(var(--rail-h, 132px) + 14px)}
-  main{grid-column:1;padding:44px 0 96px}
+  .rail{grid-row:1}
+  main{grid-column:1;grid-row:2;padding:44px 0 96px}
   .ledger{grid-template-columns:1fr;gap:0}
   .ledger .col + .col{border-left:0;padding-left:0;margin-left:0;margin-top:44px}
 }
@@ -509,6 +590,10 @@ td:last-child,th:last-child{padding-right:0}
 @media (max-width:767px){
   body{font-size:17px}
   .shell{padding:0 20px}
+  .rail{margin:0 -20px;padding:0 20px}
+  :root[data-nav="on"] .rail-body{padding:8px 20px 20px}
+  /* the role is in the lede two lines down, and the strip needs the width */
+  .ident .role{display:none}
   section{padding-top:76px}
   .wires{gap:12px;margin-bottom:28px}
   .wires a{width:44px;height:44px}
@@ -525,6 +610,16 @@ td:last-child,th:last-child{padding-right:0}
   dl.meta{grid-template-columns:82px 1fr;font-size:10.5px;line-height:2.4}
   .tablewrap{overflow-x:auto}
   table{min-width:560px}
+}
+
+/* The lede's first line settles at about 342px and stops growing, so the room left
+   beside it is whatever the column has spare. At 601px the control still clears the
+   heading by 99px, which reads as a gap; a hundred pixels lower it clears by 39, which
+   reads as a near miss, and lower still it collides. So below 600 it takes its own row
+   and pays for it out of main's top padding. Measured, not taken off a device list. */
+@media (max-width:600px){
+  .ground{grid-row:2;margin-top:14px}
+  main{grid-row:3;padding-top:18px}
 }
 
 /* Only the display toggle lives in the media query. Declaring the base rule below
@@ -550,7 +645,7 @@ td:last-child,th:last-child{padding-right:0}
     --ink:#000;--ink-2:#333;--ink-3:#555;--accent:#000;
   }
   body{background:#fff;color:#000;font-size:10.5pt}
-  .rail,.skip,.scroll-hint{display:none}
+  .rail,.skip,.scroll-hint,.ground{display:none}
   .shell{display:block;max-width:none;padding:0}
   main{padding:0}
   section{padding-top:22pt;break-inside:avoid}
@@ -574,27 +669,39 @@ td:last-child,th:last-child{padding-right:0}
         <div class="role">ML Engineer &middot; Bengaluru</div>
       </div>
 
-      <nav aria-label="Sections">
-        <ul class="index">
-          <li><a href="#thesis">About</a><span class="mark"></span></li>
-          <li><a href="#experience">Experience</a><span class="mark"></span></li>
-          <li><a href="#projects">Projects</a><span class="mark"></span></li>
-          <li><a href="#ledger">Ledger</a><span class="mark"></span></li>
-          <li><a href="#limits">Limits</a><span class="mark"></span></li>
-          <li><a href="#contact">Contact</a><span class="mark"></span></li>
-        </ul>
-      </nav>
-
-      <button id="ground" class="ground-btn" type="button" aria-pressed="false">
-        <span class="sw" aria-hidden="true"></span>Slate
+      <!-- Below 1100px this becomes a disclosure: the strip collapses to one row and the
+           six links, the toggle and the resume move into a panel behind the button. The
+           button is only shown once JS sets data-nav, so a no-JS reader keeps the whole
+           strip open and nothing is unreachable. -->
+      <button id="navbtn" class="navbtn" type="button" aria-expanded="false" aria-controls="rail-body">
+        <span class="vh">Sections menu, currently </span><span class="navbtn-at">About</span>
+        <span class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
       </button>
 
-      <div class="rail-foot">
-        <a class="cv" href="sankalp-shankar-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé, PDF <span class="arw" aria-hidden="true">&rarr;</span><span class="vh"> opens in a new tab</span></a>
-        <div><a href="https://github.com/sankalp-happy" target="_blank" rel="noopener noreferrer">github &rarr;<span class="vh"> opens in a new tab</span></a></div>
-        <div><a href="https://linkedin.com/in/sankalp-shankar-734007284/" target="_blank" rel="noopener noreferrer">linkedin &rarr;<span class="vh"> opens in a new tab</span></a></div>
+      <div class="rail-body" id="rail-body">
+        <nav aria-label="Sections">
+          <ul class="index">
+            <li><a href="#thesis">About</a><span class="mark"></span></li>
+            <li><a href="#experience">Experience</a><span class="mark"></span></li>
+            <li><a href="#projects">Projects</a><span class="mark"></span></li>
+            <li><a href="#ledger">Ledger</a><span class="mark"></span></li>
+            <li><a href="#limits">Limits</a><span class="mark"></span></li>
+            <li><a href="#contact">Contact</a><span class="mark"></span></li>
+          </ul>
+        </nav>
+
+        <div class="rail-foot">
+          <a class="cv" href="sankalp-shankar-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé, PDF <span class="arw" aria-hidden="true">&rarr;</span><span class="vh"> opens in a new tab</span></a>
+          <div><a href="https://github.com/sankalp-happy" target="_blank" rel="noopener noreferrer">github &rarr;<span class="vh"> opens in a new tab</span></a></div>
+          <div><a href="https://linkedin.com/in/sankalp-shankar-734007284/" target="_blank" rel="noopener noreferrer">linkedin &rarr;<span class="vh"> opens in a new tab</span></a></div>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="ground" role="group" aria-label="Colour scheme">
+    <button type="button" data-ground="light" aria-pressed="true">Light</button>
+    <button type="button" data-ground="dark" aria-pressed="false">Dark</button>
   </div>
 
   <!-- ============ MAIN ============ -->
@@ -619,7 +726,7 @@ td:last-child,th:last-child{padding-right:0}
 
 
 
-      <h3 class="sub-head">The rest of the page <span class="tail">Five sections, and what is in each.</span></h3>
+      <h3 class="sub-head">Sections</h3>
       <ul class="peeks">
         <li><a class="peek" href="#experience">
           <svg class="peek-mark" viewBox="0 0 96 60" aria-hidden="true">
@@ -635,7 +742,7 @@ td:last-child,th:last-child{padding-right:0}
           </svg>
           <span class="peek-txt">
             <span class="peek-t">Experience</span>
-            <span class="peek-m">Jun 2026 to now &middot; Mar to Jun 2026</span>
+            <span class="peek-m">Kapture CX &middot; Southern Railway</span>
           </span>
           <span class="peek-go" aria-hidden="true">&rarr;</span>
         </a></li>
@@ -655,7 +762,7 @@ td:last-child,th:last-child{padding-right:0}
           </svg>
           <span class="peek-txt">
             <span class="peek-t">Projects</span>
-            <span class="peek-m">2 write-ups &middot; 2 figures &middot; 4 in a table</span>
+            <span class="peek-m">SwitchBoard &middot; PharmaGuard &middot; four more</span>
           </span>
           <span class="peek-go" aria-hidden="true">&rarr;</span>
         </a></li>
@@ -676,7 +783,7 @@ td:last-child,th:last-child{padding-right:0}
           </svg>
           <span class="peek-txt">
             <span class="peek-t">Ledger</span>
-            <span class="peek-m">4 hackathon wins &middot; 2 certificates &middot; a degree in progress</span>
+            <span class="peek-m">Hackathons &middot; certifications &middot; degree</span>
           </span>
           <span class="peek-go" aria-hidden="true">&rarr;</span>
         </a></li>
@@ -691,7 +798,7 @@ td:last-child,th:last-child{padding-right:0}
           </svg>
           <span class="peek-txt">
             <span class="peek-t">Limits</span>
-            <span class="peek-m">Where the evidence stops, in five paragraphs</span>
+            <span class="peek-m">Validation &middot; scale &middot; access</span>
           </span>
           <span class="peek-go" aria-hidden="true">&rarr;</span>
         </a></li>
@@ -706,7 +813,7 @@ td:last-child,th:last-child{padding-right:0}
           </svg>
           <span class="peek-txt">
             <span class="peek-t">Contact</span>
-            <span class="peek-m">1 address &middot; 4 places the work lives</span>
+            <span class="peek-m">Email &middot; GitHub &middot; LinkedIn &middot; LeetCode</span>
           </span>
           <span class="peek-go" aria-hidden="true">&rarr;</span>
         </a></li>
@@ -716,7 +823,7 @@ td:last-child,th:last-child{padding-right:0}
 
     <!-- ---------- WORK ---------- -->
     <section id="experience">
-      <h2 class="sec-head"><span>Experience</span> <span class="tail">Two paid engagements. What I owned, and when.</span></h2>
+      <h2 class="sec-head"><span>Experience</span></h2>
 
       <article class="job">
         <header class="job-head">
@@ -748,7 +855,7 @@ td:last-child,th:last-child{padding-right:0}
 
     <!-- ---------- PROJECTS ---------- -->
     <section id="projects">
-      <h2 class="sec-head"><span>Projects</span> <span class="tail">An LLM gateway and a prescribing system. Both deployed, both linked, one figure each.</span></h2>
+      <h2 class="sec-head"><span>Projects</span></h2>
 
       <!-- === 01 SwitchBoard === -->
       <article class="system">
@@ -764,7 +871,7 @@ td:last-child,th:last-child{padding-right:0}
           <div class="plate">
             <div class="plate-head">
               <span>Fig. 1</span>
-              <span class="kind">measured, deployed gateway</span>
+              <span class="kind">measurement</span>
             </div>
             <svg viewBox="0 0 840 296" role="img" aria-labelledby="f1t f1d">
               <title id="f1t">Cosine similarity of three prompts against the 0.90 cache threshold</title>
@@ -886,7 +993,7 @@ td:last-child,th:last-child{padding-right:0}
 
       </article>
 
-      <h3 class="sub-head">Also shipped <span class="tail">Smaller. One line each.</span></h3>
+      <h3 class="sub-head">Also shipped</h3>
       <div class="tablewrap">
         <table>
           <thead>
@@ -924,7 +1031,7 @@ td:last-child,th:last-child{padding-right:0}
 
     <!-- ---------- 03 LEDGER ---------- -->
     <section id="ledger">
-      <h2 class="sec-head"><span>Ledger</span> <span class="tail">Things with a date attached.</span></h2>
+      <h2 class="sec-head"><span>Ledger</span></h2>
       <div class="ledger">
         <div class="col">
           <h4>Competition &amp; leadership</h4>
@@ -969,7 +1076,7 @@ td:last-child,th:last-child{padding-right:0}
 
     <!-- ---------- 04 LIMITS ---------- -->
     <section id="limits" class="limits">
-      <h2 class="sec-head"><span>Limits</span> <span class="tail">What is not validated, and what I have not done.</span></h2>
+      <h2 class="sec-head"><span>Limits</span></h2>
       <p>Most of what is on this site is hackathon- or coursework-scale. The two engagements under Experience are not, and neither is SwitchBoard, which has served real traffic. I will stand behind the numbers in <a class="figref" href="#fig-1">Fig. 1</a>.</p>
       <p>The Kapture work is an internship, and I tuned that serving stack rather than building it.</p>
       <p><strong>PharmaGuard has not been through clinical validation. Do not read it as if it had.</strong> It shows that the split in <a class="figref" href="#fig-2">Fig. 2</a> can be built. It is not evidence that the recommendations behind it are safe to act on.</p>
@@ -979,7 +1086,7 @@ td:last-child,th:last-child{padding-right:0}
 
     <!-- ---------- 05 CONTACT ---------- -->
     <section id="contact" class="contact">
-      <h2 class="sec-head"><span>Contact</span> <span class="tail">One address, and the four places the work already lives.</span></h2>
+      <h2 class="sec-head"><span>Contact</span></h2>
       <p class="statement">If you are putting a model somewhere it can do damage, I would like to hear about it.</p>
       <div class="contact-links">
         <a class="first" href="mailto:sankalpshankar02@gmail.com">email &rarr;</a>
@@ -988,7 +1095,7 @@ td:last-child,th:last-child{padding-right:0}
         <a href="https://leetcode.com/sankalpshankar/" target="_blank" rel="noopener noreferrer">leetcode &rarr;<span class="vh"> opens in a new tab</span></a>
         <a href="sankalp-shankar-resume.pdf" target="_blank" rel="noopener noreferrer">résumé.pdf &rarr;<span class="vh"> opens in a new tab</span></a>
       </div>
-      <div class="colophon">Set in Inter Tight, Source Serif 4 and JetBrains Mono &middot; Figures drawn by hand in SVG &middot; Bengaluru</div>
+      <div class="colophon">Set in Inter Tight, Source Serif 4 and JetBrains Mono &middot; Bengaluru</div>
     </section>
 
   </main>
@@ -996,24 +1103,31 @@ td:last-child,th:last-child{padding-right:0}
 
 <script>
 // The ground toggle. The head script already stamped data-theme before first paint;
-// this only wires the button to it and remembers the choice.
+// this only wires the two cells to it and remembers the choice.
 // Deliberately not animated: cross-fading every rule, plate and figure stroke at once
 // reads as a page repainting itself. The swap is instant, like turning over a sheet.
 (function () {
   var root = document.documentElement;
-  var btn = document.getElementById('ground');
-  if (!btn) return;
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.ground button'));
+  if (!btns.length) return;
 
   function sync() {
-    btn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+    var now = root.getAttribute('data-theme');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].setAttribute('aria-pressed', btns[i].getAttribute('data-ground') === now ? 'true' : 'false');
+    }
   }
 
-  btn.addEventListener('click', function () {
-    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('ground', next); } catch (e) {}
-    sync();
-  });
+  // Clicking the ground you are already on is still a choice, so it is stored too. That
+  // is what stops the OS listener below from moving the page out from under the reader.
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].addEventListener('click', function () {
+      var next = this.getAttribute('data-ground');
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ground', next); } catch (e) {}
+      sync();
+    });
+  }
 
   // Follow the OS while the reader has never chosen, and stop the moment they do.
   var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
@@ -1055,6 +1169,12 @@ td:last-child,th:last-child{padding-right:0}
     for (var i = 0; i < links.length; i++) {
       if (links[i].getAttribute('href') === '#' + id) {
         links[i].setAttribute('aria-current', 'true');
+        // The closed button carries the same state the rail does: the section's name,
+        // and which of the six ticks is lit.
+        if (navbtn) {
+          navbtn.setAttribute('data-at', i + 1);
+          navAt.textContent = links[i].textContent;
+        }
       } else {
         links[i].removeAttribute('aria-current');
       }
@@ -1117,8 +1237,41 @@ td:last-child,th:last-child{padding-right:0}
     root.style.setProperty('--rail-h', rail.offsetHeight + 'px');
   }
 
+  // Nav disclosure, narrow layout only. The button is inert until data-nav says JS ran,
+  // which is the same contract data-panels uses above: nothing here is load-bearing for
+  // a reader without it.
+  var navbtn = document.getElementById('navbtn');
+  var navAt = navbtn && navbtn.querySelector('.navbtn-at');
+
+  function setOpen(open) {
+    if (!navbtn || !rail) return;
+    if (open) rail.setAttribute('data-open', ''); else rail.removeAttribute('data-open');
+    navbtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  if (navbtn) {
+    root.setAttribute('data-nav', 'on');
+    navbtn.addEventListener('click', function () {
+      setOpen(!rail.hasAttribute('data-open'));
+    });
+    // A tap on a section, or anywhere off the strip, is an answer; the panel has done
+    // its job either way. Escape closes it because it covers the top of the page.
+    rail.addEventListener('click', function (e) {
+      if (e.target.closest('.index a')) setOpen(false);
+    });
+    document.addEventListener('pointerdown', function (e) {
+      if (rail.hasAttribute('data-open') && !rail.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || !rail.hasAttribute('data-open')) return;
+      setOpen(false);
+      navbtn.focus();
+    });
+  }
+
   function apply() {
     if (wide.matches) enterPanels(); else leavePanels();
+    setOpen(false);
     measureRail();
   }
 

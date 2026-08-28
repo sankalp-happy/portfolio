@@ -1008,3 +1008,165 @@ logo; it was rendered at 240px and inspected before going in at 19.
 Contact now appears in the rail, in this cluster, and in the Contact section. That is
 deliberate: PRODUCT.md holds the address to one action from any screen position, and in
 panel view About is the only screen a reader is guaranteed to see.
+
+---
+
+## Revision 15: the mono microcopy, and what a small uppercase line is allowed to say
+
+Eleven small mono lines on this page were not labels. They were a curator writing
+captions about the page in front of the reader:
+
+    EXPERIENCE   Two paid engagements. What I owned, and when.
+    PROJECTS     An LLM gateway and a prescribing system. Both deployed, both linked,
+                 one figure each.
+    LEDGER       Things with a date attached.
+    LIMITS       What is not validated, and what I have not done.
+    CONTACT      One address, and the four places the work already lives.
+    THE REST OF THE PAGE   Five sections, and what is in each.
+    ALSO SHIPPED           Smaller. One line each.
+
+Every one is the same sentence shape, a noun phrase followed by a comma and a "what /
+when" clause. Every one describes something the reader is about to read anyway. One is
+a device; seven is a template, and the template is legible as a template before the
+words are legible as words. The homepage index carried the same habit in a different
+costume, counting the page's own contents back at the reader: `2 WRITE-UPS · 2 FIGURES ·
+4 IN A TABLE`, `WHERE THE EVIDENCE STOPS, IN FIVE PARAGRAPHS`, `1 ADDRESS · 4 PLACES THE
+WORK LIVES`.
+
+The rule this establishes, and the reason the mono face survives the cut:
+
+**A small uppercase mono line may carry a name, a date, a measurement, or a list of
+things that exist. It may not carry a sentence about the page.**
+
+That distinction is what separates a real typographic system from monospace worn as a
+costume. Under it, the honest labels all stay, unchanged: the rail, `Fig. N`, the plate
+head's evidence type, `job-meta` dates and places, the `dl` term labels, table column
+heads, the ledger column heads, the sideways-scroll hint. What goes is every line whose
+subject was the document.
+
+So:
+
+- All five `.sec-head` tails and both `.sub-head` tails are deleted, along with the two
+  CSS rules that styled them. A section head is now the label and the rule, nothing
+  else. Nothing was lost, because no tail carried a fact its own section did not.
+- "The rest of the page" becomes `Sections`. Naming the list is a label; explaining that
+  it has five entries and what is in each is narration.
+- The index measurement lines become the names of what is actually in each section:
+  `KAPTURE CX · SOUTHERN RAILWAY`, `SWITCHBOARD · PHARMAGUARD · FOUR MORE`, `HACKATHONS ·
+  CERTIFICATIONS · DEGREE`, `VALIDATION · SCALE · ACCESS`, `EMAIL · GITHUB · LINKEDIN ·
+  LEETCODE`. Same slot, same face; a recruiter scanning now reads employers and project
+  names instead of a figure count.
+- Fig. 1's evidence type was `measured, deployed gateway`, a comma fragment doing two
+  jobs. It is `MEASUREMENT`, parallel with Fig. 2's `ARCHITECTURE`. The plate head's job
+  is to say which kind of thing the plate is, in one word.
+- The colophon loses "Figures drawn by hand in SVG". Naming the typefaces is a print
+  convention. Praising your own drawings in the colophon is not.
+
+Seven narration lines are gone outright, five are rewritten into content, one is
+relabelled and one is trimmed. What is left in mono all labels something real.
+
+---
+
+## Revision 16: the narrow-width rail becomes a disclosure
+
+The rail was written as a sidebar and then flattened into a strip for narrow viewports.
+Flattening it meant `flex-wrap`, and at 390px the strip wrapped into three rows: four
+section links, then two more, then the toggle and the resume box. 215px of a 844px
+phone screen, a quarter of the viewport, spent on chrome before a word of the page
+showed. The two-row nav also broke the one thing the rail is for. The current section is
+marked by recolouring a 12px mono label, which at that size is a shade difference the
+reader has to hunt for, and the hunt is over two rows.
+
+Two rules come out of this:
+
+**A strip is chrome, so it runs to the glass.** The rail sat inside the shell's padding,
+so its ground and its bottom rule stopped 20px short of each edge, and the page scrolled
+visibly through the two channels either side of a bar that is supposed to be opaque. It
+now takes a negative side margin and pays it back as padding, so the surface reaches the
+edge while the contents stay on the column.
+
+**The control that opens the index is also the index.** A hamburger says "there is a menu
+here" and nothing else, which on a page whose rail exists to say where you are is a
+downgrade. The button carries the current section's name and a glyph of six ticks, one
+per section, with the current one accent and full width. Closed, it already answers
+"where am I". Open, every tick runs full width, because every section is now on screen.
+The lit tick is driven by the same `mark()` call that moves the wide rail's marker, so
+there is one source of position, not two.
+
+Mechanics worth keeping:
+
+- The button only appears once JS sets `data-nav`, matching the `data-panels` contract.
+  With JS off the strip stays fully open and every link is reachable, which is the same
+  reason panel mode is JS-only.
+- The panel is absolutely positioned under the strip, so opening it does not move the
+  page and does not change `--rail-h`. Anchors keep landing 14px below the strip.
+- It is capped at `calc(100dvh - var(--rail-h))` and scrolls. A phone held sideways has
+  about 390px of height and the panel wants 411, so without the cap Contact and the
+  resume would be cut off the bottom in landscape.
+- In the panel the links are 52px rows with the accent square back in the margin. The
+  square is the wide rail's own "you are here" mark, and it lines up under the button's
+  ticks.
+- Escape closes and returns focus to the button; a tap on a link or anywhere off the
+  strip closes it too. It is a disclosure, not a modal, so there is no focus trap.
+- The ticks animate on `transform`, not `width`. Same movement, no layout.
+
+The strip is 69px closed, down from 215px.
+
+---
+
+## Revision 17: the ground control names both grounds
+
+The toggle was one button reading `SLATE`, with a 5px square that filled when slate was
+on. The label was fixed on purpose, so it would not thrash under the cursor, and that is
+exactly what made it unreadable. "Slate" is the destination while you are on paper and
+the name of where you already are once you are on slate, and the only thing separating
+those two readings was whether a 5px square was filled. A reader who has not been told
+the page calls its grounds paper and slate has no way in at all.
+
+It is now a two-cell segmented control, `LIGHT | DARK`, in a hairline box, with the
+active cell filled. Three things follow from that:
+
+- **Both options are on the control**, so there is no destination-or-state ambiguity
+  left to resolve. Nothing has to be inferred from a mark.
+- **The words are the reader's, not the page's.** Paper and slate stay the names in this
+  document and in the token comments, because that is what they are. The control is the
+  one place the reader meets them, and there it has to speak the browser's language.
+- **The filled cell inverts with the ground.** On paper it is ink-filled with paper text;
+  on slate it is paper-filled with ink text. So the lit cell is a swatch of the ground
+  you are standing on, not just a highlight. The inversion is the one the skip link
+  already uses, so it is a surface the page has, not a new effect.
+
+Fill still means active, which is what it meant on the square. Each cell is 44px on
+touch. Clicking the ground you are already in still writes the choice, which is what
+stops the OS listener from moving the page under a reader who has decided.
+
+Placement, decided after the control worked: it sits at the top right of the content
+column, right edge flush with the column's right edge, on the same line as the lede's
+first line. It shares that grid row with `main` and occupies the space the first line of
+the heading does not use, which is 94px clear at 1100px and 220px at 1280. So a
+preference costs the page no vertical room at all on the wide layout.
+
+It scrolls away rather than pinning. A chip fixed in the corner would stay reachable, but
+it would also slide over the prose on a page whose whole surface is one sheet, and the
+choice is one a reader makes in the first seconds or not at all. Panel mode resets scroll
+to the top on every section switch, so it is present at the top of every section anyway.
+
+Where the row is spent instead:
+
+- **Above 600px** the control sits beside the lede's first line, wide layout and narrow
+  alike, so a phone in landscape and a tablet both get it for free.
+- **Below 600px** the lede fills its line and there is no room next to it, so the control
+  takes its own row under the strip, still right-aligned, still above the first heading.
+  Main's top padding pays for most of the row, so the net cost is 32px.
+- The breakpoint is measured, not taken off a device list. The lede's first line settles
+  at about 342px and stops growing, so what is left beside it is whatever the column has
+  spare. At 601px the control clears the heading by 99px, which reads as a gap. A hundred
+  pixels lower it clears by 39, which reads as a near miss. Lower still it collides.
+
+The nav panel loses the toggle, and the resume box becomes the full-width block the
+section list ends on. That is the better hierarchy anyway: the panel's job is to get you
+to a section or out with the PDF, and a preference control was sharing a row with the one
+thing on the page a reader comes here to take.
+
+`.ground` had to join the print hide list when it left the rail, which was hiding it
+until then.
