@@ -1114,7 +1114,7 @@ The strip is 69px closed, down from 215px.
 
 ---
 
-## Revision 17: the ground control names both grounds
+## Revision 17: the ground control says night or day
 
 The toggle was one button reading `SLATE`, with a 5px square that filled when slate was
 on. The label was fixed on purpose, so it would not thrash under the cursor, and that is
@@ -1123,50 +1123,42 @@ the name of where you already are once you are on slate, and the only thing sepa
 those two readings was whether a 5px square was filled. A reader who has not been told
 the page calls its grounds paper and slate has no way in at all.
 
-It is now a two-cell segmented control, `LIGHT | DARK`, in a hairline box, with the
-active cell filled. Three things follow from that:
+It is now a 40px button carrying a crescent or a sun: the ground you would get if you
+pressed it. Moon on paper, sun on slate.
 
-- **Both options are on the control**, so there is no destination-or-state ambiguity
-  left to resolve. Nothing has to be inferred from a mark.
-- **The words are the reader's, not the page's.** Paper and slate stay the names in this
-  document and in the token comments, because that is what they are. The control is the
-  one place the reader meets them, and there it has to speak the browser's language.
-- **The filled cell inverts with the ground.** On paper it is ink-filled with paper text;
-  on slate it is paper-filled with ink text. So the lit cell is a swatch of the ground
-  you are standing on, not just a highlight. The inversion is the one the skip link
-  already uses, so it is a surface the page has, not a new effect.
+- **Paper and slate stay the names in this document and in the token comments**, because
+  that is what they are. The control is the one place the reader meets the idea, and
+  there it has to speak the convention every other site has already taught them.
+- **The icons are drawn to the page's own rule.** The wire marks are filled 24x24 paths
+  set in `currentColor`, so these are too: a crescent, and a disc with eight rays. No
+  glyph, no emoji, no second stroke language.
+- **A crescent cannot say what it does**, so the accessible name does. It reads "Switch
+  to dark" or "Switch to light" and is rewritten in the same `sync()` that draws the
+  icon, so the two can never disagree.
 
-Fill still means active, which is what it meant on the square. Each cell is 44px on
-touch. Clicking the ground you are already in still writes the choice, which is what
-stops the OS listener from moving the page under a reader who has decided.
+Placement. On the narrow layout the name, the section button and the toggle all sit on
+one row. Three pieces of chrome split across two rows read as three unrelated things; on
+one row they read as one strip. The strip is 73px at every width from 320 up.
 
-Placement, decided after the control worked: it sits at the top right of the content
-column, right edge flush with the column's right edge, on the same line as the lede's
-first line. It shares that grid row with `main` and occupies the space the first line of
-the heading does not use, which is 94px clear at 1100px and 220px at 1280. So a
-preference costs the page no vertical room at all on the wide layout.
+The DOM had to change for that. The toggle is a child of `.rail`, a sibling of
+`.rail-inner`, which is what lets it be a flex item next to the name and the button below
+1100px and, above it, absolutely positioned against `.shell` with `right:40px`. That is
+the shell's own padding, so its right edge is the content column's right edge exactly, at
+any width, with no viewport arithmetic and nothing for a scrollbar to shift.
 
-It scrolls away rather than pinning. A chip fixed in the corner would stay reachable, but
-it would also slide over the prose on a page whose whole surface is one sheet, and the
-choice is one a reader makes in the first seconds or not at all. Panel mode resets scroll
-to the top on every section switch, so it is present at the top of every section anyway.
+On the wide layout it sits top right of the content column, on the lede's own line, in
+the space the first line does not use: 171px clear at 1100px, 296px at 1280. So a
+preference costs the page no vertical room. It scrolls away rather than pinning, because
+a control fixed over the prose is worse on a page that is one sheet, and panel mode puts
+the top of a section back under it on every switch.
 
-Where the row is spent instead:
-
-- **Above 600px** the control sits beside the lede's first line, wide layout and narrow
-  alike, so a phone in landscape and a tablet both get it for free.
-- **Below 600px** the lede fills its line and there is no room next to it, so the control
-  takes its own row under the strip, still right-aligned, still above the first heading.
-  Main's top padding pays for most of the row, so the net cost is 32px.
-- The breakpoint is measured, not taken off a device list. The lede's first line settles
-  at about 342px and stops growing, so what is left beside it is whatever the column has
-  spare. At 601px the control clears the heading by 99px, which reads as a gap. A hundred
-  pixels lower it clears by 39, which reads as a near miss. Lower still it collides.
+The button drops its word below 390px. Three controls on one row need 336px at the widest
+section name, which is what the button is as wide as when you are in Experience, and the
+row has the viewport minus 40. Below 390 the name wraps to two lines to make the room, so
+the word goes and the ticks stay. The ticks were always what carried the position; the
+word is the gloss that teaches them.
 
 The nav panel loses the toggle, and the resume box becomes the full-width block the
 section list ends on. That is the better hierarchy anyway: the panel's job is to get you
 to a section or out with the PDF, and a preference control was sharing a row with the one
 thing on the page a reader comes here to take.
-
-`.ground` had to join the print hide list when it left the rail, which was hiding it
-until then.

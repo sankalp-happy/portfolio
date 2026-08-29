@@ -134,6 +134,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 
 /* ---------- shell ---------- */
 .shell{
+  position:relative;
   display:grid;
   grid-template-columns:var(--rail) var(--gutter) minmax(0,1fr);
   max-width:1280px;
@@ -214,32 +215,29 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 }
 
 /* ---------- light / dark ----------
-   Was one button labelled "Slate" with a 5px square for state, and it never said what it
-   did. "Slate" is the destination while you are on paper and the name of where you
-   already are once you are on slate, and the only thing separating those two readings
-   was whether a 5px square was filled. Both grounds are named on the control now and
-   the one you are in is filled, which is what fill already meant on the square. */
-/* Top right of the content column, on the heading's own line. It shares the grid cell
-   with main and sits in the space the first line of the lede does not use (95px clear at
-   1100px, 336px at 1280), so a preference costs the page no vertical room. It scrolls
-   away with the page rather than floating, because a chip pinned over the prose is worse
-   than one the reader scrolls back up to. */
+   Was a button labelled "Slate", which never said what it did. "Slate" is the
+   destination while you are on paper and the name of where you already are once you are
+   on slate, and the only thing separating those two readings was whether a 5px square
+   was filled. It now shows the ground you would switch to, drawn to the same rule as the
+   wire icons, filled at 24x24 rather than stroked, and the accessible name says the
+   action outright because a crescent cannot.
+
+   Top right of the content column on the wide layout, positioned against the shell so
+   its right edge is the column's right edge exactly, and on the lede's own line so a
+   preference costs the page no vertical room. It scrolls away rather than pinning,
+   because a control fixed over the prose is worse on a page that is one sheet, and
+   panel mode puts the top of a section back under it on every switch. */
 .ground{
-  grid-column:3;grid-row:1;align-self:start;justify-self:end;
-  position:relative;z-index:1;margin-top:57px;
-  display:inline-flex;border:1px solid var(--rule);background:var(--ground);
+  position:absolute;top:52px;right:40px;
+  display:grid;place-items:center;width:40px;height:40px;
+  background:var(--ground);border:1px solid var(--rule);cursor:pointer;
+  color:var(--ink-2);
 }
-.ground button{
-  background:none;border:0;cursor:pointer;padding:8px 12px;line-height:1;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--ink-3);
-}
-.ground button + button{border-left:1px solid var(--rule)}
-.ground button:hover{color:var(--ink)}
-/* the same inversion the skip link uses, so the filled cell is a surface, not a highlight */
-.ground button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+.g-i{width:18px;height:18px;fill:currentColor;display:block}
+:root[data-theme="dark"] .g-moon,:root:not([data-theme="dark"]) .g-sun{display:none}
+.ground:hover{color:var(--accent);border-color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){
-  .ground button{transition:color 150ms ease,background-color 150ms ease}
+  .ground{transition:color 150ms ease,border-color 150ms ease}
 }
 
 /* ---------- main ---------- */
@@ -518,10 +516,16 @@ td:last-child,th:last-child{padding-right:0}
      scrolled through. Negative margin out, equal padding back in, so the contents stay
      on the column while the surface does not. */
   .rail{
-    grid-column:1;position:sticky;top:0;z-index:20;
+    grid-column:1;grid-row:1;position:sticky;top:0;z-index:20;
     margin:0 -36px;padding:0 36px;
+    display:flex;align-items:center;gap:12px;
     background:var(--ground);border-bottom:1px solid var(--rule);
   }
+  /* The name and the section button ride in .rail-inner, the toggle rides beside it, so
+     all three sit on one row. The panel still hangs off .rail, which is what makes this
+     work: .rail-inner is a flex item here, not the positioning context. */
+  .rail-inner{flex:1;min-width:0}
+  .ground{position:static;width:44px;height:44px;flex:none}
   .rail-inner{position:static;height:auto;padding:14px 0;flex-direction:row;align-items:center;gap:14px 22px;flex-wrap:wrap}
   .ident{display:flex;align-items:baseline;gap:12px}
   .ident .role{margin-top:0}
@@ -537,9 +541,6 @@ td:last-child,th:last-child{padding-right:0}
   .rail-foot{display:block;margin-top:0}
   .rail-foot a:not(.cv){display:none}
   .rail-foot .cv{margin-bottom:0;min-height:44px;padding:0 13px}
-  /* one column now, so the control shares row 2 with main instead of column 3 */
-  .ground{grid-column:1;grid-row:2;margin-top:45px}
-  .ground button{min-height:44px;padding:0 13px}
   .rail-body{display:flex;flex:none;flex-direction:row;align-items:center;flex-wrap:wrap;gap:14px 22px;min-height:0}
 
   /* ---------- disclosure, JS only ----------
@@ -548,7 +549,7 @@ td:last-child,th:last-child{padding-right:0}
      they take 57px. data-nav is written by JS, so with JS off the block above still
      stands and every link is on the strip. */
   :root[data-nav="on"] .rail-inner{flex-wrap:nowrap;gap:16px}
-  :root[data-nav="on"] .navbtn{display:flex;margin-left:auto;min-height:40px;padding:0 12px}
+  :root[data-nav="on"] .navbtn{display:flex;margin-left:auto;min-height:44px;padding:0 10px;gap:9px}
   :root[data-nav="on"] .rail-body{
     position:absolute;left:0;right:0;top:100%;
     display:grid;grid-template-columns:1fr;gap:0;
@@ -612,14 +613,13 @@ td:last-child,th:last-child{padding-right:0}
   table{min-width:560px}
 }
 
-/* The lede's first line settles at about 342px and stops growing, so the room left
-   beside it is whatever the column has spare. At 601px the control still clears the
-   heading by 99px, which reads as a gap; a hundred pixels lower it clears by 39, which
-   reads as a near miss, and lower still it collides. So below 600 it takes its own row
-   and pays for it out of main's top padding. Measured, not taken off a device list. */
-@media (max-width:600px){
-  .ground{grid-row:2;margin-top:14px}
-  main{grid-row:3;padding-top:18px}
+/* Three controls on one row, measured at the widest section name rather than the
+   shortest, because the button is as wide as whatever section you are in. Below 390 the
+   name wraps to two lines to make the room, so the button drops its word and keeps its
+   ticks. The ticks were always what carried the position; the word is the gloss that
+   teaches them. */
+@media (max-width:389px){
+  .navbtn-at{display:none}
 }
 
 /* Only the display toggle lives in the media query. Declaring the base rule below
@@ -645,7 +645,7 @@ td:last-child,th:last-child{padding-right:0}
     --ink:#000;--ink-2:#333;--ink-3:#555;--accent:#000;
   }
   body{background:#fff;color:#000;font-size:10.5pt}
-  .rail,.skip,.scroll-hint,.ground{display:none}
+  .rail,.skip,.scroll-hint{display:none}
   .shell{display:block;max-width:none;padding:0}
   main{padding:0}
   section{padding-top:22pt;break-inside:avoid}
@@ -697,11 +697,10 @@ td:last-child,th:last-child{padding-right:0}
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="ground" role="group" aria-label="Colour scheme">
-    <button type="button" data-ground="light" aria-pressed="true">Light</button>
-    <button type="button" data-ground="dark" aria-pressed="false">Dark</button>
+    <button id="ground" class="ground" type="button" aria-label="Switch to dark">
+      <svg class="g-i g-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.2A8.6 8.6 0 0 1 8.8 3.4 8.9 8.9 0 1 0 20.6 15.2Z"/></svg>
+      <svg class="g-i g-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.3"/><rect x="11.1" y="1.5" width="1.8" height="3.7" rx=".9" transform="rotate(0 12 12)"/><rect x="11.1" y="1.5" width="1.8" height="3.7" rx=".9" transform="rotate(45 12 12)"/><rect x="11.1" y="1.5" width="1.8" height="3.7" rx=".9" transform="rotate(90 12 12)"/><rect x="11.1" y="1.5" width="1.8" height="3.7" rx=".9" transform="rotate(135 12 12)"/><rect x="11.1" y="1.5" width="1.8" height="3.7" rx=".9" transform="rotate(180 12 12)"/><rect x="11.1" y="1.5" width="1.8" height="3.7" rx=".9" transform="rotate(225 12 12)"/><rect x="11.1" y="1.5" width="1.8" height="3.7" rx=".9" transform="rotate(270 12 12)"/><rect x="11.1" y="1.5" width="1.8" height="3.7" rx=".9" transform="rotate(315 12 12)"/></svg>
+    </button>
   </div>
 
   <!-- ============ MAIN ============ -->
@@ -1103,31 +1102,27 @@ td:last-child,th:last-child{padding-right:0}
 
 <script>
 // The ground toggle. The head script already stamped data-theme before first paint;
-// this only wires the two cells to it and remembers the choice.
+// this only wires the button to it and remembers the choice.
 // Deliberately not animated: cross-fading every rule, plate and figure stroke at once
 // reads as a page repainting itself. The swap is instant, like turning over a sheet.
 (function () {
   var root = document.documentElement;
-  var btns = Array.prototype.slice.call(document.querySelectorAll('.ground button'));
-  if (!btns.length) return;
+  var btn = document.getElementById('ground');
+  if (!btn) return;
 
+  // The icon shows the ground you would get, which a crescent cannot say out loud, so
+  // the accessible name says it instead and changes with the icon.
   function sync() {
-    var now = root.getAttribute('data-theme');
-    for (var i = 0; i < btns.length; i++) {
-      btns[i].setAttribute('aria-pressed', btns[i].getAttribute('data-ground') === now ? 'true' : 'false');
-    }
+    btn.setAttribute('aria-label',
+      root.getAttribute('data-theme') === 'dark' ? 'Switch to light' : 'Switch to dark');
   }
 
-  // Clicking the ground you are already on is still a choice, so it is stored too. That
-  // is what stops the OS listener below from moving the page out from under the reader.
-  for (var j = 0; j < btns.length; j++) {
-    btns[j].addEventListener('click', function () {
-      var next = this.getAttribute('data-ground');
-      root.setAttribute('data-theme', next);
-      try { localStorage.setItem('ground', next); } catch (e) {}
-      sync();
-    });
-  }
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('ground', next); } catch (e) {}
+    sync();
+  });
 
   // Follow the OS while the reader has never chosen, and stop the moment they do.
   var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
