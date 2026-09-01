@@ -446,7 +446,9 @@ Nothing else. No fade-up on every block, no counters, no scroll-jacking.
 - Bento grids. Now its own cliché.
 - Glassmorphism, glow borders, gradient text, neon anything.
 - Purple/blue gradients. Lime-on-black (§3).
-- Typewriter / text-scramble effects on the headline.
+- Typewriter / text-scramble effects on the headline. Overridden by the client on
+  2026-08-31, after the 2026-08-31 critique flagged the h1 cycler as violating this
+  line. The cycler on `#cyc` ships on purpose. The ban still stands for anything else.
 - Count-up-on-scroll number animations.
 - Testimonials. A student has none.
 - Emoji as section markers.

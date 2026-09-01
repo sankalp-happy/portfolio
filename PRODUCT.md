@@ -51,10 +51,13 @@ actually forwards, so it must stay one click away from every screen position.
 ## Brand Commitments
 
 - Name and voice: first person, plain, a little warm. The incumbent site's closing line
-  ("Chai and chat? I'm in.") is his own voice and is kept.
+  ("Chai and chat? I'm in.") was dropped deliberately. The closing statement on the page
+  now carries the voice instead ("If you are putting a model somewhere it can do damage,
+  I would like to hear about it."), and it is the line to preserve.
 - Assets: profile portrait (`public/sankalp-shankar.jpeg`), resume PDF, paper grain
   texture carried over from the incumbent build.
-- Links that must stay reachable: GitHub, LinkedIn, LeetCode, Wellfound, email.
+- Links that must stay reachable: GitHub, LinkedIn, LeetCode, email. Wellfound was on
+  this list and was dropped from the page deliberately, so it is not a regression.
 - Aesthetic pinned by the user: AI-researcher / frontier-lab monochrome. Motion follows
   Emil Kowalski's rules (transform and opacity, under 300ms, custom easing, reduced
   motion respected).

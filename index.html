@@ -101,6 +101,13 @@ a:hover{text-decoration-color:var(--accent)}
   a{transition:text-decoration-color 160ms ease,color 160ms ease}
 }
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:1px}
+/* A panel takes focus when it is switched to, so the change is announced instead of
+   happening in silence. That focus is programmatic and the target is a whole section,
+   so the user agent drew its default ring around the entire column. Suppressed, because
+   a panel is a landing target and not a control: it is never tab-reachable (tabindex
+   -1), and the rail's own aria-current marker is already the visible position signal.
+   The announcement is what this focus is for; the ring was never carrying anything. */
+main > section:focus{outline:none}
 
 /* An inline call to action stays part of the sentence it sits in. It keeps the prose
    link's underline and adds one arrow that leans forward under the pointer. */
@@ -120,13 +127,13 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 @media (prefers-reduced-motion:no-preference){
   @keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
   :root[data-panels="on"] main > section[data-active] > *,
-  main > section.rise > *{animation:rise 280ms cubic-bezier(.2,.7,.3,1) both}
+  main > section.rise > *{animation:rise 180ms cubic-bezier(.2,.7,.3,1) both}
   :root[data-panels="on"] main > section[data-active] > :nth-child(2),
-  main > section.rise > :nth-child(2){animation-delay:45ms}
+  main > section.rise > :nth-child(2){animation-delay:24ms}
   :root[data-panels="on"] main > section[data-active] > :nth-child(3),
-  main > section.rise > :nth-child(3){animation-delay:90ms}
+  main > section.rise > :nth-child(3){animation-delay:48ms}
   :root[data-panels="on"] main > section[data-active] > :nth-child(n+4),
-  main > section.rise > :nth-child(n+4){animation-delay:135ms}
+  main > section.rise > :nth-child(n+4){animation-delay:72ms}
 }
 
 .skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--ground);padding:10px 16px;z-index:99}
@@ -418,7 +425,18 @@ section:first-child{padding-top:0}
 
 /* plates break wider than the prose measure */
 .plate-fig{margin:40px 0 0}
-.plate{background:var(--plate);border:1px solid var(--rule);border-radius:2px;padding:20px 22px 8px}
+/* The drawing is authored on an 840-unit canvas and its labels are set at 9.5px.
+   Letting the svg scale below 1.0 shrinks that type with it, which put figure
+   annotations at ~7.4px on a 768px viewport and ~7.6px in panel mode at 1100px.
+   min-width pins the canvas at its designed size and the plate scrolls instead, so
+   the type is never smaller than it was drawn. Above ~1280px there is room for the
+   full canvas and nothing scrolls. */
+.plate{background:var(--plate);border:1px solid var(--rule);border-radius:2px;padding:20px 22px 8px;overflow-x:auto}
+/* A scrolling plate says so at its right edge, because the hint below the figure is
+   outside the thing it describes and reads as a caption. Only while there is more to
+   reach: at the end of the scroll the fade would be claiming content that is not there. */
+.plate-fig[data-scroll="more"] .plate:not(:focus-visible){mask-image:linear-gradient(to right,#000 calc(100% - 72px),transparent)}
+.plate:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .plate-head{
   display:flex;justify-content:space-between;align-items:baseline;gap:24px;
   font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);
@@ -427,7 +445,8 @@ section:first-child{padding-top:0}
 /* the evidence-type label is the page's honesty mechanism — it has to be readable */
 .plate-head .kind{color:var(--ink-2);font-size:10.5px;white-space:nowrap}
 .scroll-hint{display:none;font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-top:8px}
-.plate svg{display:block;width:100%;height:auto}
+.plate-fig[data-scroll] .scroll-hint{display:block}
+.plate svg{display:block;width:100%;min-width:840px;height:auto}
 figcaption{margin-top:14px;font-size:15.5px;line-height:1.6;color:var(--ink-2);max-width:68ch}
 figcaption b{font-weight:600;color:var(--ink)}
 /* A Fig. reference is a citation. In panel mode the figure it names is in another
@@ -603,11 +622,9 @@ td:last-child,th:last-child{padding-right:0}
   .peek-mark{width:64px;height:40px}
   .peek-t{font-size:19px}
   .peek-m{font-size:9.5px;margin-top:5px}
-  /* diagrams do not survive being squeezed: scroll them inside a bounded frame */
-  .plate{padding:16px 14px 6px;overflow-x:auto}
-  .plate svg{min-width:660px}
+  /* the frame itself is now in the base rule; narrow only tightens the padding */
+  .plate{padding:16px 14px 6px}
   .plate-head{flex-direction:column;gap:4px}
-  .scroll-hint{display:block}
   dl.meta{grid-template-columns:82px 1fr;font-size:10.5px;line-height:2.4}
   .tablewrap{overflow-x:auto}
   table{min-width:560px}
@@ -650,7 +667,11 @@ td:last-child,th:last-child{padding-right:0}
   main{padding:0}
   section{padding-top:22pt;break-inside:avoid}
   .system,figure,.entry{break-inside:avoid}
-  .plate{background:#fff;border:1px solid #bbb}
+  /* Paper cannot scroll, so the screen rule that pins the canvas at 840px would just
+     crop the right side of every figure. On paper the drawing scales to the page
+     instead: 300dpi carries small type that a 96dpi screen could not. */
+  .plate{background:#fff;border:1px solid #bbb;overflow:visible}
+  .plate svg{min-width:0}
   a{color:#000;text-decoration:underline}
   .contact-links a{border-color:#bbb}
 }
@@ -707,8 +728,8 @@ td:last-child,th:last-child{padding-right:0}
   <main id="main">
 
     <!-- ---------- ABOUT ---------- -->
-    <section id="thesis" class="thesis">
-      <h1>I am Sankalp Shankar, a machine learning engineer working on <em id="cyc" aria-hidden="true"><span class="w">LLMOps and model training</span><span class="caret"></span></em><span class="vh">LLMOps and model training.</span></h1>
+    <section id="thesis" class="thesis" tabindex="-1" aria-labelledby="h-thesis">
+      <h1 id="h-thesis">I am Sankalp Shankar, a machine learning engineer working on <em id="cyc" aria-hidden="true"><span class="w">LLMOps and model training</span><span class="caret"></span></em><span class="vh">LLMOps and model training.</span></h1>
       <ul class="wires">
         <li><a href="https://linkedin.com/in/sankalp-shankar-734007284/" target="_blank" rel="noopener noreferrer">
           <svg class="wire-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="vh">LinkedIn, opens in a new tab</span></a></li>
@@ -722,6 +743,8 @@ td:last-child,th:last-child{padding-right:0}
       <p class="lede">I am a machine learning intern at Kapture CX in Bengaluru, finishing a BE in AI and ML. <a class="cta" href="sankalp-shankar-resume.pdf" target="_blank" rel="noopener noreferrer">R&eacute;sum&eacute;, PDF <span class="arw" aria-hidden="true">&rarr;</span><span class="vh"> opens in a new tab</span></a></p>
 
       <p>Recent work includes LLM serving at Kapture CX, an ingest pipeline for a Southern Railway document system, an LLM gateway of my own, and a prescribing tool that reads a genomic file.</p>
+
+      <p>The gateway is the quickest to check. Its cache compares prompts by meaning rather than by hash, so a rephrased question came back from cache at 0.9144 similarity, past the 0.90 threshold, instead of spending another 424 ms at the provider. That is <a class="figref" href="#fig-1">Fig. 1</a>.</p>
 
 
 
@@ -821,8 +844,8 @@ td:last-child,th:last-child{padding-right:0}
     </section>
 
     <!-- ---------- WORK ---------- -->
-    <section id="experience">
-      <h2 class="sec-head"><span>Experience</span></h2>
+    <section id="experience" tabindex="-1" aria-labelledby="h-experience">
+      <h2 class="sec-head" id="h-experience"><span>Experience</span></h2>
 
       <article class="job">
         <header class="job-head">
@@ -853,8 +876,8 @@ td:last-child,th:last-child{padding-right:0}
     </section>
 
     <!-- ---------- PROJECTS ---------- -->
-    <section id="projects">
-      <h2 class="sec-head"><span>Projects</span></h2>
+    <section id="projects" tabindex="-1" aria-labelledby="h-projects">
+      <h2 class="sec-head" id="h-projects"><span>Projects</span></h2>
 
       <!-- === 01 SwitchBoard === -->
       <article class="system">
@@ -1029,8 +1052,8 @@ td:last-child,th:last-child{padding-right:0}
     </section>
 
     <!-- ---------- 03 LEDGER ---------- -->
-    <section id="ledger">
-      <h2 class="sec-head"><span>Ledger</span></h2>
+    <section id="ledger" tabindex="-1" aria-labelledby="h-ledger">
+      <h2 class="sec-head" id="h-ledger"><span>Ledger</span></h2>
       <div class="ledger">
         <div class="col">
           <h4>Competition &amp; leadership</h4>
@@ -1074,8 +1097,8 @@ td:last-child,th:last-child{padding-right:0}
     </section>
 
     <!-- ---------- 04 LIMITS ---------- -->
-    <section id="limits" class="limits">
-      <h2 class="sec-head"><span>Limits</span></h2>
+    <section id="limits" class="limits" tabindex="-1" aria-labelledby="h-limits">
+      <h2 class="sec-head" id="h-limits"><span>Limits</span></h2>
       <p>Most of what is on this site is hackathon- or coursework-scale. The two engagements under Experience are not, and neither is SwitchBoard, which has served real traffic. I will stand behind the numbers in <a class="figref" href="#fig-1">Fig. 1</a>.</p>
       <p>The Kapture work is an internship, and I tuned that serving stack rather than building it.</p>
       <p><strong>PharmaGuard has not been through clinical validation. Do not read it as if it had.</strong> It shows that the split in <a class="figref" href="#fig-2">Fig. 2</a> can be built. It is not evidence that the recommendations behind it are safe to act on.</p>
@@ -1084,8 +1107,8 @@ td:last-child,th:last-child{padding-right:0}
     </section>
 
     <!-- ---------- 05 CONTACT ---------- -->
-    <section id="contact" class="contact">
-      <h2 class="sec-head"><span>Contact</span></h2>
+    <section id="contact" class="contact" tabindex="-1" aria-labelledby="h-contact">
+      <h2 class="sec-head" id="h-contact"><span>Contact</span></h2>
       <p class="statement">If you are putting a model somewhere it can do damage, I would like to hear about it.</p>
       <div class="contact-links">
         <a class="first" href="mailto:sankalpshankar02@gmail.com">email &rarr;</a>
@@ -1156,6 +1179,40 @@ td:last-child,th:last-child{padding-right:0}
   var wide = window.matchMedia('(min-width:1100px)');
   var currentId = null;
 
+  // A plate scrolls whenever the 840-unit canvas is wider than the frame it sits in,
+  // which depends on the viewport and on whether the rail is a sidebar. Ask the box
+  // rather than guessing from a breakpoint, and distinguish "more to the right" from
+  // "at the end" so the edge fade never claims content that is not there.
+  var figs = Array.prototype.slice.call(document.querySelectorAll('.plate-fig'));
+  function gaugePlates() {
+    for (var i = 0; i < figs.length; i++) {
+      var plate = figs[i].querySelector('.plate');
+      if (!plate || !plate.clientWidth) { figs[i].removeAttribute('data-scroll'); continue; }
+      var slack = plate.scrollWidth - plate.clientWidth;
+      if (slack < 2) {
+        figs[i].removeAttribute('data-scroll');
+        plate.removeAttribute('tabindex');
+        plate.removeAttribute('role');
+        plate.removeAttribute('aria-label');
+      } else {
+        figs[i].setAttribute('data-scroll', plate.scrollLeft >= slack - 2 ? 'end' : 'more');
+        // Arrow keys need somewhere to land, and the stop has to say what it is. The
+        // svg's own title and desc still carry the argument, so a screen reader reader
+        // never has to scroll to get it; this is for a sighted keyboard reader.
+        if (!plate.hasAttribute('tabindex')) {
+          plate.setAttribute('tabindex', '0');
+          plate.setAttribute('role', 'group');
+          var n = figs[i].querySelector('.plate-head span');
+          plate.setAttribute('aria-label', (n ? n.textContent.trim() : 'Figure') + ', scrolls sideways');
+        }
+      }
+    }
+  }
+  for (var f = 0; f < figs.length; f++) {
+    var pl = figs[f].querySelector('.plate');
+    if (pl) pl.addEventListener('scroll', gaugePlates, { passive: true });
+  }
+
   function ids() {
     return sections.map(function (s) { return s.id; });
   }
@@ -1163,7 +1220,7 @@ td:last-child,th:last-child{padding-right:0}
   function mark(id) {
     for (var i = 0; i < links.length; i++) {
       if (links[i].getAttribute('href') === '#' + id) {
-        links[i].setAttribute('aria-current', 'true');
+        links[i].setAttribute('aria-current', 'page');
         // The closed button carries the same state the rail does: the section's name,
         // and which of the six ticks is lit.
         if (navbtn) {
@@ -1187,6 +1244,7 @@ td:last-child,th:last-child{padding-right:0}
     }
     currentId = id;
     mark(id);
+    gaugePlates();
   }
 
   function fromHash() {
@@ -1204,10 +1262,25 @@ td:last-child,th:last-child{padding-right:0}
     return { id: sections[0].id, target: null };
   }
 
-  function land(r) {
+  // Replacing main is the largest thing this page does and it used to happen in
+  // silence: the links are announced as links, nothing owns focus afterwards, and a
+  // screen reader reader was left in new content with no event to explain it. Moving
+  // focus to the panel is the announcement. The panel carries aria-labelledby, so
+  // landing on it reads the section name and its region role, which is exactly the
+  // sentence the reader needs and only that sentence. No live region on top of it,
+  // because the two would talk over each other.
+  function focusPanel(id) {
+    var el = document.getElementById(id);
+    if (el) el.focus({ preventScroll: true });
+  }
+
+  function land(r, moveFocus) {
     show(r.id);
     if (r.target) r.target.scrollIntoView({ block: 'start' });
     else window.scrollTo(0, 0);
+    // Only when the reader asked for it. Stealing focus on first paint would drop
+    // them past the skip link before they have done anything.
+    if (moveFocus) focusPanel(r.id);
   }
 
   function enterPanels() {
@@ -1268,6 +1341,10 @@ td:last-child,th:last-child{padding-right:0}
     if (wide.matches) enterPanels(); else leavePanels();
     setOpen(false);
     measureRail();
+    // Every mode change resizes the figure frame, and this is the only gauge call on
+    // the scroll-mode path: leavePanels() never reaches show(). Without it the plates
+    // below 1100px, which is every phone, would never learn they have canvas offscreen.
+    gaugePlates();
   }
 
   // The click is authoritative; the URL is written on a best-effort basis afterwards.
@@ -1287,13 +1364,14 @@ td:last-child,th:last-child{padding-right:0}
       e.preventDefault();
       show(id);
       window.scrollTo(0, 0);
+      focusPanel(id);
       try { history.pushState({ panel: id }, '', '#' + id); } catch (err) {}
     });
   }
 
   function syncFromUrl() {
     if (!wide.matches) return;
-    land(resolve(fromHash()));
+    land(resolve(fromHash()), true);
   }
 
   window.addEventListener('hashchange', syncFromUrl);
@@ -1330,9 +1408,19 @@ td:last-child,th:last-child{padding-right:0}
 
   var ticking = false;
   function schedule() {
+    // apply() has one trigger, the media query's change event. If that event is ever
+    // missed the layout stays in the wrong mode until a reload, and the rail marker is
+    // then pointing at a section that is not on screen. Reconciled synchronously and
+    // outside the frame below, because it must survive the case where rAF never runs:
+    // a throttled background tab leaves ticking latched true and everything inside the
+    // callback dead, which is exactly when a silent wrong mode would persist longest.
+    // Two reads and a compare, only when the mode actually disagrees.
+    if (wide.matches !== (root.getAttribute('data-panels') === 'on')) apply();
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(function () { spy(); measureRail(); ticking = false; });
+    requestAnimationFrame(function () {
+      spy(); measureRail(); gaugePlates(); ticking = false;
+    });
   }
 
   window.addEventListener('scroll', schedule, { passive: true });
